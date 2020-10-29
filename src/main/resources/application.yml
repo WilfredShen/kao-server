@@ -1,6 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://47.93.91.154:3306/archive_center?characterEncoding=utf-8
+    url: jdbc:mysql://47.93.91.154:3306/kao?characterEncoding=utf-8
     username: kao
     password: kao666
+mybatis:
+  mapper-locations:
+    - classpath:mappers/*.xml

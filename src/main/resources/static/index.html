@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd"
+        >
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta content="application/activity+json">
+    <title>欢迎您!</title>
+    <script type=text/javascript src="jquery-3.4.1.min.js"></script>
+</head>
+<body>
+<h1>用户登录</h1>
+<!-- 数据私密、太长要使用post传输给服务器 -->
+<form id="form_login">
+    <p>请输入用户名:</p>
+    <p>
+        <input type="text" id = "username" name="username" />
+        <span id="usernamehint"></span>
+    </p>
+    <p>请输入密码:</p>
+    <p>
+        <input type="password" id="password" name="password" />
+        <span id = "passwordhint"></span>
+    </p>
+    <p>
+        <span>请输入手机号:</span>
+    </p>
+    <p>
+        <input type="text" id="phoneNumber" name="phoneNumber" />
+        <span id = "phoneNumberHint"></span>
+    </p>
+    <p>
+        <input type="button" id = "getVfCode" value="获取验证码"/>
+    </p>
+    <p>
+        <span>请输入验证码:</span>
+    </p>
+    <p>
+        <input type="text" id="verificationCode" name="verificationCode" />
+        <span id = "verificationCodeHint"></span>
+    </p>
+    <p>
+        <input type="button" id="btn" value="登录" />
+    </p>
+</form>
+<script type="text/javascript">
+    //获取按钮对象
+    //设置监听器
+    var username = $("#username").val();
+    var password = $("#password").val();
+    console.log("%s",username);
+    console.log("%s",password);
+    $("#btn").click(function (){
+        $.ajax({
+            contentType:"application/json; charset=utf-8",
+            url:"/Visitor/login",
+            data:JSON.stringify({
+                "username":username,
+                "password":password
+            }),
+            type:"post",
+            dataType:"json",
+            success:function(json){
+                if(json.state ===0){
+                    alert("登陆成功");
+                }else if(json.state === 2){
+                    $("#passwordhint").html(json.message);
+                }else{
+                    $("#usernamehint").html(json.message);
+                }
+            }
+        });
+    });
+
+
+        var phone = $("#phoneNumber").val();
+        $("#getVfCode").click(function () {
+            $.ajax({
+                contentType:"application/json; charset=utf-8",
+                url:"/Visitor/getVfCode",
+                data:JSON.stringify({
+                    "phoneNumber":phone
+                }),
+                type:"post",
+                dataType:"json",
+                success:function(json){
+                    if(json.state ===0){
+                        alert("获取验证码成功");
+                    }else if(json.state === 4){
+                        $("#verificationCodeHint").html(json.message);
+                    }
+                }
+            });
+        });
+</script>
+</body>
+</html>

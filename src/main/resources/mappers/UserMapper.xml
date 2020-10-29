@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace指定该xml文件对应的接口 -->
+<!-- 一个xml文件只对应一个接口 -->
+<mapper namespace="com.kao.server.mapper.UserMapper">
+
+	<insert id="insertNewUser">
+		INSERT INTO user
+		(uid,username,password,salt,phone,email,identity ,name ,birthday,sex,account_type)
+		VALUES
+		(#{uid},#{username},#{password},#{salt},#{phone},#{email},#{identity},#{name},
+		#{birthday},#{sex},#{account_type}
+		)
+	</insert>
+
+	<update id="updatePassword">
+		UPDATE user AS u SET u.password = #{password}
+		WHERE u.username = #{username}
+	</update>
+
+	<select id="selectUsernameByname" resultType="java.lang.String">
+		SELECT username from user where username = #{userName}
+	</select>
+
+	<select id="selectPasswordByUserName" resultType="com.kao.server.entity.User">
+		SELECT * from user where username=#{username}
+	</select>
+</mapper>
