@@ -7,8 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 
 public interface UserLoginController {
 
-//    //注册
-//    public JsonResult<String> register(JSONObject registerMessageJSON, HttpServletRequest request);
     //登录
     public JsonResult<String> login(JSONObject loginMessageJSON,HttpServletRequest request);
     //忘记密码
