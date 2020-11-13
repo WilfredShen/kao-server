@@ -6,7 +6,9 @@ import com.kao.server.mapper.AdminMapper;
 import com.kao.server.service.InterFaces.AdminService;
 import com.kao.server.service.InterFaces.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class AdminServiceImpl extends BaseServiceImpl implements AdminService, LoginService {
 
     @Autowired
