@@ -1,107 +1,114 @@
 # kao-server
 
-> 一、前后端交互数据格式
-
-#### 1. 访问路径
+> 一、前后端交互数据格式(实现权限管理后,data返回的是权限标识)
 
 - 登录：
 
-  ```http
-  localhost:8080/Visitor/login
-  ```
+  - 请求路径
+
+    ```http
+    localhost:8080/Visitor/login
+    ```
+
+  - 请求数据格式
+
+    ```json
+    {
+    "username":"",
+    "password":""
+    }
+    ```
+
+  - 返回数据格式(state为0表示登录成功，1为账号错误，2为密码错误，message为提示信息)
+
+    ```json
+    {
+    "state": "",      
+    "message":"",	   
+    "data": ""        
+    }
+    ```
 
 - 注册
 
-  ```http
-  localhost:8080/Visitor/register
-  ```
+  - 路径
+
+    ```http
+    localhost:8080/Visitor/register
+    ```
+
+  - 请求数据格式
+
+    ```json
+    {
+    "username":"",
+    "password":""
+    }
+    ```
+
+  - 返回数据格式(state为0为注册成功，3表示用户名已存在，message为错误提示信息)
+
+    ```json
+    {
+    "state":"",     
+    "message":"",	  
+    "data":""         
+    }
+    ```
 
 - 获取验证码
 
-  ```http
-  localhost:8080/getVfCode
-  ```
+  - 路径
+
+    ```http
+    localhost:8080/getVfCode
+    ```
+
+  - 请求数据格式
+
+    ```json
+    {
+       "phoneNumber":""
+    }
+    ```
+
+  - 返回数据格式(state为0为获取验证码成功，4表示验证码获取失败，message为错误提示信息，data为验证码)
+
+    ```json
+    {
+    "state":"",
+    "message":"",
+    "data":""
+    }
+    ```
+
+    
 
 - 忘记密码
 
-  ```http
-  localhost:8080/Visitor/forgetPassWord
-  ```
+  - 路径
 
-#### 2. json数据格式
+    ```http
+    localhost:8080/Visitor/forgetPassWord
+    ```
 
-##### 2.1 前端--->后端
+  - 请求格式(密码是新密码)
 
-- 登录界面
+    ```json
+    {
+    "username":"",
+    "password":""
+    }
+    ```
 
-  ```json
-  {
-  username:"账号",
-  password:"密码"
-  }
-  ```
+  - 返回格式(0为修改成功,6表示修改密码失败,mssage为错误提示信息)
 
-- 注册界面
+    ```json
+    {
+    "state":"",       
+    "message":"",	   
+    "data":""      
+    }
+    ```
 
-  ```json
-  //首先获取验证码
-  {
-      phoneNumber:"手机号"
-  }
-  
-  {
-  username:"账号",
-  password:"密码"
-  }
-  ```
-
-- 忘记密码
-
-  ```json
-  {
-  //首先获取验证码
-  {
-      phoneNumber:"手机号"
-  }
-  
-  {
-  username:"账号",
-  password:"新密码"
-  }
-  }
-  ```
-
-##### 2.2 后端--->前端
-
-- 登录
-
-  ```json
-  {
-  state:         //0为验证成功，1表示账号输入错误，2表示密码输入错误
-  message:   //错误提示信息
-  data:          //返回的数据,如添加权限管理，则为权限标识
-  }
-  ```
-
-- 注册
-
-  ```json
-  {
-  state:         //0为验证成功,3表示用户名已存在,4表示验证码获取失败
-  message:	   //错误提示信息
-  data:          //返回的数据,如添加权限管理，则为权限标识
-  }
-  ```
-
-- 忘记密码
-
-  ```json
-  {
-  state:         //0为修改成功,6表示修改密码失败
-  message:	   //错误提示信息
-  data:          //返回的数据,如添加权限管理，则为权限标识
-  }
-  ```
-
-  
-
+    

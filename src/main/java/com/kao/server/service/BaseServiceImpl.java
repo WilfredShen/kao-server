@@ -12,34 +12,5 @@ import org.springframework.stereotype.Service;
 public class BaseServiceImpl implements BaseService
 {
     @Autowired
-    UserMapper userMapper;
-    @Autowired
     QueryMapper queryMapper;
-
-    @Override
-    public int updatePassword(String userName,String passwordAgain) {
-
-        return userMapper.updatePassword(userName,passwordAgain);
-    }
-
-    @Override
-    public int insertNewUser(User user) {
-        return userMapper.insertNewUser(user);
-    }
-
-    @Override
-    public String getverifiedCode(String phoneNumber) {
-
-        return SmsUtil.getverifiedCode(phoneNumber);
-    }
-
-    @Override
-    public String selectUsernameByname(String userName) {
-        return userMapper.selectUsernameByname(userName);
-    }
-
-    @Override
-    public User selectPasswordByUserName(String userName) {
-        return userMapper.selectPasswordByUserName(userName);
-    }
 }
