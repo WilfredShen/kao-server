@@ -1,17 +1,13 @@
 package com.kao.server.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import java.sql.Timestamp;
 import java.util.Date;
 
 /**
  * @author 全鸿润
  */
-@Entity
 public class User {
 
-    @Id
     private Integer uid;
     private String username;
     private String password;
@@ -22,18 +18,10 @@ public class User {
     private String name;
     private Date birthday;
     private Boolean sex;
-    private String account_type;
-    private Timestamp register_time;
-    private Timestamp latest_login_time;
-    private String lastest_login_location;
-
-    public User(Integer uid, String username, String password, String salt, String phone) {
-        this.uid = uid;
-        this.username = username;
-        this.password = password;
-        this.salt = salt;
-        this.phone = phone;
-    }
+    private String accountType;
+    private Timestamp registerTime;
+    private Timestamp latestLoginTime;
+    private String latestLoginLocation;
 
     public Integer getUid() {
         return uid;
@@ -115,35 +103,35 @@ public class User {
         this.sex = sex;
     }
 
-    public String getAccount_type() {
-        return account_type;
+    public String getAccountType() {
+        return accountType;
     }
 
-    public void setAccount_type(String account_type) {
-        this.account_type = account_type;
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
     }
 
-    public Timestamp getRegister_time() {
-        return register_time;
+    public Timestamp getRegisterTime() {
+        return registerTime;
     }
 
-    public void setRegister_time(Timestamp register_time) {
-        this.register_time = register_time;
+    public void setRegisterTime(Timestamp registerTime) {
+        this.registerTime = registerTime;
     }
 
-    public Timestamp getLatest_login_time() {
-        return latest_login_time;
+    public Timestamp getLatestLoginTime() {
+        return latestLoginTime;
     }
 
-    public void setLatest_login_time(Timestamp latest_login_time) {
-        this.latest_login_time = latest_login_time;
+    public void setLatestLoginTime(Timestamp latestLoginTime) {
+        this.latestLoginTime = latestLoginTime;
     }
 
-    public String getLastest_login_location() {
-        return lastest_login_location;
+    public String getLatestLoginLocation() {
+        return latestLoginLocation;
     }
 
-    public void setLastest_login_location(String lastest_login_location) {
-        this.lastest_login_location = lastest_login_location;
+    public void setLatestLoginLocation(String latestLoginLocation) {
+        this.latestLoginLocation = latestLoginLocation;
     }
 }
