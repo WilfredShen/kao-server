@@ -9,7 +9,7 @@ public class GetRequestData {
     public static String getJsonDataFromRequest(HttpServletRequest request) {
 
         int contentLength = request.getContentLength();
-        ;
+
         if (contentLength < 0) {
             return null;
         }
@@ -33,7 +33,7 @@ public class GetRequestData {
             encoding = "UTF-8";
         }
         try {
-            System.err.println(new String(buffer,encoding));
+            System.err.println(new String(buffer, encoding));
             return new String(buffer, encoding);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();

@@ -2,18 +2,22 @@ package com.kao.server.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.kao.server.entity.User;
-import com.kao.server.service.impls.LoginServiceImpl;
-import com.kao.server.service.impls.SmsServiceImpl;
+import com.kao.server.service.impl.LoginServiceImpl;
+import com.kao.server.service.impl.SmsServiceImpl;
 import com.kao.server.util.json.JsonResult;
 import com.kao.server.util.json.JsonResultStatus;
 import com.kao.server.util.json.ResultFactory;
-import com.kao.server.util.login.IsLogined;
+import com.kao.server.util.login.IsLoggedIn;
 import com.kao.server.util.login.SaltGenerator;
 import com.kao.server.util.login.UidGenerator;
 import com.kao.server.util.token.TokenGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -42,7 +46,7 @@ public class LoginController {
         if (password == null) {
             return ResultFactory.buildFailJsonResult(JsonResultStatus.PASSWORD_ISNULL, "密码不能为空");
         }
-        JsonResult jsonResult = ResultFactory.buildJsonResult(null,null,null);
+        JsonResult jsonResult = ResultFactory.buildJsonResult(null, null, null);
         User user = loginService.findUserByUsername(username);
         if (user != null && user.getUsername().equals(username)) {
             if (user.getPassword().equals(password)) {
@@ -81,13 +85,13 @@ public class LoginController {
         if (verificationCode == null) {
             return ResultFactory.buildFailJsonResult(JsonResultStatus.VERIFICATIONCODE_ISNULL, "验证码不能为空");
         }
-        JsonResult jsonResult = ResultFactory.buildJsonResult(null,null,null);
+        JsonResult jsonResult = ResultFactory.buildJsonResult(null, null, null);
         User user = loginService.findUserNameByUsername(username);
         if (user == null) {
             if ((loginService.findPhoneNumberByPhoneNumber(phoneNumber) != null)) {
                 jsonResult.setStatus(JsonResultStatus.PHONENUMBER_ISEXITED);
                 jsonResult.setMessage("该手机号已经存在");
-            }else{
+            } else {
                 User newUser = new User();
                 newUser.setUid(UidGenerator.getUID());
                 newUser.setUsername(username);
@@ -108,7 +112,7 @@ public class LoginController {
 
     @RequestMapping(value = "/updatepassword", method = RequestMethod.POST)
     @ResponseBody
-    @IsLogined
+    @IsLoggedIn
     public JsonResult updatePassword(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
         String username = jsonObject.getString("username");
         String phoneNumber = jsonObject.getString("phoneNumber");
@@ -146,7 +150,7 @@ public class LoginController {
     @ResponseBody
     public JsonResult getVerificationCode(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
         String phoneNumber = jsonObject.getString("phoneNumber");
-        JsonResult jsonResult = ResultFactory.buildJsonResult(null,null,null);
+        JsonResult jsonResult = ResultFactory.buildJsonResult(null, null, null);
         if (phoneNumber == null) {
             jsonResult.setStatus(JsonResultStatus.PHONENUMBER_ISNULL);
             jsonResult.setMessage("手机号不能为空");
@@ -155,7 +159,7 @@ public class LoginController {
         String verificationCode = smsService.getVerificationCode(phoneNumber);
         if (verificationCode != null) {
             jsonResult.setStatus(JsonResultStatus.SUCCESS);
-        }else {
+        } else {
             jsonResult.setStatus(JsonResultStatus.VERIFICATIONCODE_GET_FAILED);
             jsonResult.setMessage("获取验证码失败!请检查手机号是否正确");
         }

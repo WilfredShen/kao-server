@@ -6,44 +6,34 @@
 <!-- 一个xml文件只对应一个接口 -->
 <mapper namespace="com.kao.server.mapper.LoginMapper">
 
-    <resultMap id="UserMap" type="com.kao.server.entity.User">
-        <id column="uid" property="uid"/>
-        <result column="username" property="username"/>
-        <result column="password" property="password"/>
-        <result column="salt" property="salt"/>
-        <result column="phone" property="phone"/>
-        <result column="email" property="email"/>
-        <result column="identity" property="identity"/>
-        <result column="name" property="name"/>
-        <result column="birthday" property="birthday"/>
-        <result column="sex" property="sex"/>
-        <result column="account_type" property="accountType"/>
-        <result column="register_time" property="registerTime"/>
-        <result column="latest_login_time" property="latestLoginTime"/>
-        <result column="latest_login_location" property="latestLoginLocation"/>
-    </resultMap>
-
     <insert id="addOne">
         INSERT INTO user (uid, username, password, salt, phone, email, identity, name,
-            birthday, sex, account_type,register_time,latest_login_time,latest_login_location)
-        VALUES
-        (#{uid}, #{username}, #{password}, #{salt}, #{phone}, #{email}, #{identity}, #{name},
-            #{birthday}, #{sex}, #{accountType},#{registerTime},#{latestLoginTime},#{latestLoginLocation})
+                          birthday, sex, account_type, register_time, latest_login_time, latest_login_location)
+        VALUES (#{uid}, #{username}, #{password}, #{salt}, #{phone}, #{email}, #{identity}, #{name},
+                #{birthday}, #{sex}, #{accountType}, #{registerTime}, #{latestLoginTime}, #{latestLoginLocation})
     </insert>
 
     <update id="updatePassword">
-        UPDATE user AS u SET u.password = #{newPassword} WHERE u.username = #{username}
+        UPDATE user AS u
+        SET u.password = #{newPassword}
+        WHERE u.username = #{username}
     </update>
 
-    <select id="findUserByUsername" resultMap="UserMap" parameterType="String">
-        SELECT u.* From user AS u WHERE u.username = #{username}
+    <select id="findUserByUsername" parameterType="java.lang.String" resultType="com.kao.server.entity.User">
+        SELECT u.*
+        From user AS u
+        WHERE u.username = #{username}
     </select>
 
-    <select id="findUserNameByUsername" resultMap="UserMap" parameterType="String">
-        SELECT u.* FROM user AS u WHERE u.username = #{username}
+    <select id="findUserNameByUsername" parameterType="java.lang.String" resultType="com.kao.server.entity.User">
+        SELECT u.*
+        FROM user AS u
+        WHERE u.username = #{username}
     </select>
 
     <select id="findPhoneNumberByPhoneNumber" resultType="java.lang.String">
-        SELECT u.phone FROM user AS u WHERE u.phone = #{phoneNumber}
+        SELECT u.phone
+        FROM user AS u
+        WHERE u.phone = #{phoneNumber}
     </select>
 </mapper>

@@ -1,12 +1,10 @@
 package com.kao.server.util.intercepter;
 
 import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.kao.server.util.json.GetRequestData;
 import com.kao.server.util.json.JsonResultStatus;
-import com.kao.server.util.login.IsLogined;
+import com.kao.server.util.login.IsLoggedIn;
 import com.kao.server.util.token.TokenVerifytor;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -29,7 +27,7 @@ public class AuthorityIntercepter implements HandlerInterceptor {
         }
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         Method method = handlerMethod.getMethod();
-        IsLogined anotation = method.getAnnotation(IsLogined.class);
+        IsLoggedIn anotation = method.getAnnotation(IsLoggedIn.class);
         JSONObject jsonResult = new JSONObject();
         response.setContentType("application/json;charset=utf-8");
         response.setCharacterEncoding("UTF-8");

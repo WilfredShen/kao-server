@@ -1,4 +1,4 @@
-package com.kao.server.service.impls;
+package com.kao.server.service.impl;
 
 import com.kao.server.service.SmsService;
 import com.kao.server.util.sms.VerificationCodeGenerator;

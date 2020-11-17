@@ -1,7 +1,7 @@
 package com.kao.server.util.login;
 
 import com.kao.server.entity.User;
-import com.kao.server.service.impls.LoginServiceImpl;
+import com.kao.server.service.impl.LoginServiceImpl;
 import com.kao.server.util.json.JsonResult;
 import com.kao.server.util.json.JsonResultStatus;
 import com.kao.server.util.json.ResultFactory;
@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 
 public class RegisterChecker {
 
-    public static JsonResult checkRgister(String username, String password, String phoneNumber, String verificationCode, LoginServiceImpl loginService) {
+    public static JsonResult checkRegister(String username, String password, String phoneNumber, String verificationCode, LoginServiceImpl loginService) {
 
         if (username == null) {
             return ResultFactory.buildFailJsonResult(JsonResultStatus.USERNAME_ISNULL, "用户名不能为空");

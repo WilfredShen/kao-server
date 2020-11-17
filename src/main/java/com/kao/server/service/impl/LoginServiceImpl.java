@@ -1,4 +1,4 @@
-package com.kao.server.service.impls;
+package com.kao.server.service.impl;
 
 import com.kao.server.entity.User;
 import com.kao.server.mapper.LoginMapper;
