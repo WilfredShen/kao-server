@@ -5,6 +5,7 @@ package com.kao.server.util.json;
  */
 public class JsonResultStatus {
     static public Integer SUCCESS = 200;
+    static public Integer FAIL = 400;
     static public Integer UNKOWN_ERROR = 400;
     static public Integer USERNAME_WRONG = 401;
     static public Integer USERNAME_ISNULL = 403;
@@ -21,5 +22,4 @@ public class JsonResultStatus {
     static public Integer PASSWORD_ISNOT_THESAME = 427;
     static public Integer UPDATE_PASSWORD_FAILED = 430;
     static public Integer UNAUTHORIZED_USER = 440;
-
 }
