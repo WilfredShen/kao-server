@@ -5,4 +5,5 @@ package com.kao.server.util.json;
  */
 public class JsonResultStatus {
     static public Integer SUCCESS = 200;
+    static public Integer FAIL = 400;
 }
