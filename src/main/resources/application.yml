@@ -12,7 +12,7 @@ mybatis:
     lazy-loading-enabled: true
     aggressive-lazy-loading: true
   mapper-locations:
-    - classpath:mappers/*.xml
+    - classpath:mapper/*.xml
 
 server:
   port: 8080
