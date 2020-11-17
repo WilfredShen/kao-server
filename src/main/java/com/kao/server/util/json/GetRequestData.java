@@ -17,7 +17,7 @@ public class GetRequestData {
         int startIndex = 0, len = 0;
         while (true) {
             try {
-                if (!(request.getInputStream().read(buffer, startIndex, contentLength - startIndex) == -1)) {
+                if ((request.getInputStream().read(buffer, startIndex, contentLength - startIndex) == -1)) {
                     break;
                 } else {
                     startIndex += len;
@@ -33,6 +33,7 @@ public class GetRequestData {
             encoding = "UTF-8";
         }
         try {
+            System.err.println(new String(buffer,encoding));
             return new String(buffer, encoding);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
