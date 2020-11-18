@@ -1,25 +1,17 @@
 package com.kao.server.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.kao.server.entity.User;
 import com.kao.server.service.impl.LoginServiceImpl;
 import com.kao.server.service.impl.SmsServiceImpl;
 import com.kao.server.util.json.JsonResult;
-import com.kao.server.util.json.JsonResultStatus;
 import com.kao.server.util.json.ResultFactory;
 import com.kao.server.util.login.*;
-import com.kao.server.util.token.TokenGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.sql.Timestamp;
 
 @Controller
 @CrossOrigin
@@ -39,7 +31,7 @@ public class LoginController {
         String username = jsonObject.getString("username");
         String password = jsonObject.getString("password");
 
-        return LoginChecker.checkLogin(username,password,loginService);
+        return LoginChecker.checkLogin(username, password, loginService);
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
@@ -51,7 +43,7 @@ public class LoginController {
         String phoneNumber = jsonObject.getString("phoneNumber");
         String verificationCode = jsonObject.getString("verificationCode");
 
-        return RegisterChecker.checkRegister(username,password,phoneNumber,verificationCode,loginService);
+        return RegisterChecker.checkRegister(username, password, phoneNumber, verificationCode, loginService);
     }
 
     @RequestMapping(value = "/updatepassword", method = RequestMethod.POST)
@@ -64,7 +56,7 @@ public class LoginController {
         String password = jsonObject.getString("password");
         String passwordAgain = jsonObject.getString("passwordAgain");
 
-        return UpdatePasswordChecker.checkUpdatePassword(username,password,passwordAgain,phoneNumber,verificationCode,loginService);
+        return UpdatePasswordChecker.checkUpdatePassword(username, password, passwordAgain, phoneNumber, verificationCode, loginService);
     }
 
     @RequestMapping(value = "/getvfcode", method = RequestMethod.POST)
@@ -73,6 +65,6 @@ public class LoginController {
         String phoneNumber = jsonObject.getString("phoneNumber");
         JsonResult jsonResult = ResultFactory.buildJsonResult(null, null, null);
 
-        return GetVerificationCodeChecker.checkGetVerificationCode(phoneNumber,loginService,smsService);
+        return GetVerificationCodeChecker.checkGetVerificationCode(phoneNumber, loginService, smsService);
     }
 }
