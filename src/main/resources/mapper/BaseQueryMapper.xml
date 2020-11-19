@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kao.server.mapper.BaseQueryMapper">
+    <select id="queryEvaluation" resultType="com.kao.server.dto.EvaluationBase">
+        SELECT cid, mid, result, round
+        FROM evaluation
+        where round = #{round};
+    </select>
+
+    <select id="queryLatestEvaluation" resultType="com.kao.server.dto.EvaluationBase">
+        SELECT cid, mid, result, round
+        FROM evaluation
+        where round = (
+            SELECT MAX(round)
+            FROM evaluation
+        );
+    </select>
+    <select id="queryLatestNews" resultType="com.kao.server.dto.NewsBase">
+        SELECT cid, date, title, content, image, official_link
+        FROM news
+        ORDER BY date DESC
+        LIMIT #{limit};
+    </select>
+</mapper>

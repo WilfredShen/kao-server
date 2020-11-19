@@ -30,9 +30,9 @@ public class MetaQueryController {
     public JsonResult queryCollegeIdAndName() {
         List<CollegeIdAndName> data = metaQueryService.queryCollegeIdAndName();
         if (data == null) {
-            return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, "query failed");
+            return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
         } else {
-            return ResultFactory.buildSuccessJsonResult("query success", data);
+            return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
         }
     }
 
@@ -40,9 +40,9 @@ public class MetaQueryController {
     public JsonResult queryDiscipline() {
         List<Discipline> data = metaQueryService.queryDiscipline();
         if (data == null) {
-            return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, "query failed");
+            return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
         } else {
-            return ResultFactory.buildSuccessJsonResult("query success", data);
+            return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
         }
     }
 
@@ -50,9 +50,9 @@ public class MetaQueryController {
     public JsonResult queryMajor() {
         List<Major> data = metaQueryService.queryMajor();
         if (data == null) {
-            return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, "query failed");
+            return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
         } else {
-            return ResultFactory.buildSuccessJsonResult("query success", data);
+            return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
         }
     }
 
@@ -60,9 +60,9 @@ public class MetaQueryController {
     public JsonResult queryRound() {
         List<Integer> data = metaQueryService.queryRound();
         if (data == null) {
-            return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, "query failed");
+            return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
         } else {
-            return ResultFactory.buildSuccessJsonResult("query success", data);
+            return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
         }
     }
 }
