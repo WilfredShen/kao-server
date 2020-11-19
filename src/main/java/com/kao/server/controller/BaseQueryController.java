@@ -2,6 +2,8 @@ package com.kao.server.controller;
 
 import com.kao.server.dto.EvaluationBase;
 import com.kao.server.dto.NewsBase;
+import com.kao.server.dto.TutorRoleBaseWithName;
+import com.kao.server.entity.College;
 import com.kao.server.service.BaseQueryService;
 import com.kao.server.util.json.JsonResult;
 import com.kao.server.util.json.JsonResultStatus;
@@ -42,6 +44,26 @@ public class BaseQueryController {
     @GetMapping("/latest-news")
     public JsonResult queryLatestNews() {
         List<NewsBase> data = baseQueryService.queryLatestNews(6);
+        if (data == null) {
+            return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
+        } else {
+            return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
+        }
+    }
+
+    @GetMapping("/college")
+    public JsonResult queryCollege(@RequestParam() String cid) {
+        College data = baseQueryService.queryCollege(cid);
+        if (data == null) {
+            return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
+        } else {
+            return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
+        }
+    }
+
+    @GetMapping("/tutor")
+    public JsonResult queryTutor(@RequestParam() String cid) {
+        List<TutorRoleBaseWithName> data = baseQueryService.queryTutor(cid);
         if (data == null) {
             return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
         } else {

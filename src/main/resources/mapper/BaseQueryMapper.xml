@@ -24,4 +24,22 @@
         ORDER BY date DESC
         LIMIT #{limit};
     </select>
+    <select id="queryCollege" resultType="com.kao.server.entity.College">
+        SELECT cid, cname, location, level, introduction, type
+        FROM college
+        where cid = #{cid};
+    </select>
+    <select id="queryTutor" resultType="com.kao.server.dto.TutorRoleBaseWithName">
+        SELECT cid,
+               mid,
+               tid,
+               u.uid,
+               name,
+               contact_phone,
+               contact_email,
+               research
+        FROM tutor_role
+                 join user u on u.uid = tutor_role.uid
+        WHERE cid = #{cid};
+    </select>
 </mapper>
