@@ -21,6 +21,7 @@ public class WebConfigurer implements WebMvcConfigurer {
         excludes.add("/visitor/register");
         excludes.add("/visitor/getvfcode");
         excludes.add("/meta/*");
+        excludes.add("/base/*");
         registry.addInterceptor(new AuthorityIntercepter())
                 .addPathPatterns("/**")
                 .excludePathPatterns(excludes);
