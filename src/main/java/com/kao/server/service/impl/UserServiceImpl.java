@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
                 result.setStatus(JsonResultStatus.SUCCESS);
                 result.setMessage("修改成功!");
             } else {
-                result.setStatus(JsonResultStatus.UNKOWN_ERROR);
+                result.setStatus(JsonResultStatus.UNKNOWN_ERROR);
                 result.setMessage("修改失败!未知错误");
                 return result;
             }
@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
                 result.setStatus(JsonResultStatus.SUCCESS);
                 result.setMessage("修改成功!");
             } else {
-                result.setStatus(JsonResultStatus.UNKOWN_ERROR);
+                result.setStatus(JsonResultStatus.UNKNOWN_ERROR);
                 result.setMessage("修改失败!未知错误");
                 return result;
             }
@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
                 result.setStatus(JsonResultStatus.SUCCESS);
                 result.setMessage("修改成功!");
             } else {
-                result.setStatus(JsonResultStatus.UNKOWN_ERROR);
+                result.setStatus(JsonResultStatus.UNKNOWN_ERROR);
                 result.setMessage("修改失败!未知错误");
                 return result;
             }
