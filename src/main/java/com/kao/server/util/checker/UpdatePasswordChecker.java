@@ -1,4 +1,4 @@
-package com.kao.server.util.login;
+package com.kao.server.util.checker;
 
 import com.kao.server.service.impl.LoginServiceImpl;
 import com.kao.server.util.json.JsonResult;
