@@ -1,10 +1,12 @@
-package com.kao.server.util.login;
+package com.kao.server.util.checker;
 
 import com.kao.server.entity.User;
 import com.kao.server.service.impl.LoginServiceImpl;
 import com.kao.server.util.json.JsonResult;
 import com.kao.server.util.json.JsonResultStatus;
 import com.kao.server.util.json.ResultFactory;
+import com.kao.server.util.login.SaltGenerator;
+import com.kao.server.util.login.UidGenerator;
 
 import java.sql.Timestamp;
 

@@ -4,14 +4,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.kao.server.service.impl.LoginServiceImpl;
 import com.kao.server.service.impl.SmsServiceImpl;
 import com.kao.server.util.json.JsonResult;
-import com.kao.server.util.json.ResultFactory;
-import com.kao.server.util.login.*;
+import com.kao.server.util.login.IsLoggedIn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 @Controller
 @CrossOrigin
@@ -27,44 +25,27 @@ public class LoginController {
     @ResponseBody
     public JsonResult login(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
 
-        HttpSession session = request.getSession();
-        String username = jsonObject.getString("username");
-        String password = jsonObject.getString("password");
-
-        return LoginChecker.checkLogin(username, password, loginService);
+        return loginService.login(jsonObject, request);
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult register(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
 
-        String username = jsonObject.getString("username");
-        String password = jsonObject.getString("password");
-        String phoneNumber = jsonObject.getString("phoneNumber");
-        String verificationCode = jsonObject.getString("verificationCode");
-
-        return RegisterChecker.checkRegister(username, password, phoneNumber, verificationCode, loginService);
+        return loginService.register(jsonObject, request);
     }
 
     @RequestMapping(value = "/updatepassword", method = RequestMethod.POST)
     @ResponseBody
     @IsLoggedIn
     public JsonResult updatePassword(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
-        String username = jsonObject.getString("username");
-        String phoneNumber = jsonObject.getString("phoneNumber");
-        String verificationCode = jsonObject.getString("verificationCode");
-        String password = jsonObject.getString("password");
-        String passwordAgain = jsonObject.getString("passwordAgain");
 
-        return UpdatePasswordChecker.checkUpdatePassword(username, password, passwordAgain, phoneNumber, verificationCode, loginService);
+        return loginService.updatePassword(jsonObject, request);
     }
 
     @RequestMapping(value = "/getvfcode", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult getVerificationCode(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
-        String phoneNumber = jsonObject.getString("phoneNumber");
-        JsonResult jsonResult = ResultFactory.buildJsonResult(null, null, null);
-
-        return GetVerificationCodeChecker.checkGetVerificationCode(phoneNumber, loginService, smsService);
+        return loginService.getVerificationCode(jsonObject, request);
     }
 }
