@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace指定该xml文件对应的接口 -->
+<!-- 一个xml文件只对应一个接口 -->
+<mapper namespace="com.kao.server.mapper.StudentMapper">
+    <update id="updatePhone">
+        UPDATE student_role AS s SET s.contact_phone = #{phone} WHERE s.uid=#{uid}
+    </update>
+    <update id="updateEmail">
+        UPDATE student_role AS s SET s.contact_email = #{email} WHERE s.uid=#{uid}
+    </update>
+    <update id="updateAccountType">
+        UPDATE student_role AS s SET s.accountType = #{accountType} WHERE s.uid=#{uid}
+    </update>
+    <update id="updateCollege">
+        UPDATE student_role AS s SET s.cid = (SELECT c.cid FROM college AS c WHERE c.cname = #{college})
+        WHERE s.uid=#{uid}
+    </update>
+    <update id="updateMajor">
+        UPDATE student_role AS s SET s.mid = (SELECT m.mid FROM major AS m WHERE m.mname = #{major})
+        WHERE s.uid=#{uid}
+    </update>
+    <update id="updateGraduateDate">
+        UPDATE student_role AS s SET s.graduation_date = #{graduationDate} WHERE s.uid=#{uid}
+    </update>
+    <update id="updateExpectedMajor">
+        UPDATE student_role AS s SET s.expected = #{expectedMajor} WHERE s.uid=#{uid}
+    </update>
+    <update id="updateQueryable">
+        UPDATE student_role AS s SET s.queryable = #{queryable} WHERE s.uid=#{uid}
+    </update>
+
+
+    <select id="findStudentById" resultType="com.kao.server.dto.StudentMessage">
+        SELECT * FROM studentmsg AS s WHERE s.uid = #{uid};
+    </select>
+
+</mapper>

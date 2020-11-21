@@ -31,25 +31,26 @@ public class AuthorityIntercepter implements HandlerInterceptor {
         JSONObject jsonResult = new JSONObject();
         response.setContentType("application/json;charset=utf-8");
         response.setCharacterEncoding("UTF-8");
-        PrintWriter out = response.getWriter();
+
         //需要拦截的方法
         if (anotation != null) {
             try{
-                JSONObject jsonObject = JSONObject.parseObject(GetRequestData.getJsonDataFromRequest(request));
-                String accessToken = jsonObject.getString("accessToken");
+//                JSONObject jsonObject = JSONObject.parseObject(GetRequestData.getJsonDataFromRequest(request));
+                String accessToken = request.getHeader("accessToken");
                 if (accessToken != null) {
-                    boolean isLogined = TokenVerifytor.verifyToken(accessToken);
-                    System.err.println(isLogined);
-                    if (isLogined){
-                        jsonResult.put("state", JsonResultStatus.SUCCESS);
+                    boolean isLogin = TokenVerifytor.verifyToken(accessToken);
+                    if (isLogin){
+                        return true;
                     }else{
+                        PrintWriter out = response.getWriter();
                         jsonResult.put("state",JsonResultStatus.UNAUTHORIZED_USER);
                         jsonResult.put("message","当前身份不符，请先登录！");
+                        out.print(jsonResult.toString());
+                        out.close();
+                        return isLogin;
                     }
-                    out.print(jsonResult.toString());
-                    out.close();
-                    return isLogined;
                 } else {
+                    PrintWriter out = response.getWriter();
                     jsonResult.put("state",JsonResultStatus.UNAUTHORIZED_USER);
                     jsonResult.put("message","当前身份不符，请先登录！");
                     out.print(jsonResult.toString());
@@ -57,6 +58,7 @@ public class AuthorityIntercepter implements HandlerInterceptor {
                     return false;
                 }
             }catch (Exception e){
+                PrintWriter out = response.getWriter();
                 jsonResult.put("state",JsonResultStatus.BAD_REQUEST);
                 jsonResult.put("message","传递的数据格式有误!");
                 out.print(jsonResult.toString());
@@ -64,6 +66,7 @@ public class AuthorityIntercepter implements HandlerInterceptor {
                 return false;
             }
         }
+        PrintWriter out = response.getWriter();
         jsonResult.put("state",JsonResultStatus.UNAUTHORIZED_USER);
         jsonResult.put("message","当前身份不符，请先登录！");
         out.close();

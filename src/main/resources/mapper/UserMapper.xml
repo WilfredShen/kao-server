@@ -6,28 +6,18 @@
 <!-- 一个xml文件只对应一个接口 -->
 <mapper namespace="com.kao.server.mapper.UserMapper">
 
-    <resultMap id="UserMap" type="com.kao.server.entity.User">
-        <id column="uid" property="uid"/>
-        <result column="username" property="username"/>
-        <result column="password" property="password"/>
-        <result column="salt" property="salt"/>
-        <result column="phone" property="phone"/>
-        <result column="email" property="email"/>
-        <result column="identity" property="identity"/>
-        <result column="name" property="name"/>
-        <result column="birthday" property="birthday"/>
-        <result column="sex" property="sex"/>
-        <result column="account_type" property="accountType"/>
-        <result column="register_time" property="registerTime"/>
-        <result column="latest_login_time" property="latestLoginTime"/>
-        <result column="latest_login_location" property="latestLoginLocation"/>
-    </resultMap>
-    <select id="findUserByUserName" resultType="com.kao.server.entity.User">
-        SELECT u.* From user AS u WHERE u.username = #{username}
+    <update id="updatePhone">
+        UPDATE user AS u SET u.phone = #{phoneNumber} WHERE u.uid = #{uid};
+    </update>
+    <update id="updateEmail">
+        UPDATE user AS u SET u.phone = #{email} WHERE u.uid = #{uid};
+    </update>
+    <update id="updateAccountType">
+        UPDATE user AS u SET u.phone = #{accountType} WHERE u.uid = #{uid};
+    </update>
+
+    <select id="findUserByUserId" resultType="com.kao.server.entity.User">
+        SELECT  u.* From user AS u WHERE u.uid = #{userId}
     </select>
 
-
-<!--    <select id="findUserNameByUsername" resultMap="UserMap" parameterType="String">-->
-<!--        SELECT u.* FROM user AS u WHERE u.username = #{username}-->
-<!--    </select>-->
 </mapper>
