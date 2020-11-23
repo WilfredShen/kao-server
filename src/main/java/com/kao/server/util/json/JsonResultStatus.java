@@ -27,7 +27,9 @@ public class JsonResultStatus {
     static public Integer PASSWORD_ISNOT_THESAME = 427;
     static public Integer UPDATE_PASSWORD_FAILED = 430;
     static public Integer UNAUTHORIZED_USER = 440;
-
+    static public Integer COLLEGE_ISNULL = 450;
+    static public  Integer GRADUATEDATE_ISNULL = 453;
+  
     static public Integer ILLEGAL_PARAM = 450;
     static public String ILLEGAL_PARAM_DESC = "非法参数";
 }

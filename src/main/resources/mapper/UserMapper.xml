@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace指定该xml文件对应的接口 -->
+<!-- 一个xml文件只对应一个接口 -->
+<mapper namespace="com.kao.server.mapper.UserMapper">
+
+    <update id="updatePhone">
+        UPDATE user AS u SET u.phone = #{phoneNumber} WHERE u.uid = #{uid};
+    </update>
+    <update id="updateEmail">
+        UPDATE user AS u SET u.phone = #{email} WHERE u.uid = #{uid};
+    </update>
+    <update id="updateAccountType">
+        UPDATE user AS u SET u.phone = #{accountType} WHERE u.uid = #{uid};
+    </update>
+
+    <select id="findUserByUserId" resultType="com.kao.server.entity.User">
+        SELECT  u.* From user AS u WHERE u.uid = #{userId}
+    </select>
+
+</mapper>
