@@ -1,9 +1,10 @@
 package com.kao.server.controller;
 
-import com.kao.server.dto.CollegeIdAndName;
-import com.kao.server.entity.Discipline;
-import com.kao.server.entity.Major;
-import com.kao.server.service.MetaQueryService;
+import com.kao.server.dto.EvaluationBase;
+import com.kao.server.dto.NewsBase;
+import com.kao.server.dto.TutorRoleBaseWithName;
+import com.kao.server.entity.College;
+import com.kao.server.service.BaseQueryService;
 import com.kao.server.util.json.JsonResult;
 import com.kao.server.util.json.JsonResultStatus;
 import com.kao.server.util.json.ResultFactory;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -20,15 +22,38 @@ import java.util.List;
  */
 @RestController
 @CrossOrigin
-@RequestMapping("/meta")
-public class MetaQueryController {
+@RequestMapping("/base")
+public class BaseQueryController {
 
     @Autowired
-    MetaQueryService metaQueryService;
+    BaseQueryService baseQueryService;
+
+    @GetMapping("/evaluation")
+    public JsonResult queryEvaluation(@RequestParam(required = false) Integer round) {
+        List<EvaluationBase> data;
+        if (round == null || round == 0) {
+            data = baseQueryService.queryLatestEvaluation();
+        } else if (round > 0) {
+            data = baseQueryService.queryEvaluation(round);
+        } else {
+            return ResultFactory.buildFailJsonResult(JsonResultStatus.ILLEGAL_PARAM, JsonResultStatus.ILLEGAL_PARAM_DESC);
+        }
+        return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
+    }
+
+    @GetMapping("/latest-news")
+    public JsonResult queryLatestNews() {
+        List<NewsBase> data = baseQueryService.queryLatestNews(6);
+        if (data == null) {
+            return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
+        } else {
+            return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
+        }
+    }
 
     @GetMapping("/college")
-    public JsonResult queryCollegeIdAndName() {
-        List<CollegeIdAndName> data = metaQueryService.queryCollegeIdAndName();
+    public JsonResult queryCollege(@RequestParam() String cid) {
+        College data = baseQueryService.queryCollege(cid);
         if (data == null) {
             return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
         } else {
@@ -36,29 +61,9 @@ public class MetaQueryController {
         }
     }
 
-    @GetMapping("/discipline")
-    public JsonResult queryDiscipline() {
-        List<Discipline> data = metaQueryService.queryDiscipline();
-        if (data == null) {
-            return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
-        } else {
-            return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
-        }
-    }
-
-    @GetMapping("/major")
-    public JsonResult queryMajor() {
-        List<Major> data = metaQueryService.queryMajor();
-        if (data == null) {
-            return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
-        } else {
-            return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
-        }
-    }
-
-    @GetMapping("/round")
-    public JsonResult queryRound() {
-        List<Integer> data = metaQueryService.queryRound();
+    @GetMapping("/tutor")
+    public JsonResult queryTutor(@RequestParam() String cid) {
+        List<TutorRoleBaseWithName> data = baseQueryService.queryTutor(cid);
         if (data == null) {
             return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
         } else {
