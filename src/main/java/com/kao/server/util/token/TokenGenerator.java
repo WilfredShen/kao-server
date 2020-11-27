@@ -16,7 +16,7 @@ public class TokenGenerator {
     根据传入的用户名和用户ID生成token
     这里使用的是HS256加密算法
      */
-    public static String generateToken(String username, String userid) {
+    public static String generateToken(String username, String userid, String password, String accountType) {
 
         Date date = new Date(System.currentTimeMillis() + TokenContant.getEXPIRTIME());
         Algorithm algorithm = Algorithm.HMAC256(TokenContant.getSecretKey());
@@ -28,6 +28,8 @@ public class TokenGenerator {
                 .withHeader(header)
                 .withClaim("uid", userid)
                 .withClaim("username", username)
+                .withClaim("password",password)
+                .withClaim("accountType",accountType)
                 .withExpiresAt(date)
                 .sign(algorithm);
     }
