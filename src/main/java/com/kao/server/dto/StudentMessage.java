@@ -1,9 +1,6 @@
 package com.kao.server.dto;
 
-import cn.hutool.core.lang.Range;
-
 import java.sql.Date;
-import java.sql.Timestamp;
 
 public class StudentMessage {
 

@@ -4,14 +4,16 @@ import com.alibaba.fastjson.JSONObject;
 import com.kao.server.service.impl.LoginServiceImpl;
 import com.kao.server.service.impl.SmsServiceImpl;
 import com.kao.server.util.json.JsonResult;
-import com.kao.server.util.login.IsLoggedIn;
+import com.kao.server.util.intercepter.IsLoggedIn;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-@Controller
+/**
+ * @author 全鸿润
+ */
+@RestController
 @CrossOrigin
 @RequestMapping(value = "/visitor")
 public class LoginController {

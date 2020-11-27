@@ -54,13 +54,11 @@ public class LoginServiceImpl implements LoginService {
     }
 
     public JsonResult login(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
-
-        HttpSession session = request.getSession();
         String username = jsonObject.getString("username");
         String password = jsonObject.getString("password");
-
-        return LoginChecker.checkLogin(username, password, this);
+        return LoginChecker.checkLogin(username, password, this,request);
     }
+
     public JsonResult register(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
 
         String username = jsonObject.getString("username");
@@ -70,6 +68,7 @@ public class LoginServiceImpl implements LoginService {
 
         return RegisterChecker.checkRegister(username, password, phoneNumber, verificationCode, this);
     }
+
     public JsonResult updatePassword(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
         String username = jsonObject.getString("username");
         String phoneNumber = jsonObject.getString("phoneNumber");

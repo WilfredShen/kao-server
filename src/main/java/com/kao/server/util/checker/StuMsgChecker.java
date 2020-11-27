@@ -13,17 +13,16 @@ import java.sql.Date;
  */
 public class StuMsgChecker {
 
-    public static JsonResult checkStuMsg(String phone , String email, String college, String major, String graduationDate, String expectedMajor,
-                                         String queryable, String id, StudentServiceImpl studentService)
-    {
+    public static JsonResult checkStuMsg(String phone, String email, String college, String major, String graduationDate, String expectedMajor,
+                                         String queryable, String id, StudentServiceImpl studentService) {
         try {
             int uid = Integer.parseInt(id);
-            if (studentService.getstuMsg(uid)==null){
+            if (studentService.getstuMsg(uid) == null) {
                 return ResultFactory.buildFailJsonResult(JsonResultStatus.UNAUTHORIZED_USER, "越权访问");
             }
 
             if (phone != null) {
-                if (studentService.updatePhone(uid, phone)==1){
+                if (studentService.updatePhone(uid, phone) == 1) {
                     System.err.println("YES");
                 }
             } else {
@@ -31,7 +30,7 @@ public class StuMsgChecker {
             }
 
             if (college != null) {
-                if (studentService.updateCollege(uid, college)==1){
+                if (studentService.updateCollege(uid, college) == 1) {
                     System.err.println("YES");
                 }
             } else {
@@ -39,7 +38,7 @@ public class StuMsgChecker {
             }
 
             if (graduationDate != null) {
-                if (studentService.updateGraduateDate(uid, Date.valueOf(graduationDate))==1){
+                if (studentService.updateGraduateDate(uid, Date.valueOf(graduationDate)) == 1) {
                     System.err.println("YES");
                 }
             } else {
@@ -64,12 +63,12 @@ public class StuMsgChecker {
 
             StudentMessage studentMessage = studentService.getstuMsg(uid);
             return ResultFactory.buildSuccessJsonResult("修改成功", studentMessage);
-        }catch (Exception e){
+        } catch (Exception e) {
 
             System.err.println("请检查uid格式是否正确");
         }
 
-        return  ResultFactory.buildFailJsonResult(JsonResultStatus.UNKNOWN_ERROR,"未知错误!");
+        return ResultFactory.buildFailJsonResult(JsonResultStatus.UNKNOWN_ERROR, "未知错误!");
     }
 
 }
