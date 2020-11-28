@@ -1,12 +1,15 @@
 package com.kao.server;
 
 import com.kao.server.dto.QueryableStudentMessage;
+import com.kao.server.entity.Admin;
+import com.kao.server.mapper.AdminMapper;
 import com.kao.server.mapper.LoginMapper;
 import com.kao.server.mapper.TutorMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.sound.midi.SoundbankResource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,6 +22,8 @@ class ServerApplicationTests {
     LoginMapper mapper;
     @Autowired
     TutorMapper tutorService;
+    @Autowired
+    AdminMapper adminMapper;
 
     @Test
     void contextLoads() {
@@ -48,6 +53,16 @@ class ServerApplicationTests {
             e.printStackTrace();
         }
 
+    }
+
+    @Test
+
+    public void testAdminLogin(){
+        String username = "帅润";
+        String password = "534261";
+
+        Admin admin = adminMapper.findUserByUsername(username);
+        System.err.println(admin.getUsername()+admin.getPassword());
     }
 
 }

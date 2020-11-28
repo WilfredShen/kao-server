@@ -46,6 +46,7 @@ public class VerificationCodeGenerator {
             }
             return verifiedCode;
         } catch (ClientException e) {
+            e.printStackTrace();
             System.err.println("获取验证码失败,检查手机号是否输入正确");
             return null;
         }
