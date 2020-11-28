@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kao.server.mapper.AdminMapper">
+    <insert id="uploadNews">
+        INSERT INTO news(cid, date, admin_id, title, content, image, official_link, update_time)
+        VALUES (#{news.cid},
+                #{news.date},
+                #{adminId},
+                #{news.title},
+                #{news.content},
+                #{news.image},
+                #{news.officialLink},
+                now())
+    </insert>
+
+    <insert id="updateNews">
+        INSERT into news(cid, date, admin_id, title, content, image, official_link, update_time)
+        VALUES (#{news.cid},
+                #{news.date},
+                #{adminId},
+                #{news.title},
+                #{news.content},
+                #{news.image},
+                #{news.officialLink},
+                now())
+        ON DUPLICATE KEY UPDATE title         = #{news.title},
+                                content       = #{news.content},
+                                image         = #{news.image},
+                                official_link = #{news.officialLink},
+                                admin_id      = #{adminId},
+                                update_time   = now()
+    </insert>
+
+    <select id="queryNews" resultType="com.kao.server.dto.NewsBase">
+        SELECT *
+        FROM news
+        ORDER BY update_time DESC
+    </select>
+
+
+</mapper>
