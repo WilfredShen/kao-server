@@ -19,11 +19,6 @@ public class MetaQueryServiceImpl implements MetaQueryService {
     @Autowired
     private MetaQueryMapper metaQueryMapper;
 
-    /**
-     * 获取所有院校的编号和名称
-     *
-     * @return 院校列表
-     */
     @Override
     public List<CollegeIdAndName> queryCollegeIdAndName() {
         List<CollegeIdAndName> data = null;
@@ -35,11 +30,6 @@ public class MetaQueryServiceImpl implements MetaQueryService {
         return data;
     }
 
-    /**
-     * 获取所有学科的编号和名称
-     *
-     * @return 学科列表
-     */
     @Override
     public List<Discipline> queryDiscipline() {
         List<Discipline> data = null;
@@ -51,11 +41,6 @@ public class MetaQueryServiceImpl implements MetaQueryService {
         return data;
     }
 
-    /**
-     * 获取所有专业的编号、名称和所属学科的编号
-     *
-     * @return 专业列表
-     */
     @Override
     public List<Major> queryMajor() {
         List<Major> data = null;
@@ -67,11 +52,6 @@ public class MetaQueryServiceImpl implements MetaQueryService {
         return data;
     }
 
-    /**
-     * 获取所有轮次
-     *
-     * @return 轮次列表
-     */
     @Override
     public List<Integer> queryRound() {
         List<Integer> data = null;

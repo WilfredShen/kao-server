@@ -23,12 +23,6 @@ public class FavorServiceImpl implements FavorService {
     @Autowired
     private FavorMapper favorMapper;
 
-    /**
-     * 查询学生 id
-     *
-     * @param uid 用户 id
-     * @return 查询结果
-     */
     @Override
     public StudentId getStudentId(int uid) {
         StudentId data = null;
@@ -40,12 +34,6 @@ public class FavorServiceImpl implements FavorService {
         return data;
     }
 
-    /**
-     * 收藏专业
-     *
-     * @param majorList 某学校学生待收藏的专业
-     * @return 收藏是否成功
-     */
     @Override
     @Transactional
     public boolean favorMajor(String stuCid, String stuSid, List<MajorFavorBase> majorList) {
@@ -60,12 +48,6 @@ public class FavorServiceImpl implements FavorService {
         return true;
     }
 
-    /**
-     * 收藏导师
-     *
-     * @param tutorList 某学校学生待收藏的导师
-     * @return 收藏是否成功
-     */
     @Override
     @Transactional
     public boolean favorTutor(String stuCid, String stuSid, List<TutorFavorBase> tutorList) {
@@ -80,13 +62,6 @@ public class FavorServiceImpl implements FavorService {
         return true;
     }
 
-    /**
-     * 查询收藏的学校的新闻
-     *
-     * @param stuCid 学生学校编号
-     * @param stuSid 学生编号
-     * @return 查询结果
-     */
     @Override
     public List<NewsFavorMessage> queryNews(String stuCid, String stuSid) {
         List<NewsFavorMessage> data = null;
@@ -98,13 +73,6 @@ public class FavorServiceImpl implements FavorService {
         return data;
     }
 
-    /**
-     * 查询收藏的专业
-     *
-     * @param stuCid 学生学校编号
-     * @param stuSid 学生编号
-     * @return 查询结果
-     */
     @Override
     public List<MajorFavorMessage> queryMajor(String stuCid, String stuSid) {
         List<MajorFavorMessage> data = null;
@@ -116,13 +84,6 @@ public class FavorServiceImpl implements FavorService {
         return data;
     }
 
-    /**
-     * 查询收藏的导师
-     *
-     * @param stuCid 学生学校编号
-     * @param stuSid 学生编号
-     * @return 查询结果
-     */
     @Override
     public List<TutorFavorMessage> queryTutor(String stuCid, String stuSid) {
         List<TutorFavorMessage> data = null;

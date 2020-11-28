@@ -20,12 +20,6 @@ public class BaseQueryServiceImpl implements BaseQueryService {
     @Autowired
     BaseQueryMapper baseQueryMapper;
 
-    /**
-     * 获得指定轮次的所有评估结果
-     *
-     * @param round 轮次
-     * @return 评估结果
-     */
     @Override
     public List<EvaluationBase> queryEvaluation(Integer round) {
         List<EvaluationBase> data = null;
@@ -37,11 +31,6 @@ public class BaseQueryServiceImpl implements BaseQueryService {
         return data;
     }
 
-    /**
-     * 获得最新轮次的所有评估结果
-     *
-     * @return 评估结果
-     */
     @Override
     public List<EvaluationBase> queryLatestEvaluation() {
         List<EvaluationBase> data = null;
@@ -53,12 +42,6 @@ public class BaseQueryServiceImpl implements BaseQueryService {
         return data;
     }
 
-    /**
-     * 获取最新的新闻（根据日期降序排序）
-     *
-     * @param limit 限定获取的数量，0或负数表示全部
-     * @return 新闻
-     */
     @Override
     public List<NewsBase> queryLatestNews(Integer limit) {
         List<NewsBase> data = null;
@@ -73,12 +56,6 @@ public class BaseQueryServiceImpl implements BaseQueryService {
         return data;
     }
 
-    /**
-     * 获取指定学校的详情
-     *
-     * @param cid 学校代码
-     * @return 学校详情
-     */
     @Override
     public College queryCollege(String cid) {
         College college = null;
@@ -90,12 +67,6 @@ public class BaseQueryServiceImpl implements BaseQueryService {
         return college;
     }
 
-    /**
-     * 获得指定学校的所有导师
-     *
-     * @param cid 学校代码
-     * @return 导师
-     */
     @Override
     public List<TutorRoleBaseWithName> queryTutor(String cid) {
         List<TutorRoleBaseWithName> data = null;

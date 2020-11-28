@@ -4,19 +4,22 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.kao.server.dto.AdminViewEvaluation;
 import com.kao.server.dto.EvaluationBase;
+import com.kao.server.dto.NewsBase;
 import com.kao.server.service.AdminService;
 import com.kao.server.util.intercepter.IsAdmin;
 import com.kao.server.util.intercepter.IsLoggedIn;
-import com.kao.server.dto.NewsBase;
-import com.kao.server.service.AdminService;
 import com.kao.server.util.json.JsonResult;
 import com.kao.server.util.json.JsonResultStatus;
 import com.kao.server.util.json.ResultFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
