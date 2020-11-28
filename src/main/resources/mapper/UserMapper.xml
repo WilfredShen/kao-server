@@ -7,26 +7,40 @@
 <mapper namespace="com.kao.server.mapper.UserMapper">
 
     <update id="updatePhone">
-        UPDATE user AS u SET u.phone = #{phoneNumber} WHERE u.uid = #{uid};
+        UPDATE user AS u
+        SET u.phone = #{phoneNumber}
+        WHERE u.uid = #{uid};
     </update>
     <update id="updateEmail">
-        UPDATE user AS u SET u.phone = #{email} WHERE u.uid = #{uid};
+        UPDATE user AS u
+        SET u.phone = #{email}
+        WHERE u.uid = #{uid};
     </update>
     <update id="updateAccountType">
-        UPDATE user AS u SET u.phone = #{accountType} WHERE u.uid = #{uid};
+        UPDATE user AS u
+        SET u.phone = #{accountType}
+        WHERE u.uid = #{uid};
     </update>
 
     <select id="findUserByUserId" resultType="com.kao.server.entity.User">
-        SELECT  u.* From user AS u WHERE u.uid = #{userId}
+        SELECT u.*
+        From user AS u
+        WHERE u.uid = #{userId}
     </select>
     <select id="getNotVerifiedUserMessageById" resultType="com.kao.server.dto.UserMessage">
-        SELECT * FROM not_verified_user AS n WHERE n.uid = #{uid};
+        SELECT *
+        FROM not_verified_user AS n
+        WHERE n.uid = #{uid};
     </select>
     <select id="getStudentUserMessageById" resultType="com.kao.server.dto.UserMessage">
-        SELECT * FROM user_stu AS u WHERE u.uid = #{uid};
+        SELECT *
+        FROM user_stu AS u
+        WHERE u.uid = #{uid};
     </select>
     <select id="getTutorUserMessageById" resultType="com.kao.server.dto.UserMessage">
-        SELECT * FROM user_teacher AS u WHERE u.uid = #{uid};
+        SELECT *
+        FROM user_teacher AS u
+        WHERE u.uid = #{uid};
     </select>
 
 </mapper>

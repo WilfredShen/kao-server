@@ -4,19 +4,23 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.kao.server.dto.AdminViewEvaluation;
 import com.kao.server.dto.EvaluationBase;
-import com.kao.server.service.AdminService;
-import com.kao.server.util.intercepter.IsAdmin;
-import com.kao.server.util.intercepter.IsLoggedIn;
 import com.kao.server.dto.NewsBase;
 import com.kao.server.service.AdminService;
+import com.kao.server.util.cookie.CookieUtil;
+import com.kao.server.util.intercepter.IsAdmin;
+import com.kao.server.util.intercepter.IsLoggedIn;
 import com.kao.server.util.json.JsonResult;
 import com.kao.server.util.json.JsonResultStatus;
 import com.kao.server.util.json.ResultFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -92,7 +96,10 @@ public class AdminController {
     @IsLoggedIn
     @IsAdmin
     public JsonResult uploadNews(NewsBase news, HttpServletRequest request) {
-        int adminId = Integer.parseInt(request.getParameter("adminId"));
+        Integer adminId = CookieUtil.parseInt(request.getCookies(), "adminId");
+        if (adminId == null) {
+            return ResultFactory.buildFailJsonResult(JsonResultStatus.UNAUTHORIZED, JsonResultStatus.UNAUTHORIZED_DESC);
+        }
         int result = adminService.uploadNews(news, adminId);
         if (result == 1) {
             return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, null);
@@ -104,7 +111,11 @@ public class AdminController {
     @PostMapping("/q/news")
     @IsLoggedIn
     @IsAdmin
-    public JsonResult queryNews() {
+    public JsonResult queryNews(HttpServletRequest request) {
+        Integer adminId = CookieUtil.parseInt(request.getCookies(), "adminId");
+        if (adminId == null) {
+            return ResultFactory.buildFailJsonResult(JsonResultStatus.UNAUTHORIZED, JsonResultStatus.UNAUTHORIZED_DESC);
+        }
         List<NewsBase> data = adminService.queryNews();
         if (data == null) {
             return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
@@ -119,7 +130,10 @@ public class AdminController {
     @IsLoggedIn
     @IsAdmin
     public JsonResult updateNews(NewsBase news, HttpServletRequest request) {
-        int adminId = Integer.parseInt(request.getParameter("adminId"));
+        Integer adminId = CookieUtil.parseInt(request.getCookies(), "adminId");
+        if (adminId == null) {
+            return ResultFactory.buildFailJsonResult(JsonResultStatus.UNAUTHORIZED, JsonResultStatus.UNAUTHORIZED_DESC);
+        }
         int result = adminService.updateNews(news, adminId);
         if (result == 1) {
             return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, null);
