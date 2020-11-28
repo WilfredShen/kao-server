@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kao.server.mapper.FavorMapper">
+    <insert id="favorMajor" parameterType="com.kao.server.dto.MajorFavorBase">
+        INSERT INTO major_favorite (major_cid, major_mid, stu_cid, stu_sid, date)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.majorCid}, #{item.majorMid}, #{stuCid}, #{stuSid}, now())
+        </foreach>
+    </insert>
+    <insert id="favorTutor" parameterType="com.kao.server.dto.TutorFavorBase">
+        INSERT INTO tutor_favorite (stu_cid, stu_sid, tut_cid, tut_tid, date)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{stuCid}, #{stuSid}, #{item.tutCid}, #{item.tutTid}, now())
+        </foreach>
+    </insert>
+    <select id="getStudentId" resultType="com.kao.server.dto.StudentId">
+        SELECT uid, cid, sid, mid
+        FROM student_role
+        WHERE uid = #{uid}
+    </select>
+    <select id="queryNews" resultType="com.kao.server.dto.NewsFavorMessage">
+        (SELECT cid, cname, official_link, update_time, 'news' AS type
+         FROM news_favor_message
+         WHERE stu_cid = #{stuCid}
+           AND stu_sid = #{stuSid})
+        UNION
+        (SELECT cid, cname, official_link, update_time, 'exemption' AS type
+         FROM exemption_favor_message
+         WHERE stu_cid = #{stuCid}
+           AND stu_sid = #{stuSid})
+        UNION
+        (SELECT cid, cname, official_link, update_time, 'summer_camp' AS type
+         FROM summer_camp_favor_message
+         WHERE stu_cid = #{stuCid}
+           AND stu_sid = #{stuSid})
+    </select>
+    <select id="queryMajor" resultType="com.kao.server.dto.MajorFavorMessage">
+        SELECT cid, cname, mid, mname
+        FROM major_favor_message
+        WHERE stu_cid = #{stuCid}
+          AND stu_sid = #{stuSid}
+    </select>
+    <select id="queryTutor" resultType="com.kao.server.dto.TutorFavorMessage">
+        SELECT cid, cname, name, contact_phone, contact_email
+        FROM tutor_favor_message
+        WHERE stu_cid = #{stuCid}
+          AND stu_sid = #{stuSid}
+    </select>
+</mapper>
