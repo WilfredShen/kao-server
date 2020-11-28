@@ -76,8 +76,19 @@ public class StudentServiceImpl implements StudentService {
 
     }
 
-    public JsonResult updateStudentMsg(String phone, String email, String college, String major, String graduationDate, String expectedMajor, String queryable, String id) {
+    public JsonResult updateStudentMsg(String phone, String email, String college, String major, String graduationDate, String expectedMajor,
+                                       String queryable, String id) {
 
-        return StuMsgChecker.checkStuMsg(phone, email, college, major, graduationDate, expectedMajor, queryable, id, this);
+        return StuMsgChecker.checkStuMsg(
+                phone,
+                email,
+                college,
+                major,
+                graduationDate,
+                expectedMajor,
+                queryable,
+                id,
+                this
+        );
     }
 }

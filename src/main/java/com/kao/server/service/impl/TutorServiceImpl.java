@@ -62,18 +62,36 @@ public class TutorServiceImpl implements TutorService {
 
     @Override
     public List<QueryableStudentMessage> getQueryableStudentByConditions(Date beginDate, Date endDate, String collegeLevel, String major, String expectedMajor) {
-        return tutorMapper.getQueryableStudentByConditions(beginDate, endDate, collegeLevel, major, expectedMajor);
+        return tutorMapper.getQueryableStudentByConditions(
+                beginDate,
+                endDate,
+                collegeLevel,
+                major,
+                expectedMajor
+        );
     }
 
     @Override
     public JsonResult updateTutorMsg(String phone, String email, String college, String major, String id, String research) {
 
-        return TutorMsgChecker.checkTutorMsg(phone, email, college, major, this, research, id);
+        return TutorMsgChecker.checkTutorMsg(
+                phone,
+                email,
+                college,
+                major,
+                this,
+                research, id
+        );
     }
 
     public JsonResult getQueryableStudentMsg(Date beginDate, Date endDate, String collegeLevel, String major, String expectedMajor) {
 
-        List<QueryableStudentMessage> data = tutorMapper.getQueryableStudentByConditions(beginDate, endDate, collegeLevel, major, expectedMajor);
+        List<QueryableStudentMessage> data = tutorMapper.getQueryableStudentByConditions(
+                beginDate,
+                endDate,
+                collegeLevel, major,
+                expectedMajor
+        );
         if (data != null) {
             return ResultFactory.buildSuccessJsonResult("query success", data);
         } else {

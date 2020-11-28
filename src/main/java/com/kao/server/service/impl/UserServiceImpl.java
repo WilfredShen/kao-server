@@ -1,6 +1,5 @@
 package com.kao.server.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.kao.server.dto.UserMessage;
 import com.kao.server.entity.User;
 import com.kao.server.mapper.UserMapper;
@@ -11,9 +10,6 @@ import com.kao.server.util.json.JsonResultStatus;
 import com.kao.server.util.json.ResultFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -76,7 +72,7 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    public JsonResult updateUserMsg(String phoneNumber,String email,String accountType,String uid) {
+    public JsonResult updateUserMsg(String phoneNumber, String email, String accountType, String uid) {
 
         JsonResult result = ResultFactory.buildJsonResult(null, null, null);
         if (phoneNumber != null) {
@@ -119,7 +115,7 @@ public class UserServiceImpl implements UserService {
             userMessage = userMapper.getNotVerifiedUserMessageById(Integer.parseInt(uid));
         } else if (AccountTypeConstant.getStudentType().equals(user.getAccountType())) {
             userMessage = userMapper.getStudentUserMessageById(Integer.parseInt(uid));
-        }else {
+        } else {
             userMapper.getTutorUserMessageById(Integer.parseInt(uid));
         }
         if (userMessage != null) {

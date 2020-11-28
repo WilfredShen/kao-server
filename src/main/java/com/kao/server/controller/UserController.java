@@ -37,6 +37,6 @@ public class UserController {
         String email = userMsg.getString("email");
         String accountType = userMsg.getString("accountType");
         String uid = userMsg.getString("uid");
-        return userService.updateUserMsg(phoneNumber,email,accountType,uid);
+        return userService.updateUserMsg(phoneNumber, email, accountType, uid);
     }
 }

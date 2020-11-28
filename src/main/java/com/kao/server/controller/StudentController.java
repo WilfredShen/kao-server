@@ -45,6 +45,15 @@ public class StudentController {
         String expectedMajor = studentMsg.getString("expectedMajor");
         String queryable = studentMsg.getString("queryable");
         String id = request.getHeader("uid");
-        return studentService.updateStudentMsg(phone, email, college, major, graduationDate, expectedMajor, queryable, id);
+        return studentService.updateStudentMsg(
+                phone,
+                email,
+                college,
+                major,
+                graduationDate,
+                expectedMajor,
+                queryable,
+                id
+        );
     }
 }
