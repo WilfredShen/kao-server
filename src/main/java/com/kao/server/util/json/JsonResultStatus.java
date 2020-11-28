@@ -29,7 +29,7 @@ public class JsonResultStatus {
     static public Integer UNAUTHORIZED_USER = 440;
     static public Integer COLLEGE_ISNULL = 456;
     static public Integer GRADUATEDATE_ISNULL = 453;
-  
+
     static public Integer ILLEGAL_PARAM = 450;
     static public String ILLEGAL_PARAM_DESC = "非法参数";
 }

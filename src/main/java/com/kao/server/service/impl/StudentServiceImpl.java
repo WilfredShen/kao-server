@@ -1,6 +1,5 @@
 package com.kao.server.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.kao.server.dto.StudentMessage;
 import com.kao.server.mapper.StudentMapper;
 import com.kao.server.service.StudentService;
@@ -10,9 +9,7 @@ import com.kao.server.util.json.JsonResultStatus;
 import com.kao.server.util.json.ResultFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
 
 @Service
@@ -67,9 +64,8 @@ public class StudentServiceImpl implements StudentService {
     }
 
 
-    public JsonResult getStudentMsg(HttpServletRequest request) {
+    public JsonResult getStudentMsg(String uid) {
 
-        String uid = request.getParameter("uid");
 
         StudentMessage studentMessage = this.getstuMsg(Integer.parseInt(uid));
         if (studentMessage != null) {
@@ -80,16 +76,7 @@ public class StudentServiceImpl implements StudentService {
 
     }
 
-    public JsonResult updateStudentMsg(@RequestBody JSONObject studentMsg, HttpServletRequest request) {
-
-        String phone = studentMsg.getString("phoneNumber");
-        String email = studentMsg.getString("email");
-        String college = studentMsg.getString("college");
-        String major = studentMsg.getString("major");
-        String graduationDate = studentMsg.getString("graduationDate");
-        String expectedMajor = studentMsg.getString("expectedMajor");
-        String queryable = studentMsg.getString("queryable");
-        String id = request.getHeader("uid");
+    public JsonResult updateStudentMsg(String phone, String email, String college, String major, String graduationDate, String expectedMajor, String queryable, String id) {
 
         return StuMsgChecker.checkStuMsg(phone, email, college, major, graduationDate, expectedMajor, queryable, id, this);
     }

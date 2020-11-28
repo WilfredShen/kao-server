@@ -1,11 +1,9 @@
 package com.kao.server.service;
 
-import com.alibaba.fastjson.JSONObject;
 import com.kao.server.dto.QueryableStudentMessage;
 import com.kao.server.dto.TutorMessage;
 import com.kao.server.util.json.JsonResult;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 
@@ -23,9 +21,9 @@ public interface TutorService {
 
     public Integer updateResearch(int uid, String research);
 
-    public JsonResult getTutorMsg(HttpServletRequest request);
+    public JsonResult getTutorMsg(String uid);
 
-    public JsonResult updateTutorMsg(JSONObject tutorMsg, HttpServletRequest request);
+    public JsonResult updateTutorMsg(String phone, String email, String college, String major, String id, String research);
 
     public List<QueryableStudentMessage> getQueryableStudentByConditions(Date beginDate, Date endDate, String CollegeLevel, String major, String expectedMajor);
 }

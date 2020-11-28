@@ -13,7 +13,7 @@ public interface LoginService {
 
     public Integer addOne(User user);
 
-    public Integer updatePassword(String username, String newPassword);
+    public Integer updatePassword(String username, String newPassword, String phoneNumber, String verificationCode, String passwordAgain);
 
     public String findPhoneNumberByPhoneNumber(String phoneNumber);
 }

@@ -1,6 +1,5 @@
 package com.kao.server.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.kao.server.entity.User;
 import com.kao.server.mapper.LoginMapper;
 import com.kao.server.service.LoginService;
@@ -8,14 +7,9 @@ import com.kao.server.util.checker.LoginChecker;
 import com.kao.server.util.checker.RegisterChecker;
 import com.kao.server.util.checker.UpdatePasswordChecker;
 import com.kao.server.util.json.JsonResult;
-import com.kao.server.util.json.ResultFactory;
 import com.kao.server.util.login.GetVerificationCodeChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 /**
  * @author 全鸿润
@@ -44,7 +38,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public Integer updatePassword(String username, String newPassword) {
+    public Integer updatePassword(String username, String newPassword, String phoneNumber, String verificationCode, String passwordAgain) {
         return loginMapper.updatePassword(username, newPassword);
     }
 
@@ -53,37 +47,26 @@ public class LoginServiceImpl implements LoginService {
         return loginMapper.findPhoneNumberByPhoneNumber(phoneNumber);
     }
 
-    public JsonResult login(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
-        String username = jsonObject.getString("username");
-        String password = jsonObject.getString("password");
-        return LoginChecker.checkLogin(username, password, this,request);
+    public JsonResult handleLogin(String username, String password) {
+
+        User user = this.findUserByUsername(username);
+        return LoginChecker.checkLogin(user, username, password);
     }
 
-    public JsonResult register(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
+    public JsonResult register(String username, String password, String phoneNumber, String verificationCode) {
 
-        String username = jsonObject.getString("username");
-        String password = jsonObject.getString("password");
-        String phoneNumber = jsonObject.getString("phoneNumber");
-        String verificationCode = jsonObject.getString("verificationCode");
-
-        return RegisterChecker.checkRegister(username, password, phoneNumber, verificationCode, this);
+        User user = this.findUserNameByUsername(username);
+        return RegisterChecker.checkRegister(user, username, password, phoneNumber, verificationCode, this);
     }
 
-    public JsonResult updatePassword(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
-        String username = jsonObject.getString("username");
-        String phoneNumber = jsonObject.getString("phoneNumber");
-        String verificationCode = jsonObject.getString("verificationCode");
-        String password = jsonObject.getString("password");
-        String passwordAgain = jsonObject.getString("passwordAgain");
+    public JsonResult updateUserPassword(String username, String password, String phoneNumber, String verificationCode, String passwordAgain) {
 
         return UpdatePasswordChecker.checkUpdatePassword(username, password, passwordAgain, phoneNumber, verificationCode, this);
     }
 
-    public JsonResult getVerificationCode(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
-        String phoneNumber = jsonObject.getString("phoneNumber");
-        JsonResult jsonResult = ResultFactory.buildJsonResult(null, null, null);
+    public JsonResult getVerificationCode(String phoneNumber) {
 
-        return GetVerificationCodeChecker.checkGetVerificationCode(phoneNumber, this, smsService);
+        return GetVerificationCodeChecker.checkGetVerificationCode(phoneNumber, smsService);
     }
 
 }

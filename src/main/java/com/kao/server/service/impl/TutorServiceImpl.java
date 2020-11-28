@@ -1,6 +1,5 @@
 package com.kao.server.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.kao.server.dto.QueryableStudentMessage;
 import com.kao.server.dto.TutorMessage;
 import com.kao.server.mapper.TutorMapper;
@@ -12,9 +11,6 @@ import com.kao.server.util.json.ResultFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -54,8 +50,7 @@ public class TutorServiceImpl implements TutorService {
     }
 
     @Override
-    public JsonResult getTutorMsg(HttpServletRequest request) {
-        String uid = request.getParameter("uid");
+    public JsonResult getTutorMsg(String uid) {
 
         TutorMessage tutorMessage = tutorMapper.findTutorById(Integer.parseInt(uid));
         if (tutorMessage != null) {
@@ -64,41 +59,20 @@ public class TutorServiceImpl implements TutorService {
             return ResultFactory.buildFailJsonResult(JsonResultStatus.UNAUTHORIZED_USER, "越权访问");
         }
     }
+
     @Override
-    public List<QueryableStudentMessage> getQueryableStudentByConditions(Date beginDate, Date endDate, String CollegeLevel, String major, String expectedMajor) {
-        return tutorMapper.getQueryableStudentByConditions(beginDate, endDate, CollegeLevel, major, expectedMajor);
+    public List<QueryableStudentMessage> getQueryableStudentByConditions(Date beginDate, Date endDate, String collegeLevel, String major, String expectedMajor) {
+        return tutorMapper.getQueryableStudentByConditions(beginDate, endDate, collegeLevel, major, expectedMajor);
     }
 
     @Override
-    public JsonResult updateTutorMsg(JSONObject tutorMsg, HttpServletRequest request) {
+    public JsonResult updateTutorMsg(String phone, String email, String college, String major, String id, String research) {
 
-        String phone = tutorMsg.getString("phoneNumber");
-        String email = tutorMsg.getString("email");
-        String college = tutorMsg.getString("college");
-        String major = tutorMsg.getString("major");
-        String id = request.getHeader("uid");
-        String research = tutorMsg.getString("research");
         return TutorMsgChecker.checkTutorMsg(phone, email, college, major, this, research, id);
     }
 
-    public JsonResult getQueryableStudentMsg(HttpServletRequest request) {
+    public JsonResult getQueryableStudentMsg(Date beginDate, Date endDate, String collegeLevel, String major, String expectedMajor) {
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-
-        Date beginDate = null;
-        Date endDate = null;
-        if (request.getParameter("beginDate")!=null && request.getParameter("endDate")!=null ){
-            try {
-                beginDate = format.parse(request.getParameter("beginDate"));
-                endDate = format.parse(request.getParameter("endDate"));
-            } catch (ParseException e) {
-                System.err.println(request.getParameter("beginDate"));
-                e.printStackTrace();
-            }
-        }
-        String collegeLevel = request.getParameter("collegeLevel");
-        String major = request.getParameter("major");
-        String expectedMajor = request.getParameter("expectedMajor");
         List<QueryableStudentMessage> data = tutorMapper.getQueryableStudentByConditions(beginDate, endDate, collegeLevel, major, expectedMajor);
         if (data != null) {
             return ResultFactory.buildSuccessJsonResult("query success", data);
@@ -106,6 +80,4 @@ public class TutorServiceImpl implements TutorService {
             return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, "query failed");
         }
     }
-
-
 }

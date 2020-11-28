@@ -52,17 +52,17 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    public JsonResult getUserMessage(HttpServletRequest request) {
+    public JsonResult getUserMessage(String id) {
         int uid;
         try {
-            uid = Integer.parseInt(request.getParameter("uid"));
+            uid = Integer.parseInt(id);
             User user = this.findUserByUserId(uid);
             UserMessage userMessage = null;
-            if (user.getAccountType()==null) {
+            if (user.getAccountType() == null) {
                 userMessage = userMapper.getNotVerifiedUserMessageById(uid);
             } else if (user.getAccountType().equals(AccountTypeConstant.getStudentType())) {
                 userMessage = userMapper.getStudentUserMessageById(uid);
-            }else if (user.getAccountType().equals(AccountTypeConstant.getTeacherType())){
+            } else if (user.getAccountType().equals(AccountTypeConstant.getTeacherType())) {
                 userMessage = userMapper.getTutorUserMessageById(uid);
             }
             if (userMessage != null) {
@@ -76,12 +76,8 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    public JsonResult updateUserMsg(@RequestBody JSONObject userMsg) {
+    public JsonResult updateUserMsg(String phoneNumber,String email,String accountType,String uid) {
 
-        String phoneNumber = userMsg.getString("phoneNumber");
-        String email = userMsg.getString("email");
-        String accountType = userMsg.getString("accountType");
-        String uid = userMsg.getString("uid");
         JsonResult result = ResultFactory.buildJsonResult(null, null, null);
         if (phoneNumber != null) {
             if (this.updatePhone(Integer.parseInt(uid), phoneNumber) == 1) {
@@ -118,12 +114,13 @@ public class UserServiceImpl implements UserService {
             }
         }
         User user = this.findUserByUserId(Integer.parseInt(uid));
-
         UserMessage userMessage = null;
         if (user.getAccountType() == null) {
             userMessage = userMapper.getNotVerifiedUserMessageById(Integer.parseInt(uid));
-        } else if ("学生".equals(user.getAccountType())) {
+        } else if (AccountTypeConstant.getStudentType().equals(user.getAccountType())) {
             userMessage = userMapper.getStudentUserMessageById(Integer.parseInt(uid));
+        }else {
+            userMapper.getTutorUserMessageById(Integer.parseInt(uid));
         }
         if (userMessage != null) {
             return ResultFactory.buildSuccessJsonResult(null, userMessage);

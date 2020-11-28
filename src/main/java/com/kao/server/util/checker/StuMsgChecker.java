@@ -20,7 +20,6 @@ public class StuMsgChecker {
             if (studentService.getstuMsg(uid) == null) {
                 return ResultFactory.buildFailJsonResult(JsonResultStatus.UNAUTHORIZED_USER, "越权访问");
             }
-
             if (phone != null) {
                 if (studentService.updatePhone(uid, phone) == 1) {
                     System.err.println("YES");

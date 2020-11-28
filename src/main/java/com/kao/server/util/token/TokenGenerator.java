@@ -28,8 +28,8 @@ public class TokenGenerator {
                 .withHeader(header)
                 .withClaim("uid", userid)
                 .withClaim("username", username)
-                .withClaim("password",password)
-                .withClaim("accountType",accountType)
+                .withClaim("password", password)
+                .withClaim("accountType", accountType)
                 .withExpiresAt(date)
                 .sign(algorithm);
     }

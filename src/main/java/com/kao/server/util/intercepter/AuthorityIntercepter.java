@@ -1,6 +1,5 @@
 package com.kao.server.util.intercepter;
 
-import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.kao.server.service.impl.UserServiceImpl;
 import com.kao.server.util.json.JsonResultStatus;
@@ -62,34 +61,34 @@ public class AuthorityIntercepter implements HandlerInterceptor {
                             return false;
                         } else {
                             //判断权限
-                                if (method.getAnnotation(IsStudent.class) != null && !AccountTypeConstant.getStudentType().equals(accountType)) {
-                                    PrintWriter out = response.getWriter();
-                                    jsonResult.put("state", JsonResultStatus.UNAUTHORIZED_USER);
-                                    jsonResult.put("message", "当前身份不符，请先登录！");
-                                    out.print(jsonResult.toString());
-                                    out.close();
-                                    return false;
-                                }
-                                if (method.getAnnotation(IsTutor.class) != null && !AccountTypeConstant.getTeacherType().equals(accountType)) {
-                                    PrintWriter out = response.getWriter();
-                                    jsonResult.put("state", JsonResultStatus.UNAUTHORIZED_USER);
-                                    jsonResult.put("message", "当前身份不符，请先登录！");
-                                    out.print(jsonResult.toString());
-                                    out.close();
-                                    return false;
-                                }
-                                if (method.getAnnotation(IsAdmin.class) != null && !AccountTypeConstant.getAdminType().equals(accountType)) {
-                                    PrintWriter out = response.getWriter();
-                                    jsonResult.put("state", JsonResultStatus.UNAUTHORIZED_USER);
-                                    jsonResult.put("message", "当前身份不符，请先登录！");
-                                    out.print(jsonResult.toString());
-                                    out.close();
-                                    return false;
-                                }
+                            if (method.getAnnotation(IsStudent.class) != null && !AccountTypeConstant.getStudentType().equals(accountType)) {
+                                PrintWriter out = response.getWriter();
+                                jsonResult.put("state", JsonResultStatus.UNAUTHORIZED_USER);
+                                jsonResult.put("message", "当前身份不符，请先登录！");
+                                out.print(jsonResult.toString());
+                                out.close();
+                                return false;
+                            }
+                            if (method.getAnnotation(IsTutor.class) != null && !AccountTypeConstant.getTeacherType().equals(accountType)) {
+                                PrintWriter out = response.getWriter();
+                                jsonResult.put("state", JsonResultStatus.UNAUTHORIZED_USER);
+                                jsonResult.put("message", "当前身份不符，请先登录！");
+                                out.print(jsonResult.toString());
+                                out.close();
+                                return false;
+                            }
+                            if (method.getAnnotation(IsAdmin.class) != null && !AccountTypeConstant.getAdminType().equals(accountType)) {
+                                PrintWriter out = response.getWriter();
+                                jsonResult.put("state", JsonResultStatus.UNAUTHORIZED_USER);
+                                jsonResult.put("message", "当前身份不符，请先登录！");
+                                out.print(jsonResult.toString());
+                                out.close();
+                                return false;
+                            }
 
-                                //不访问权限方法,放权
+                            //不访问权限方法,放权
 
-                                return true;
+                            return true;
                         }
                     } else {
                         PrintWriter out = response.getWriter();
