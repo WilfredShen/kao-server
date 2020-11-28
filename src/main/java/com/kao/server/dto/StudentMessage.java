@@ -1,10 +1,10 @@
 package com.kao.server.dto;
 
-import cn.hutool.core.lang.Range;
-
 import java.sql.Date;
-import java.sql.Timestamp;
 
+/**
+ * @author 全鸿润
+ */
 public class StudentMessage {
 
     private Integer uid;

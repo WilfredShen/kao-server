@@ -1,5 +1,6 @@
 package com.kao.server.util.checker;
 
+import cn.hutool.core.util.StrUtil;
 import com.kao.server.entity.User;
 import com.kao.server.service.impl.LoginServiceImpl;
 import com.kao.server.util.json.JsonResult;
@@ -12,22 +13,22 @@ import java.sql.Timestamp;
 
 public class RegisterChecker {
 
-    public static JsonResult checkRegister(String username, String password, String phoneNumber, String verificationCode, LoginServiceImpl loginService) {
+    public static JsonResult checkRegister(User user, String username, String password, String phoneNumber, String verificationCode, LoginServiceImpl loginService) {
 
-        if (username == null) {
+        if (StrUtil.isNotEmpty(username)) {
             return ResultFactory.buildFailJsonResult(JsonResultStatus.USERNAME_ISNULL, "用户名不能为空");
         }
-        if (password == null) {
+        if (StrUtil.isNotEmpty(password)) {
             return ResultFactory.buildFailJsonResult(JsonResultStatus.PASSWORD_ISNULL, "密码不能为空");
         }
-        if (phoneNumber == null) {
+        if (StrUtil.isNotEmpty(phoneNumber)) {
             return ResultFactory.buildFailJsonResult(JsonResultStatus.PHONENUMBER_ISNULL, "手机号不能为空");
         }
-        if (verificationCode == null) {
+        if (StrUtil.isNotEmpty(verificationCode)) {
             return ResultFactory.buildFailJsonResult(JsonResultStatus.VERIFICATIONCODE_ISNULL, "验证码不能为空");
         }
         JsonResult jsonResult = ResultFactory.buildJsonResult(null, null, null);
-        User user = loginService.findUserNameByUsername(username);
+
         if (user == null) {
             if ((loginService.findPhoneNumberByPhoneNumber(phoneNumber) != null)) {
                 jsonResult.setStatus(JsonResultStatus.PHONENUMBER_ISEXITED);

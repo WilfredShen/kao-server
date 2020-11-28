@@ -12,6 +12,9 @@ import com.aliyuncs.profile.DefaultProfile;
 
 import java.util.Random;
 
+/**
+ * @author 全鸿润
+ */
 public class VerificationCodeGenerator {
 
     public static String generateVerificationCode(String phoneNumber) {
@@ -40,12 +43,13 @@ public class VerificationCodeGenerator {
 
         try {
             CommonResponse response = m_client.getCommonResponse(request);
-            JSONObject verifiedCodeJSON = JSON.parseObject(response.getData());
-            if (verifiedCodeJSON == null || !verifiedCodeJSON.get("Code").equals("OK")) {
+            JSONObject verification = JSON.parseObject(response.getData());
+            if (verification == null || !verification.get("Code").equals("OK")) {
                 return null;
             }
             return verifiedCode;
         } catch (ClientException e) {
+            e.printStackTrace();
             System.err.println("获取验证码失败,检查手机号是否输入正确");
             return null;
         }

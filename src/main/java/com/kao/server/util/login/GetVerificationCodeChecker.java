@@ -1,14 +1,16 @@
 package com.kao.server.util.login;
 
-import com.kao.server.service.impl.LoginServiceImpl;
-import com.kao.server.service.impl.SmsServiceImpl;
+import com.kao.server.service.SmsService;
 import com.kao.server.util.json.JsonResult;
 import com.kao.server.util.json.JsonResultStatus;
 import com.kao.server.util.json.ResultFactory;
 
+/**
+ * @author 全鸿润
+ */
 public class GetVerificationCodeChecker {
 
-    public static JsonResult checkGetVerificationCode(String phoneNumber, LoginServiceImpl loginService, SmsServiceImpl smsService) {
+    public static JsonResult checkGetVerificationCode(String phoneNumber, SmsService smsService) {
 
         JsonResult jsonResult = ResultFactory.buildJsonResult(null, null, null);
         if (phoneNumber == null) {
