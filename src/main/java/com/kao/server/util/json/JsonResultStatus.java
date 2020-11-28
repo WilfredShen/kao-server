@@ -43,7 +43,4 @@ public class JsonResultStatus {
     static public Integer UNAUTHORIZED_USER = 440;
     static public Integer COLLEGE_ISNULL = 456;
     static public Integer GRADUATEDATE_ISNULL = 453;
-  
-    static public Integer COLLEGE_ISNULL = 450;
-    static public Integer GRADUATEDATE_ISNULL = 453;
 }
