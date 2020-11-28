@@ -2,6 +2,9 @@ package com.kao.server.dto;
 
 import java.sql.Date;
 
+/**
+ * @author 全鸿润
+ */
 public class StudentMessage {
 
     private Integer uid;

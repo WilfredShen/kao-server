@@ -34,8 +34,8 @@ public class LoginChecker {
                     jsonResult.setMessage("密码错误");
                 }
             } else if (user instanceof Admin) {
-                System.err.println("check:"+username+password);
-                System.err.println("checkAdmin:"+((Admin) user).getUsername()+((Admin) user).getPassword());
+                System.err.println("check:" + username + password);
+                System.err.println("checkAdmin:" + ((Admin) user).getUsername() + ((Admin) user).getPassword());
                 if (((Admin) user).getPassword().equals(password)) {
                     String token = TokenGenerator.generateToken(
                             ((Admin) user).getUsername(),

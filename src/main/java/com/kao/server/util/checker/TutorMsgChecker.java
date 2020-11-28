@@ -51,7 +51,7 @@ public class TutorMsgChecker {
             System.err.println("请检查uid格式是否正确");
         }
 
-        return ResultFactory.buildFailJsonResult(JsonResultStatus.UNKOWN_ERROR, "未知错误!");
+        return ResultFactory.buildFailJsonResult(JsonResultStatus.UNKNOWN_ERROR, "未知错误!");
     }
 
 }

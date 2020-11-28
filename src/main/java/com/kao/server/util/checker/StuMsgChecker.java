@@ -17,7 +17,7 @@ public class StuMsgChecker {
                                          String queryable, String id, StudentServiceImpl studentService) {
         try {
             int uid = Integer.parseInt(id);
-            if (studentService.getstuMsg(uid) == null) {
+            if (studentService.getStuMsg(uid) == null) {
                 return ResultFactory.buildFailJsonResult(JsonResultStatus.UNAUTHORIZED_USER, "越权访问");
             }
             if (phone != null) {
@@ -60,14 +60,14 @@ public class StuMsgChecker {
                 studentService.updateQueryable(uid, Boolean.parseBoolean(queryable));
             }
 
-            StudentMessage studentMessage = studentService.getstuMsg(uid);
+            StudentMessage studentMessage = studentService.getStuMsg(uid);
             return ResultFactory.buildSuccessJsonResult("修改成功", studentMessage);
         } catch (Exception e) {
 
             System.err.println("请检查uid格式是否正确");
         }
 
-        return ResultFactory.buildFailJsonResult(JsonResultStatus.UNKOWN_ERROR, "未知错误!");
+        return ResultFactory.buildFailJsonResult(JsonResultStatus.UNKNOWN_ERROR, "未知错误!");
     }
 
 }

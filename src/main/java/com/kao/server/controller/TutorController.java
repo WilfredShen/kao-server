@@ -1,7 +1,7 @@
 package com.kao.server.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.kao.server.service.impl.TutorServiceImpl;
+import com.kao.server.service.TutorService;
 import com.kao.server.util.intercepter.IsLoggedIn;
 import com.kao.server.util.intercepter.IsTutor;
 import com.kao.server.util.json.JsonResult;
@@ -13,13 +13,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * @author 全鸿润
+ */
 @RestController
 @CrossOrigin
 @RequestMapping(value = "/tutor")
-public class TurtorController {
+public class TutorController {
 
     @Autowired
-    TutorServiceImpl tutorService;
+    TutorService tutorService;
 
     @RequestMapping(value = "/get_tutor_msg", method = RequestMethod.GET)
     @ResponseBody

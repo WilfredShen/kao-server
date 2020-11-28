@@ -11,7 +11,7 @@ public class JsonResultStatus {
     static public Integer FAIL = 400;
     static public String FAIL_DESC = "unknown error";
 
-    static public Integer UNKOWN_ERROR = 400;
+    static public Integer UNKNOWN_ERROR = 400;
     static public Integer USERNAME_WRONG = 401;
     static public Integer USERNAME_ISNULL = 403;
     static public Integer BAD_REQUEST = 404;

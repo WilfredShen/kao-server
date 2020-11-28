@@ -1,7 +1,7 @@
 package com.kao.server.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.kao.server.service.impl.StudentServiceImpl;
+import com.kao.server.service.StudentService;
 import com.kao.server.util.intercepter.IsLoggedIn;
 import com.kao.server.util.intercepter.IsStudent;
 import com.kao.server.util.json.JsonResult;
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 public class StudentController {
 
     @Autowired
-    StudentServiceImpl studentService;
+    StudentService studentService;
 
     @RequestMapping(value = "/get_stu_info", method = RequestMethod.GET)
     @ResponseBody

@@ -11,6 +11,9 @@ import com.kao.server.util.json.ResultFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * @author 全鸿润
+ */
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -48,6 +51,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    @Override
     public JsonResult getUserMessage(String id) {
         int uid;
         try {
@@ -72,6 +76,7 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
     public JsonResult updateUserMsg(String phoneNumber, String email, String accountType, String uid) {
 
         JsonResult result = ResultFactory.buildJsonResult(null, null, null);
@@ -80,7 +85,7 @@ public class UserServiceImpl implements UserService {
                 result.setStatus(JsonResultStatus.SUCCESS);
                 result.setMessage("修改成功!");
             } else {
-                result.setStatus(JsonResultStatus.UNKOWN_ERROR);
+                result.setStatus(JsonResultStatus.UNKNOWN_ERROR);
                 result.setMessage("修改失败!未知错误");
                 return result;
             }
@@ -93,7 +98,7 @@ public class UserServiceImpl implements UserService {
                 result.setStatus(JsonResultStatus.SUCCESS);
                 result.setMessage("修改成功!");
             } else {
-                result.setStatus(JsonResultStatus.UNKOWN_ERROR);
+                result.setStatus(JsonResultStatus.UNKNOWN_ERROR);
                 result.setMessage("修改失败!未知错误");
                 return result;
             }
@@ -104,7 +109,7 @@ public class UserServiceImpl implements UserService {
                 result.setStatus(JsonResultStatus.SUCCESS);
                 result.setMessage("修改成功!");
             } else {
-                result.setStatus(JsonResultStatus.UNKOWN_ERROR);
+                result.setStatus(JsonResultStatus.UNKNOWN_ERROR);
                 result.setMessage("修改失败!未知错误");
                 return result;
             }

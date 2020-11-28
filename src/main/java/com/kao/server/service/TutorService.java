@@ -26,4 +26,6 @@ public interface TutorService {
     public JsonResult updateTutorMsg(String phone, String email, String college, String major, String id, String research);
 
     public List<QueryableStudentMessage> getQueryableStudentByConditions(Date beginDate, Date endDate, String CollegeLevel, String major, String expectedMajor);
+
+    JsonResult getQueryableStudentMsg(Date beginDate, Date endDate, String collegeLevel, String major, String expectedMajor);
 }

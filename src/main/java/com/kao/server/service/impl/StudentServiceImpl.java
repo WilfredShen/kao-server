@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 
+/**
+ * @author 全鸿润
+ */
 @Service
 public class StudentServiceImpl implements StudentService {
 
@@ -19,7 +22,7 @@ public class StudentServiceImpl implements StudentService {
     StudentMapper studentMapper;
 
     @Override
-    public StudentMessage getstuMsg(int uid) {
+    public StudentMessage getStuMsg(int uid) {
         return studentMapper.findStudentById(uid);
     }
 
@@ -63,11 +66,11 @@ public class StudentServiceImpl implements StudentService {
         return studentMapper.updateQueryable(uid, queryable);
     }
 
-
+    @Override
     public JsonResult getStudentMsg(String uid) {
 
 
-        StudentMessage studentMessage = this.getstuMsg(Integer.parseInt(uid));
+        StudentMessage studentMessage = this.getStuMsg(Integer.parseInt(uid));
         if (studentMessage != null) {
             return ResultFactory.buildSuccessJsonResult("获取成功", studentMessage);
         } else {
@@ -76,6 +79,7 @@ public class StudentServiceImpl implements StudentService {
 
     }
 
+    @Override
     public JsonResult updateStudentMsg(String phone, String email, String college, String major, String graduationDate, String expectedMajor,
                                        String queryable, String id) {
 

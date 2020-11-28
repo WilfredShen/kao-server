@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author 全鸿润
+ */
 @Service
 public class TutorServiceImpl implements TutorService {
     @Autowired
@@ -84,6 +87,7 @@ public class TutorServiceImpl implements TutorService {
         );
     }
 
+    @Override
     public JsonResult getQueryableStudentMsg(Date beginDate, Date endDate, String collegeLevel, String major, String expectedMajor) {
 
         List<QueryableStudentMessage> data = tutorMapper.getQueryableStudentByConditions(

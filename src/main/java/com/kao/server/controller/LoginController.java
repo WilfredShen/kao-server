@@ -1,7 +1,7 @@
 package com.kao.server.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.kao.server.service.impl.LoginServiceImpl;
+import com.kao.server.service.LoginService;
 import com.kao.server.service.impl.SmsServiceImpl;
 import com.kao.server.util.intercepter.IsLoggedIn;
 import com.kao.server.util.json.JsonResult;
@@ -21,7 +21,7 @@ import javax.servlet.http.HttpSession;
 public class LoginController {
 
     @Autowired
-    LoginServiceImpl loginService;
+    LoginService loginService;
     @Autowired
     SmsServiceImpl smsService;
 

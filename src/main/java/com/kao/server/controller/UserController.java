@@ -1,7 +1,7 @@
 package com.kao.server.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.kao.server.service.impl.UserServiceImpl;
+import com.kao.server.service.UserService;
 import com.kao.server.util.intercepter.IsLoggedIn;
 import com.kao.server.util.json.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 public class UserController {
 
     @Autowired
-    UserServiceImpl userService;
+    UserService userService;
 
     @RequestMapping(value = "/get_user_info")
     @IsLoggedIn
