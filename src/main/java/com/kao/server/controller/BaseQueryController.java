@@ -9,7 +9,11 @@ import com.kao.server.util.json.JsonResult;
 import com.kao.server.util.json.JsonResultStatus;
 import com.kao.server.util.json.ResultFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -26,44 +30,53 @@ public class BaseQueryController {
 
     @GetMapping("/evaluation")
     public JsonResult queryEvaluation(@RequestParam(required = false) Integer round) {
+        JsonResult jsonResult;
         List<EvaluationBase> data;
         if (round == null || round == 0) {
             data = baseQueryService.queryLatestEvaluation();
+            jsonResult = ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
         } else if (round > 0) {
             data = baseQueryService.queryEvaluation(round);
+            jsonResult = ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
         } else {
-            return ResultFactory.buildFailJsonResult(JsonResultStatus.ILLEGAL_PARAM, JsonResultStatus.ILLEGAL_PARAM_DESC);
+            jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.ILLEGAL_PARAM, JsonResultStatus.ILLEGAL_PARAM_DESC);
         }
-        return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
+        return jsonResult;
     }
 
     @GetMapping("/latest-news")
     public JsonResult queryLatestNews() {
+        JsonResult jsonResult;
         List<NewsBase> data = baseQueryService.queryLatestNews(6);
         if (data == null) {
-            return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
+            jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
         } else {
-            return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
+            jsonResult = ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
         }
+        return jsonResult;
     }
 
     @GetMapping("/college")
     public JsonResult queryCollege(@RequestParam() String cid) {
+        JsonResult jsonResult;
         College data = baseQueryService.queryCollege(cid);
         if (data == null) {
-            return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
+            jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
         } else {
-            return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
+            jsonResult = ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
         }
+        return jsonResult;
     }
 
     @GetMapping("/tutor")
     public JsonResult queryTutor(@RequestParam() String cid) {
+        JsonResult jsonResult;
         List<TutorRoleBaseWithName> data = baseQueryService.queryTutor(cid);
         if (data == null) {
-            return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
+            jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
         } else {
-            return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
+            jsonResult = ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
         }
+        return jsonResult;
     }
 }

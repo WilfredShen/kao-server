@@ -6,12 +6,12 @@
 <mapper namespace="com.kao.server.mapper.AdminMapper">
     <insert id="uploadEvaluationResult">
         INSERT INTO evaluation AS e(
-            cid,
-            mid,
-            round,
-            adminId,
-            result,
-            updateTime
+        cid,
+        mid,
+        round,
+        adminId,
+        result,
+        updateTime
         )
         VALUES
         <foreach collection="list" open="(" close=")" index="index" item="item" separator=",">
@@ -25,12 +25,13 @@
     </insert>
 
     <update id="updateEvaluationResult">
-        UPDATE  evaluation AS e SET
-            e.result = #{result},
+        UPDATE evaluation AS e
+        SET e.result     = #{result},
             e.admin_id=#{adminId},
             e.update_time=CURRENT_TIMESTAMP
-        WHERE
-        e.cid = #{cid} AND e.mid=#{mid} AND e.round=#{round}
+        WHERE e.cid = #{cid}
+          AND e.mid = #{mid}
+          AND e.round = #{round}
     </update>
 
     <select id="findUserByUsername" parameterType="java.lang.String" resultType="com.kao.server.entity.Admin">
@@ -40,9 +41,9 @@
     </select>
 
     <select id="findEvaluationByRound" resultType="com.kao.server.dto.AdminViewEvaluation">
-        SELECT a.mname,a.mid,a.cname,a.cid,a.result
+        SELECT a.mname, a.mid, a.cname, a.cid, a.result
         FROM admin_view_evaluation AS a
-        WHERE a.round =  #{round};
+        WHERE a.round = #{round};
     </select>
 
     <insert id="uploadNews">
@@ -58,7 +59,7 @@
     </insert>
 
     <insert id="updateNews">
-        INSERT into news(cid, date, admin_id, title, content, image, official_link, update_time)
+        INSERT INTO news(cid, date, admin_id, title, content, image, official_link, update_time)
         VALUES (#{news.cid},
                 #{news.date},
                 #{adminId},
