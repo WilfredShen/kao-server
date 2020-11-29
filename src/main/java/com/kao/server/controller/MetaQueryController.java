@@ -28,41 +28,49 @@ public class MetaQueryController {
 
     @GetMapping("/college")
     public JsonResult queryCollegeIdAndName() {
+        JsonResult jsonResult;
         List<CollegeIdAndName> data = metaQueryService.queryCollegeIdAndName();
         if (data == null) {
-            return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
+            jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
         } else {
-            return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
+            jsonResult = ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
         }
+        return jsonResult;
     }
 
     @GetMapping("/discipline")
     public JsonResult queryDiscipline() {
+        JsonResult jsonResult;
         List<Discipline> data = metaQueryService.queryDiscipline();
         if (data == null) {
-            return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
+            jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
         } else {
-            return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
+            jsonResult = ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
         }
+        return jsonResult;
     }
 
     @GetMapping("/major")
     public JsonResult queryMajor() {
+        JsonResult jsonResult;
         List<Major> data = metaQueryService.queryMajor();
         if (data == null) {
-            return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
+            jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
         } else {
-            return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
+            jsonResult = ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
         }
+        return jsonResult;
     }
 
     @GetMapping("/round")
     public JsonResult queryRound() {
+        JsonResult jsonResult;
         List<Integer> data = metaQueryService.queryRound();
         if (data == null) {
-            return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
+            jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
         } else {
-            return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
+            jsonResult = ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
         }
+        return jsonResult;
     }
 }

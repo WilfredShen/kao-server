@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -35,69 +34,79 @@ public class FavorController {
 
     @PostMapping("/p/major")
     public JsonResult favorMajor(List<MajorFavorBase> majorList, HttpServletRequest request) {
+        JsonResult jsonResult;
         Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
         StudentId studentId = favorService.getStudentId(uid);
         try {
             boolean flag = favorService.favorMajor(studentId.getCid(), studentId.getSid(), majorList);
             if (flag) {
-                return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, null);
+                jsonResult = ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, null);
             } else {
-                return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
+                jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
             }
         } catch (Exception e) {
-            return ResultFactory.buildFailJsonResult(JsonResultStatus.UNCOMPLETED, JsonResultStatus.UNCOMPLETED_DESC);
+            jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.UNCOMPLETED, JsonResultStatus.UNCOMPLETED_DESC);
         }
+        return jsonResult;
     }
 
     @PostMapping("/p/tutor")
     public JsonResult favorTutor(List<TutorFavorBase> tutorList, HttpServletRequest request) {
+        JsonResult jsonResult;
         Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
         StudentId studentId = favorService.getStudentId(uid);
         try {
             boolean flag = favorService.favorTutor(studentId.getCid(), studentId.getSid(), tutorList);
             if (flag) {
-                return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, null);
+                jsonResult = ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, null);
             } else {
-                return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
+                jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
             }
         } catch (Exception e) {
-            return ResultFactory.buildFailJsonResult(JsonResultStatus.UNCOMPLETED, JsonResultStatus.UNCOMPLETED_DESC);
+            jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.UNCOMPLETED, JsonResultStatus.UNCOMPLETED_DESC);
         }
+        return jsonResult;
     }
 
     @GetMapping("/q/news")
     public JsonResult queryNews(HttpServletRequest request) {
+        JsonResult jsonResult;
         Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
         StudentId studentId = favorService.getStudentId(uid);
         List<NewsFavorMessage> data = favorService.queryNews(studentId.getCid(), studentId.getSid());
         if (data == null) {
-            return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
+            jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
         } else {
-            return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
+            jsonResult = ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
         }
+        return jsonResult;
     }
 
     @GetMapping("/q/major")
     public JsonResult queryMajor(HttpServletRequest request) {
+        JsonResult jsonResult;
         Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
         StudentId studentId = favorService.getStudentId(uid);
         List<MajorFavorMessage> data = favorService.queryMajor(studentId.getCid(), studentId.getSid());
         if (data == null) {
-            return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
+            jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
         } else {
-            return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
+            jsonResult = ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
         }
+        return jsonResult;
     }
 
     @GetMapping("/q/tutor")
     public JsonResult queryTutor(HttpServletRequest request) {
+        JsonResult jsonResult;
         Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
         StudentId studentId = favorService.getStudentId(uid);
         List<TutorFavorMessage> data = favorService.queryTutor(studentId.getCid(), studentId.getSid());
         if (data == null) {
-            return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
+            jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
         } else {
-            return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
+            jsonResult = ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
         }
+        return jsonResult;
     }
 }

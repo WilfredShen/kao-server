@@ -4,13 +4,14 @@ import com.kao.server.dto.AdminViewEvaluation;
 import com.kao.server.dto.EvaluationBase;
 import com.kao.server.dto.NewsBase;
 import com.kao.server.entity.Admin;
-import org.apache.ibatis.annotations.Mapper;
+
 import java.util.List;
 
 /**
  * @author 全鸿润、沈伟峰
  */
 public interface AdminMapper {
+
     /**
      * 通过用户名查找管理员
      *
