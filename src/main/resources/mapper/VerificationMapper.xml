@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kao.server.mapper.VerificationMapper">
+    <insert id="studentAuth">
+        INSERT INTO student_role(uid, cid, sid, graduation_date)
+        VALUES (#{uid}, #{cid}, #{sid}, 0)
+    </insert>
+    <insert id="tutorAuth">
+        INSERT INTO tutor_role(uid, cid, tid)
+        VALUES (#{uid}, #{cid}, #{tid})
+    </insert>
+    <update id="realAuth">
+        UPDATE user
+        SET identity = #{identity},
+            name     = #{name}
+        WHERE uid = #{uid}
+    </update>
+    <update id="studentAuthVerified">
+        UPDATE student_role
+        SET verified      = 1,
+            verified_time = now()
+        WHERE uid = #{uid}
+    </update>
+    <update id="tutorAuthVerified">
+        UPDATE tutor_role
+        SET verified      = 1,
+            verified_time = now()
+        WHERE uid = #{uid}
+    </update>
+</mapper>
