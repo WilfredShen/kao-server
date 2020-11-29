@@ -13,7 +13,7 @@ public interface VerificationService {
      * @param name     姓名
      * @return 认证结果
      */
-    boolean realAuth(Integer uid, String identity, String name);
+    Integer realAuth(Integer uid, String identity, String name);
 
     /**
      * 学生认证
@@ -23,7 +23,7 @@ public interface VerificationService {
      * @param sid 学生编号
      * @return 认证结果
      */
-    boolean studentAuth(Integer uid, String cid, String sid);
+    Integer studentAuth(Integer uid, String cid, String sid);
 
     /**
      * 导师认证
@@ -33,5 +33,5 @@ public interface VerificationService {
      * @param tid 导师编号
      * @return 认证结果
      */
-    boolean tutorAuth(Integer uid, String cid, String tid);
+    Integer tutorAuth(Integer uid, String cid, String tid);
 }

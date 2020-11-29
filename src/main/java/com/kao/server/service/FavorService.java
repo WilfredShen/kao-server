@@ -26,17 +26,17 @@ public interface FavorService {
      * 收藏专业
      *
      * @param majorList 某学校学生待收藏的专业
-     * @return 收藏是否成功
+     * @return 收藏成功的条数
      */
-    boolean favorMajor(String stuCid, String stuSid, List<MajorFavorBase> majorList) throws Exception;
+    Integer favorMajor(String stuCid, String stuSid, List<MajorFavorBase> majorList);
 
     /**
      * 收藏导师
      *
      * @param tutorList 某学校学生待收藏的导师
-     * @return 收藏是否成功
+     * @return 收藏成功的条数
      */
-    boolean favorTutor(String stuCid, String stuSid, List<TutorFavorBase> tutorList) throws Exception;
+    Integer favorTutor(String stuCid, String stuSid, List<TutorFavorBase> tutorList);
 
     /**
      * 查询收藏的学校的新闻

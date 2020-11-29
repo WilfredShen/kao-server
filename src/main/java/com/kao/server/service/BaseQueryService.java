@@ -41,7 +41,7 @@ public interface BaseQueryService {
      * @param cid 学校代码
      * @return 学校详情
      */
-    College queryCollege(String cid);
+    Object queryCollege(String cid);
 
     /**
      * 获得指定学校的所有导师

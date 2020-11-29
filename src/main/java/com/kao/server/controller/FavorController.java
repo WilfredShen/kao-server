@@ -9,7 +9,6 @@ import com.kao.server.dto.TutorFavorMessage;
 import com.kao.server.service.FavorService;
 import com.kao.server.util.cookie.CookieUtil;
 import com.kao.server.util.json.JsonResult;
-import com.kao.server.util.json.JsonResultStatus;
 import com.kao.server.util.json.ResultFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -37,15 +36,13 @@ public class FavorController {
         JsonResult jsonResult;
         Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
         StudentId studentId = favorService.getStudentId(uid);
-        try {
-            boolean flag = favorService.favorMajor(studentId.getCid(), studentId.getSid(), majorList);
-            if (flag) {
-                jsonResult = ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, null);
-            } else {
-                jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
-            }
-        } catch (Exception e) {
-            jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.UNCOMPLETED, JsonResultStatus.UNCOMPLETED_DESC);
+        Integer count = favorService.favorMajor(studentId.getCid(), studentId.getSid(), majorList);
+        if (count == null) {
+            jsonResult = ResultFactory.buildFailJsonResult();
+        } else if (count == majorList.size()) {
+            jsonResult = ResultFactory.buildSuccessJsonResult();
+        } else {
+            jsonResult = ResultFactory.buildWarnJsonResult("UNCOMPLETED");
         }
         return jsonResult;
     }
@@ -55,15 +52,13 @@ public class FavorController {
         JsonResult jsonResult;
         Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
         StudentId studentId = favorService.getStudentId(uid);
-        try {
-            boolean flag = favorService.favorTutor(studentId.getCid(), studentId.getSid(), tutorList);
-            if (flag) {
-                jsonResult = ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, null);
-            } else {
-                jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
-            }
-        } catch (Exception e) {
-            jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.UNCOMPLETED, JsonResultStatus.UNCOMPLETED_DESC);
+        Integer count = favorService.favorTutor(studentId.getCid(), studentId.getSid(), tutorList);
+        if (count == null) {
+            jsonResult = ResultFactory.buildFailJsonResult();
+        } else if (count == tutorList.size()) {
+            jsonResult = ResultFactory.buildSuccessJsonResult();
+        } else {
+            jsonResult = ResultFactory.buildWarnJsonResult("UNCOMPLETED");
         }
         return jsonResult;
     }
@@ -74,11 +69,7 @@ public class FavorController {
         Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
         StudentId studentId = favorService.getStudentId(uid);
         List<NewsFavorMessage> data = favorService.queryNews(studentId.getCid(), studentId.getSid());
-        if (data == null) {
-            jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
-        } else {
-            jsonResult = ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
-        }
+        jsonResult = ResultFactory.listPack(data);
         return jsonResult;
     }
 
@@ -88,11 +79,7 @@ public class FavorController {
         Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
         StudentId studentId = favorService.getStudentId(uid);
         List<MajorFavorMessage> data = favorService.queryMajor(studentId.getCid(), studentId.getSid());
-        if (data == null) {
-            jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
-        } else {
-            jsonResult = ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
-        }
+        jsonResult = ResultFactory.listPack(data);
         return jsonResult;
     }
 
@@ -102,11 +89,7 @@ public class FavorController {
         Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
         StudentId studentId = favorService.getStudentId(uid);
         List<TutorFavorMessage> data = favorService.queryTutor(studentId.getCid(), studentId.getSid());
-        if (data == null) {
-            jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
-        } else {
-            jsonResult = ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
-        }
+        jsonResult = ResultFactory.listPack(data);
         return jsonResult;
     }
 }

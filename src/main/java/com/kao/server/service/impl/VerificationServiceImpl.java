@@ -2,6 +2,7 @@ package com.kao.server.service.impl;
 
 import com.kao.server.mapper.VerificationMapper;
 import com.kao.server.service.VerificationService;
+import com.kao.server.util.json.JsonResultStatus;
 import com.kao.server.util.verification.VerificationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,54 +17,65 @@ public class VerificationServiceImpl implements VerificationService {
     private VerificationMapper verificationMapper;
 
     @Override
-    public boolean realAuth(Integer uid, String identity, String name) {
+    public Integer realAuth(Integer uid, String identity, String name) {
+        int status;
         boolean flag = VerificationUtil.realAuth(identity, name);
         if (flag) {
             try {
                 verificationMapper.realAuth(uid, identity, name);
+                status = JsonResultStatus.SUCCESS;
             } catch (Exception e) {
-                e.printStackTrace();
-                flag = false;
+                status = JsonResultStatus.FAIL;
             }
+        } else {
+            status = JsonResultStatus.REAL_AUTH_FAILED;
         }
-        return flag;
+        return status;
     }
 
     @Override
-    public boolean studentAuth(Integer uid, String cid, String sid) {
+    public Integer studentAuth(Integer uid, String cid, String sid) {
+        int status;
         try {
             verificationMapper.studentAuth(uid, cid, sid);
         } catch (Exception e) {
-            return false;
+            status = JsonResultStatus.FAIL;
+            return status;
         }
         boolean flag = VerificationUtil.studentAuth(cid, sid);
         if (flag) {
             try {
                 verificationMapper.studentAuthVerified(uid);
+                status = JsonResultStatus.SUCCESS;
             } catch (Exception e) {
-                e.printStackTrace();
-                flag = false;
+                status = JsonResultStatus.FAIL;
             }
+        } else {
+            status = JsonResultStatus.STUDENT_AUTH_FAILED;
         }
-        return flag;
+        return status;
     }
 
     @Override
-    public boolean tutorAuth(Integer uid, String cid, String tid) {
+    public Integer tutorAuth(Integer uid, String cid, String tid) {
+        int status;
         try {
             verificationMapper.tutorAuth(uid, cid, tid);
         } catch (Exception e) {
-            return false;
+            status = JsonResultStatus.FAIL;
+            return status;
         }
-        boolean flag = VerificationUtil.studentAuth(cid, tid);
+        boolean flag = VerificationUtil.tutorAuth(cid, tid);
         if (flag) {
             try {
                 verificationMapper.tutorAuthVerified(uid);
+                status = JsonResultStatus.SUCCESS;
             } catch (Exception e) {
-                e.printStackTrace();
-                flag = false;
+                status = JsonResultStatus.FAIL;
             }
+        } else {
+            status = JsonResultStatus.TUTOR_AUTH_FAILED;
         }
-        return flag;
+        return status;
     }
 }

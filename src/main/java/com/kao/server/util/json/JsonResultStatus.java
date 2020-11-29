@@ -26,6 +26,18 @@ public class JsonResultStatus {
     static public Integer UNCOMPLETED = 1090;
     static public String UNCOMPLETED_DESC = "未全部完成";
 
+    static public Integer NEWS_ALREADY_EXISTS = 1110;
+    static public String  NEWS_ALREADY_EXISTS_DESC = "新闻已存在";
+
+    static public Integer REAL_AUTH_FAILED = 3060;
+    static public String REAL_AUTH_FAILED_DESC = "实名认证未通过";
+
+    static public Integer STUDENT_AUTH_FAILED = 3061;
+    static public String STUDENT_AUTH_FAILED_DESC = "学生认证未通过";
+
+    static public Integer TUTOR_AUTH_FAILED = 3062;
+    static public String TUTOR_AUTH_FAILED_DESC = "导师认证未通过";
+
     static public Integer USERNAME_WRONG = 401;
     static public Integer USERNAME_ISNULL = 403;
     static public Integer BAD_REQUEST = 404;
