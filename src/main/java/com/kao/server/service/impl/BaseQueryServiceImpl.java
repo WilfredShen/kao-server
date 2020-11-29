@@ -57,10 +57,13 @@ public class BaseQueryServiceImpl implements BaseQueryService {
     }
 
     @Override
-    public College queryCollege(String cid) {
+    public Object queryCollege(String cid) {
         College college = null;
         try {
             college = baseQueryMapper.queryCollege(cid);
+            if (college == null) {
+                return cid;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

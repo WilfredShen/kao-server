@@ -35,31 +35,25 @@ public class FavorServiceImpl implements FavorService {
     }
 
     @Override
-    @Transactional
-    public boolean favorMajor(String stuCid, String stuSid, List<MajorFavorBase> majorList) {
+    public Integer favorMajor(String stuCid, String stuSid, List<MajorFavorBase> majorList) {
+        Integer count = null;
         try {
-            int count = favorMapper.favorMajor(stuCid, stuSid, majorList);
-            if (count != majorList.size()) {
-                throw new RuntimeException("未全部完成");
-            }
+            count = favorMapper.favorMajor(stuCid, stuSid, majorList);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return true;
+        return count;
     }
 
     @Override
-    @Transactional
-    public boolean favorTutor(String stuCid, String stuSid, List<TutorFavorBase> tutorList) {
+    public Integer favorTutor(String stuCid, String stuSid, List<TutorFavorBase> tutorList) {
+        Integer count = null;
         try {
-            int count = favorMapper.favorTutor(stuCid, stuSid, tutorList);
-            if (count != tutorList.size()) {
-                throw new RuntimeException("未全部完成");
-            }
+            count = favorMapper.favorTutor(stuCid, stuSid, tutorList);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return true;
+        return count;
     }
 
     @Override

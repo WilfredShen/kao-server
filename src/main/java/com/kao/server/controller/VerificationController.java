@@ -29,12 +29,14 @@ public class VerificationController {
     @IsLoggedIn
     public JsonResult realAuth(String identity, String name, HttpServletRequest request) {
         Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
-        boolean flag = verificationService.realAuth(uid, identity, name);
+        int flag = verificationService.realAuth(uid, identity, name);
         JsonResult jsonResult;
-        if (flag) {
-            jsonResult = ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, null);
+        if (flag == JsonResultStatus.SUCCESS) {
+            jsonResult = ResultFactory.buildSuccessJsonResult();
+        } else if (flag == JsonResultStatus.REAL_AUTH_FAILED) {
+            jsonResult = ResultFactory.buildFailJsonResult("REAL_AUTH_FAILED");
         } else {
-            jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
+            jsonResult = ResultFactory.buildFailJsonResult();
         }
         return jsonResult;
     }
@@ -43,12 +45,14 @@ public class VerificationController {
     @IsLoggedIn
     public JsonResult studentAuth(String cid, String sid, HttpServletRequest request) {
         Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
-        boolean flag = verificationService.studentAuth(uid, cid, sid);
+        int flag = verificationService.studentAuth(uid, cid, sid);
         JsonResult jsonResult;
-        if (flag) {
-            jsonResult = ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, null);
+        if (flag == JsonResultStatus.SUCCESS) {
+            jsonResult = ResultFactory.buildSuccessJsonResult();
+        } else if (flag == JsonResultStatus.STUDENT_AUTH_FAILED) {
+            jsonResult = ResultFactory.buildFailJsonResult("STUDENT_AUTH_FAILED");
         } else {
-            jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
+            jsonResult = ResultFactory.buildFailJsonResult();
         }
         return jsonResult;
     }
@@ -57,12 +61,14 @@ public class VerificationController {
     @IsLoggedIn
     public JsonResult tutorAuth(String cid, String tid, HttpServletRequest request) {
         Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
-        boolean flag = verificationService.tutorAuth(uid, cid, tid);
+        int flag = verificationService.tutorAuth(uid, cid, tid);
         JsonResult jsonResult;
-        if (flag) {
-            jsonResult = ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, null);
+        if (flag == JsonResultStatus.SUCCESS) {
+            jsonResult = ResultFactory.buildSuccessJsonResult();
+        } else if (flag == JsonResultStatus.TUTOR_AUTH_FAILED) {
+            jsonResult = ResultFactory.buildFailJsonResult("TUTOR_AUTH_FAILED");
         } else {
-            jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
+            jsonResult = ResultFactory.buildFailJsonResult();
         }
         return jsonResult;
     }

@@ -57,7 +57,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Integer uploadNews(NewsBase news, Integer adminId) {
-        int count = 0;
+        Integer count = null;
         try {
             count = adminMapper.uploadNews(news, adminId);
         } catch (Exception e) {
@@ -79,7 +79,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Integer updateNews(NewsBase news, Integer adminId) {
-        int count = 0;
+        Integer count = 0;
         try {
             count = adminMapper.updateNews(news, adminId);
         } catch (Exception e) {

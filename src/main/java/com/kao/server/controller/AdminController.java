@@ -10,7 +10,6 @@ import com.kao.server.util.cookie.CookieUtil;
 import com.kao.server.util.intercepter.IsAdmin;
 import com.kao.server.util.intercepter.IsLoggedIn;
 import com.kao.server.util.json.JsonResult;
-import com.kao.server.util.json.JsonResultStatus;
 import com.kao.server.util.json.ResultFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -61,9 +60,9 @@ public class AdminController {
         List<EvaluationBase> results = res.toJavaList(EvaluationBase.class);
         int len = results.size();
         if (len != adminService.uploadEvaluationResult(results)) {
-            return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
+            return ResultFactory.buildFailJsonResult();
         }
-        return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, null);
+        return ResultFactory.buildSuccessJsonResult();
     }
 
     @RequestMapping(value = "/update_evaluation", method = RequestMethod.POST)
@@ -86,10 +85,10 @@ public class AdminController {
         );
 
         if (raws == 1) {
-            return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, null);
+            return ResultFactory.buildSuccessJsonResult();
         }
 
-        return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
+        return ResultFactory.buildFailJsonResult();
 
     }
 
@@ -100,13 +99,13 @@ public class AdminController {
         JsonResult jsonResult;
         Integer adminId = CookieUtil.parseInt(request.getCookies(), "adminId");
         if (adminId == null) {
-            jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.UNAUTHORIZED, JsonResultStatus.UNAUTHORIZED_DESC);
+            jsonResult = ResultFactory.buildFailJsonResult("UNAUTHORIZED");
         } else {
-            int result = adminService.uploadNews(news, adminId);
-            if (result == 1) {
-                jsonResult = ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, null);
+            Integer count = adminService.uploadNews(news, adminId);
+            if (count != null && count == 1) {
+                jsonResult = ResultFactory.buildSuccessJsonResult();
             } else {
-                jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
+                jsonResult = ResultFactory.buildFailJsonResult();
             }
         }
         return jsonResult;
@@ -119,16 +118,10 @@ public class AdminController {
         JsonResult jsonResult;
         Integer adminId = CookieUtil.parseInt(request.getCookies(), "adminId");
         if (adminId == null) {
-            jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.UNAUTHORIZED, JsonResultStatus.UNAUTHORIZED_DESC);
+            jsonResult = ResultFactory.buildFailJsonResult("UNAUTHORIZED");
         } else {
             List<NewsBase> data = adminService.queryNews();
-            if (data == null) {
-                jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
-            } else if (data.size() == 0) {
-                jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.NOT_FOUND, JsonResultStatus.NOT_FOUND_DESC);
-            } else {
-                jsonResult = ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
-            }
+            jsonResult = ResultFactory.listPack(data);
         }
         return jsonResult;
     }
@@ -140,13 +133,13 @@ public class AdminController {
         JsonResult jsonResult;
         Integer adminId = CookieUtil.parseInt(request.getCookies(), "adminId");
         if (adminId == null) {
-            jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.UNAUTHORIZED, JsonResultStatus.UNAUTHORIZED_DESC);
+            jsonResult = ResultFactory.buildFailJsonResult("UNAUTHORIZED");
         } else {
-            int result = adminService.updateNews(news, adminId);
-            if (result == 1) {
-                jsonResult = ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, null);
+            Integer count = adminService.updateNews(news, adminId);
+            if (count != null && count == 1) {
+                jsonResult = ResultFactory.buildSuccessJsonResult();
             } else {
-                jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
+                jsonResult = ResultFactory.buildFailJsonResult();
             }
         }
         return jsonResult;
