@@ -3,6 +3,7 @@ package com.kao.server.controller;
 import com.kao.server.dto.EvaluationBase;
 import com.kao.server.dto.NewsBase;
 import com.kao.server.dto.TutorRoleBaseWithName;
+import com.kao.server.entity.College;
 import com.kao.server.service.BaseQueryService;
 import com.kao.server.util.json.JsonResult;
 import com.kao.server.util.json.ResultFactory;
@@ -48,21 +49,15 @@ public class BaseQueryController {
     }
 
     @GetMapping("/college")
-    public JsonResult queryCollege(@RequestParam() String cid) {
+    public JsonResult queryCollege(@RequestParam List<String> cidList) {
         JsonResult jsonResult;
-        Object data = baseQueryService.queryCollege(cid);
-        if (data == null) {
-            jsonResult = ResultFactory.buildFailJsonResult();
-        } else if (data instanceof String && data.equals(cid)) {
-            jsonResult = ResultFactory.buildFailJsonResult("NOT_FOUND");
-        } else {
-            jsonResult = ResultFactory.buildSuccessJsonResult(data);
-        }
+        List<College> data = baseQueryService.queryCollege(cidList);
+        jsonResult = ResultFactory.listPack(data);
         return jsonResult;
     }
 
     @GetMapping("/tutor")
-    public JsonResult queryTutor(@RequestParam() String cid) {
+    public JsonResult queryTutor(@RequestParam String cid) {
         JsonResult jsonResult;
         List<TutorRoleBaseWithName> data = baseQueryService.queryTutor(cid);
         jsonResult = ResultFactory.listPack(data);
