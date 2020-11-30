@@ -38,10 +38,10 @@ public interface BaseQueryService {
     /**
      * 获取指定学校的详情
      *
-     * @param cid 学校代码
+     * @param cidList 学校代码
      * @return 学校详情
      */
-    Object queryCollege(String cid);
+    List<College> queryCollege(List<String> cidList);
 
     /**
      * 获得指定学校的所有导师

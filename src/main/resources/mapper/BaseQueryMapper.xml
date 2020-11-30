@@ -27,7 +27,10 @@
     <select id="queryCollege" resultType="com.kao.server.entity.College">
         SELECT cid, cname, location, level, introduction, type
         FROM college
-        where cid = #{cid};
+        where cid in
+        <foreach collection="cidList" open="(" close=")" separator="," item="item">
+            #{item}
+        </foreach>
     </select>
     <select id="queryTutor" resultType="com.kao.server.dto.TutorRoleBaseWithName">
         SELECT cid,

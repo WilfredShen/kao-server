@@ -18,7 +18,7 @@ public interface BaseQueryMapper {
 
     List<NewsBase> queryLatestNews(Integer limit) throws Exception;
 
-    College queryCollege(String cid) throws Exception;
+    List<College> queryCollege(List<String> cidList) throws Exception;
 
     List<TutorRoleBaseWithName> queryTutor(String cid) throws Exception;
 }
