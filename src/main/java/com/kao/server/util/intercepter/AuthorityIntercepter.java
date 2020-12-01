@@ -2,8 +2,9 @@ package com.kao.server.util.intercepter;
 
 import com.alibaba.fastjson.JSONObject;
 import com.kao.server.service.impl.UserServiceImpl;
+import com.kao.server.util.cookie.CookieUtil;
 import com.kao.server.util.json.JsonResultStatus;
-import com.kao.server.util.token.TokenVerifytor;
+import com.kao.server.util.token.TokenVerifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -42,20 +43,20 @@ public class AuthorityIntercepter implements HandlerInterceptor {
         //需要拦截的方法
         if (annotation != null) {
             try {
-                String accessToken = request.getHeader("accessToken");
+                String accessToken = CookieUtil.findCookie(request.getCookies(), "accessToken").getValue();
                 if (accessToken != null) {
-                    boolean isLogin = TokenVerifytor.verifyToken(accessToken);
+                    boolean isLogin = TokenVerifier.verifyToken(accessToken);
                     //先判断登录
                     if (isLogin) {
-                        String username = TokenVerifytor.getUserNameFromToken(accessToken);
-                        String password = TokenVerifytor.getPasswordFromToken(accessToken);
-                        String accountType = TokenVerifytor.getAccountTypeFromToken(accessToken);
+                        String username = TokenVerifier.getUserNameFromToken(accessToken);
+                        String password = TokenVerifier.getPasswordFromToken(accessToken);
+                        String accountType = TokenVerifier.getAccountTypeFromToken(accessToken);
                         //判断token是否属于当前用户
                         if (!session.getAttribute("username").equals(username) || !session.getAttribute("password").equals(password)) {
 
                             PrintWriter out = response.getWriter();
-                            jsonResult.put("state", JsonResultStatus.UNAUTHORIZED_USER);
-                            jsonResult.put("message", "当前身份不符，请先登录！");
+                            jsonResult.put("state", JsonResultStatus.UNAUTHORIZED);
+                            jsonResult.put("message", JsonResultStatus.UNAUTHORIZED_DESC);
                             out.print(jsonResult.toString());
                             out.close();
                             return false;
@@ -63,62 +64,59 @@ public class AuthorityIntercepter implements HandlerInterceptor {
                             //判断权限
                             if (method.getAnnotation(IsStudent.class) != null && !AccountTypeConstant.getStudentType().equals(accountType)) {
                                 PrintWriter out = response.getWriter();
-                                jsonResult.put("state", JsonResultStatus.UNAUTHORIZED_USER);
-                                jsonResult.put("message", "当前身份不符，请先登录！");
+                                jsonResult.put("state", JsonResultStatus.UNAUTHORIZED);
+                                jsonResult.put("message", JsonResultStatus.UNAUTHORIZED_DESC);
                                 out.print(jsonResult.toString());
                                 out.close();
                                 return false;
                             }
                             if (method.getAnnotation(IsTutor.class) != null && !AccountTypeConstant.getTeacherType().equals(accountType)) {
                                 PrintWriter out = response.getWriter();
-                                jsonResult.put("state", JsonResultStatus.UNAUTHORIZED_USER);
-                                jsonResult.put("message", "当前身份不符，请先登录！");
+                                jsonResult.put("state", JsonResultStatus.UNAUTHORIZED);
+                                jsonResult.put("message", JsonResultStatus.UNAUTHORIZED_DESC);
                                 out.print(jsonResult.toString());
                                 out.close();
                                 return false;
                             }
                             if (method.getAnnotation(IsAdmin.class) != null && !AccountTypeConstant.getAdminType().equals(accountType)) {
                                 PrintWriter out = response.getWriter();
-                                jsonResult.put("state", JsonResultStatus.UNAUTHORIZED_USER);
-                                jsonResult.put("message", "当前身份不符，请先登录！");
+                                jsonResult.put("state", JsonResultStatus.UNAUTHORIZED);
+                                jsonResult.put("message", JsonResultStatus.UNAUTHORIZED_DESC);
                                 out.print(jsonResult.toString());
                                 out.close();
                                 return false;
                             }
-
-                            //不访问权限方法,放权
-
                             return true;
                         }
                     } else {
                         PrintWriter out = response.getWriter();
-                        jsonResult.put("state", JsonResultStatus.UNAUTHORIZED_USER);
-                        jsonResult.put("message", "当前身份不符，请先登录！");
+                        jsonResult.put("state", JsonResultStatus.UNAUTHORIZED);
+                        jsonResult.put("message", JsonResultStatus.UNAUTHORIZED_DESC);
                         out.close();
                         out.print(jsonResult.toString());
                     }
                     return false;
                 } else {
                     PrintWriter out = response.getWriter();
-                    jsonResult.put("state", JsonResultStatus.UNAUTHORIZED_USER);
-                    jsonResult.put("message", "当前身份不符，请先登录！");
+                    jsonResult.put("state", JsonResultStatus.UNAUTHORIZED);
+                    jsonResult.put("message", JsonResultStatus.UNAUTHORIZED_DESC);
                     out.close();
                     out.print(jsonResult.toString());
                     return false;
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                System.err.println("token格式不对或没有token");
                 PrintWriter out = response.getWriter();
-                jsonResult.put("state", JsonResultStatus.BAD_REQUEST);
-                jsonResult.put("message", "传递的数据格式有误!");
+                jsonResult.put("state", JsonResultStatus.UNAUTHORIZED);
+                jsonResult.put("message", JsonResultStatus.UNAUTHORIZED_DESC);
                 out.print(jsonResult.toString());
                 out.close();
                 return false;
             }
         }
         PrintWriter out = response.getWriter();
-        jsonResult.put("state", JsonResultStatus.UNAUTHORIZED_USER);
-        jsonResult.put("message", "当前身份不符，请先登录！");
+        jsonResult.put("state", JsonResultStatus.ILLEGAL_PARAM);
+        jsonResult.put("message", JsonResultStatus.ILLEGAL_PARAM_DESC);
         out.close();
         return false;
     }
