@@ -4,7 +4,6 @@ import com.kao.server.dto.AdminViewEvaluation;
 import com.kao.server.dto.EvaluationBase;
 import com.kao.server.dto.NewsBase;
 import com.kao.server.entity.Admin;
-import com.kao.server.util.json.JsonResult;
 
 import java.util.List;
 
@@ -63,7 +62,7 @@ public interface AdminService {
     /**
      * 上传新闻
      *
-     * @param news 新闻内容
+     * @param news    新闻内容
      * @param adminId 管理员编号
      * @return 添加结果
      */
@@ -79,7 +78,7 @@ public interface AdminService {
     /**
      * 更新新闻
      *
-     * @param news 更新后的内容
+     * @param news    更新后的内容
      * @param adminId 管理员编号
      * @return 更新结果
      */

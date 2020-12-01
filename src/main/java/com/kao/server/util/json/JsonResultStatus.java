@@ -27,7 +27,7 @@ public class JsonResultStatus {
     static public String UNCOMPLETED_DESC = "未全部完成";
 
     static public Integer NEWS_ALREADY_EXISTS = 1110;
-    static public String  NEWS_ALREADY_EXISTS_DESC = "新闻已存在";
+    static public String NEWS_ALREADY_EXISTS_DESC = "新闻已存在";
 
     static public Integer REAL_AUTH_FAILED = 3060;
     static public String REAL_AUTH_FAILED_DESC = "实名认证未通过";

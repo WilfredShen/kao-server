@@ -1,21 +1,12 @@
 package com.kao.server.controller;
 
-import com.kao.server.dto.MajorFavorBase;
-import com.kao.server.dto.MajorFavorMessage;
-import com.kao.server.dto.NewsFavorMessage;
-import com.kao.server.dto.StudentId;
-import com.kao.server.dto.TutorFavorBase;
-import com.kao.server.dto.TutorFavorMessage;
+import com.kao.server.dto.*;
 import com.kao.server.service.FavorService;
 import com.kao.server.util.cookie.CookieUtil;
 import com.kao.server.util.json.JsonResult;
 import com.kao.server.util.json.ResultFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;

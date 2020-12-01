@@ -1,11 +1,6 @@
 package com.kao.server.service;
 
-import com.kao.server.dto.MajorFavorBase;
-import com.kao.server.dto.MajorFavorMessage;
-import com.kao.server.dto.NewsFavorMessage;
-import com.kao.server.dto.StudentId;
-import com.kao.server.dto.TutorFavorBase;
-import com.kao.server.dto.TutorFavorMessage;
+import com.kao.server.dto.*;
 
 import java.util.List;
 

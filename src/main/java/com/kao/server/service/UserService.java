@@ -17,16 +17,18 @@ public interface UserService {
 
     /**
      * 修改用户信息
+     *
      * @param phoneNumber 手机号
-     * @param email 邮箱
+     * @param email       邮箱
      * @param accountType 用户类型
-     * @param uid 用户id
+     * @param uid         用户id
      * @return 影响的行数
      */
     Integer updateUserMsg(String phoneNumber, String email, String accountType, int uid);
 
     /**
      * 获取未注册用户信息
+     *
      * @param uid 用户id
      * @return 未注册用户信息
      */
@@ -34,6 +36,7 @@ public interface UserService {
 
     /**
      * 获取学生用户信息
+     *
      * @param uid 用户id
      * @return 学生用户信息
      */
@@ -41,6 +44,7 @@ public interface UserService {
 
     /**
      * 获取老师用户信息
+     *
      * @param uid 用户id
      * @return 老师用户信息
      */

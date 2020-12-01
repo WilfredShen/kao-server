@@ -1,16 +1,10 @@
 package com.kao.server.service.impl;
 
-import com.kao.server.dto.MajorFavorBase;
-import com.kao.server.dto.MajorFavorMessage;
-import com.kao.server.dto.NewsFavorMessage;
-import com.kao.server.dto.StudentId;
-import com.kao.server.dto.TutorFavorBase;
-import com.kao.server.dto.TutorFavorMessage;
+import com.kao.server.dto.*;
 import com.kao.server.mapper.FavorMapper;
 import com.kao.server.service.FavorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

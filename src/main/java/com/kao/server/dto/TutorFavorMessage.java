@@ -5,9 +5,9 @@ package com.kao.server.dto;
  */
 public class TutorFavorMessage {
 
-    private String  cid;
-    private String  cname;
-    private String  name;
+    private String cid;
+    private String cname;
+    private String name;
     private String contactPhone;
     private String contactEmail;
 
