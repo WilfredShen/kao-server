@@ -8,6 +8,7 @@ import com.kao.server.util.intercepter.IsLoggedIn;
 import com.kao.server.util.json.JsonResult;
 import com.kao.server.util.json.JsonResultStatus;
 import com.kao.server.util.json.ResultFactory;
+import com.kao.server.util.login.DigestGenerator;
 import com.kao.server.util.login.SaltGenerator;
 import com.kao.server.util.login.UidGenerator;
 import com.kao.server.util.token.TokenGenerator;
@@ -51,7 +52,7 @@ public class LoginController {
                     (user).getAccountType()
             );
             session.setAttribute("username", username);
-            session.setAttribute("password", password);
+            session.setAttribute("password", user.getPassword());
             jsonResult.setStatus(state);
             Cookie tokenCookie = new Cookie("accessToken", token);
             Cookie uidCookie = new Cookie("uid", String.valueOf(user.getUid()));
@@ -95,9 +96,10 @@ public class LoginController {
             User newUser = new User();
             newUser.setUid(UidGenerator.getUid());
             newUser.setUsername(username);
-            newUser.setPassword(password);
             newUser.setPhone(phoneNumber);
             newUser.setSalt(SaltGenerator.getSalt());
+            //存入摘要
+            newUser.setPassword(DigestGenerator.getDigest(password, newUser.getSalt()));
             newUser.setRegisterTime(new Timestamp(System.currentTimeMillis()));
 
             loginService.addOne(newUser);
