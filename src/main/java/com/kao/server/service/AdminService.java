@@ -16,45 +16,49 @@ public interface AdminService {
     /**
      * 通过用户名查找管理员
      *
-     * @param username
-     * @return Admin
+     * @param username 用户名
+     * @return Admin 管理员对象
      */
-    public Admin findUserByUsername(String username);
+    Admin findUserByUsername(String username);
 
     /**
      * 处理登录逻辑
      *
-     * @param username
-     * @param password
-     * @return json格式的处理结果
+     * @param admin    通过cookie里面的adminId查找到的管理员对象
+     * @param username 用户名
+     * @param password 密码
+     * @return 处理状态码
      */
-    public JsonResult handleLogin(String username, String password);
+    int handleLogin(Admin admin, String username, String password);
 
     /**
      * 管理员界面的根据轮次获取评估结果
      *
-     * @param result
+     * @param result  新的评估结果
+     * @param adminId 管理员id
      * @return 评估结果列表
      */
-    public Integer uploadEvaluationResult(List<EvaluationBase> result);
+    Integer uploadEvaluationResult(List<EvaluationBase> result, int adminId);
 
     /**
-     * @param round
-     * @return
-     */
-    public List<AdminViewEvaluation> findEvaluationByRound(int round);
-
-    /**
-     * 修改当行评估结果
+     * 管理员通过轮次查询评估结果
      *
-     * @param cid
-     * @param mid
-     * @param round
-     * @param adminId
-     * @param result
-     * @return
+     * @param round 评估轮次
+     * @return 评估结果列表
      */
-    public Integer updateEvaluationResult(String cid, String mid, int round, int adminId, String result);
+    List<AdminViewEvaluation> findEvaluationByRound(int round);
+
+    /**
+     * 修改评估结果(单行)
+     *
+     * @param cid     学校代码
+     * @param mid     专业代码
+     * @param round   评估轮次
+     * @param adminId 管理员id
+     * @param result  修改后的评估结果
+     * @return 修改行数
+     */
+    Integer updateEvaluationResult(String cid, String mid, int round, int adminId, String result);
 
     /**
      * 上传新闻

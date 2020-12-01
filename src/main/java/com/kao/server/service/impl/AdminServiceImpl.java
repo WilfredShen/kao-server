@@ -7,7 +7,6 @@ import com.kao.server.entity.Admin;
 import com.kao.server.mapper.AdminMapper;
 import com.kao.server.service.AdminService;
 import com.kao.server.util.checker.LoginChecker;
-import com.kao.server.util.json.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,9 +27,8 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public JsonResult handleLogin(String username, String password) {
+    public int handleLogin(Admin admin, String username, String password) {
 
-        Admin admin = adminMapper.findUserByUsername(username);
         return LoginChecker.checkLogin(admin, username, password);
     }
 
@@ -51,8 +49,8 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Integer uploadEvaluationResult(List<EvaluationBase> result) {
-        return adminMapper.uploadEvaluationResult(result);
+    public Integer uploadEvaluationResult(List<EvaluationBase> result, int adminId) {
+        return adminMapper.uploadEvaluationResult(result, adminId);
     }
 
     @Override
