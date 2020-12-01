@@ -5,10 +5,7 @@ import com.kao.server.mapper.LoginMapper;
 import com.kao.server.service.LoginService;
 import com.kao.server.service.SmsService;
 import com.kao.server.util.checker.LoginChecker;
-import com.kao.server.util.checker.RegisterChecker;
-import com.kao.server.util.checker.UpdatePasswordChecker;
-import com.kao.server.util.json.JsonResult;
-import com.kao.server.util.login.GetVerificationCodeChecker;
+import com.kao.server.util.json.JsonResultStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +16,9 @@ import org.springframework.stereotype.Service;
 public class LoginServiceImpl implements LoginService {
 
     @Autowired
-    LoginMapper loginMapper;
+    private LoginMapper loginMapper;
     @Autowired
-    SmsService smsService;
+    private SmsService smsService;
 
     @Override
     public User findUserByUsername(String username) {
@@ -44,34 +41,46 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public String findPhoneNumberByPhoneNumber(String phoneNumber) {
-        return loginMapper.findPhoneNumberByPhoneNumber(phoneNumber);
-    }
+    public int handleLogin(User user, String username, String password) {
 
-    @Override
-    public JsonResult handleLogin(String username, String password) {
-
-        User user = this.findUserByUsername(username);
         return LoginChecker.checkLogin(user, username, password);
     }
 
     @Override
-    public JsonResult register(String username, String password, String phoneNumber, String verificationCode) {
-
+    public int handleRegister(String username, String password, String phoneNumber, String verificationCode) {
         User user = this.findUserNameByUsername(username);
-        return RegisterChecker.checkRegister(user, username, password, phoneNumber, verificationCode, this);
+        //验证码先写死成666666
+        String verification = "666666";
+        if (user == null) {
+            if ((loginMapper.findPhoneNumberByPhoneNumber(phoneNumber) != null)) {
+                return JsonResultStatus.PHONE_NUMBER_EXISTED;
+            } else if (!verification.equals(verificationCode)) {
+                return JsonResultStatus.VERIFICATIONS_IS_WRONG;
+            } else {
+                return JsonResultStatus.SUCCESS;
+            }
+
+        } else {
+            return JsonResultStatus.USERNAME_IS_EXITED;
+        }
     }
 
     @Override
-    public JsonResult updateUserPassword(String username, String password, String phoneNumber, String verificationCode, String passwordAgain) {
+    public int handleUpdateUserPassword(String username, String password, String phoneNumber,
+                                        String verificationCode, String passwordAgain) {
 
-        return UpdatePasswordChecker.checkUpdatePassword(username, password, passwordAgain, phoneNumber, verificationCode, this);
+        int raws = loginMapper.updatePassword(username, password);
+        if (raws == 1) {
+            return JsonResultStatus.SUCCESS;
+        } else {
+            return JsonResultStatus.FAIL;
+        }
     }
 
     @Override
-    public JsonResult getVerificationCode(String phoneNumber) {
+    public String getVerificationCode(String phoneNumber) {
 
-        return GetVerificationCodeChecker.checkGetVerificationCode(phoneNumber, smsService);
+        return smsService.getVerificationCode(phoneNumber);
     }
 
 }

@@ -12,14 +12,14 @@ import java.util.Map;
  */
 public class TokenGenerator {
 
-    /*
-    根据传入的用户名和用户ID生成token
-    这里使用的是HS256加密算法
+    /**
+     * 根据传入的用户名和用户ID生成token
+     * 这里使用的是HS256加密算法
      */
     public static String generateToken(String username, String userid, String password, String accountType) {
 
-        Date date = new Date(System.currentTimeMillis() + TokenContant.getEXPIRTIME());
-        Algorithm algorithm = Algorithm.HMAC256(TokenContant.getSecretKey());
+        Date date = new Date(System.currentTimeMillis() + TokenConstant.getExpiredTime());
+        Algorithm algorithm = Algorithm.HMAC256(TokenConstant.getSecretKey());
         Map<String, Object> header = new HashMap<>(2);
         header.put("typ", "JWT");
         header.put("alg", "HS256");

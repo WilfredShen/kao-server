@@ -1,9 +1,15 @@
 package com.kao.server.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.kao.server.dto.UserMessage;
+import com.kao.server.entity.User;
 import com.kao.server.service.UserService;
+import com.kao.server.util.cookie.CookieUtil;
+import com.kao.server.util.intercepter.AccountTypeConstant;
 import com.kao.server.util.intercepter.IsLoggedIn;
 import com.kao.server.util.json.JsonResult;
+import com.kao.server.util.json.JsonResultStatus;
+import com.kao.server.util.json.ResultFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,18 +31,43 @@ public class UserController {
     @ResponseBody
     public JsonResult getUserMessage(HttpServletRequest request) {
 
-        String uid = request.getParameter("uid");
-        return userService.getUserMessage(uid);
+        try {
+            Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
+            User user = userService.findUserByUserId(uid);
+            UserMessage userMessage = null;
+
+            if (user.getAccountType() == null) {
+                userMessage = userService.getNotVerifiedUserMessageById(uid);
+            } else if (user.getAccountType().equals(AccountTypeConstant.getStudentType())) {
+                userMessage = userService.getStudentUserMessageById(uid);
+            } else if (user.getAccountType().equals(AccountTypeConstant.getTeacherType())) {
+                userMessage = userService.getTutorUserMessageById(uid);
+            }
+
+            if (userMessage != null) {
+                return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, userMessage);
+            } else {
+                return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
+            }
+        } catch (Exception e) {
+            return ResultFactory.buildFailJsonResult(JsonResultStatus.ILLEGAL_PARAM, JsonResultStatus.ILLEGAL_PARAM_DESC);
+        }
     }
 
     @RequestMapping(value = "/update_user_msg", method = RequestMethod.POST)
     @IsLoggedIn
     @ResponseBody
-    public JsonResult updateUserMsg(@RequestBody JSONObject userMsg) {
+    public JsonResult updateUserMsg(@RequestBody JSONObject userMsg, HttpServletRequest request) {
+
+        Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
         String phoneNumber = userMsg.getString("phoneNumber");
         String email = userMsg.getString("email");
         String accountType = userMsg.getString("accountType");
-        String uid = userMsg.getString("uid");
-        return userService.updateUserMsg(phoneNumber, email, accountType, uid);
+
+        if (userService.updateUserMsg(phoneNumber, email, accountType, uid) == 1) {
+            return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, null);
+        } else {
+            return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
+        }
     }
 }

@@ -2,7 +2,6 @@ package com.kao.server.service;
 
 import com.kao.server.dto.UserMessage;
 import com.kao.server.entity.User;
-import com.kao.server.util.json.JsonResult;
 
 /**
  * @author 全鸿润
@@ -11,22 +10,45 @@ public interface UserService {
     /**
      * 根据uid查询用户
      *
-     * @param userId
+     * @param userId 用户id
      * @return User实例
      */
-    public User findUserByUserId(int userId);
+    User findUserByUserId(int userId);
 
-    public Integer updatePhone(int uid, String phoneNumber);
+    /**
+     * 修改用户信息
+     *
+     * @param phoneNumber 手机号
+     * @param email       邮箱
+     * @param accountType 用户类型
+     * @param uid         用户id
+     * @return 影响的行数
+     */
+    Integer updateUserMsg(String phoneNumber, String email, String accountType, int uid);
 
-    public Integer updateEmail(int uid, String email);
+    /**
+     * 获取未注册用户信息
+     *
+     * @param uid 用户id
+     * @return 未注册用户信息
+     */
+    UserMessage getNotVerifiedUserMessageById(int uid);
 
-    public Integer updateAccountType(int uid, String accountType);
+    /**
+     * 获取学生用户信息
+     *
+     * @param uid 用户id
+     * @return 学生用户信息
+     */
+    UserMessage getStudentUserMessageById(int uid);
 
-    public UserMessage getNotVerifiedUserMessageById(int uid);
+    /**
+     * 获取老师用户信息
+     *
+     * @param uid 用户id
+     * @return 老师用户信息
+     */
+    UserMessage getTutorUserMessageById(int uid);
 
-    public UserMessage getStudentUserMessageById(int uid);
 
-    JsonResult getUserMessage(String id);
-
-    JsonResult updateUserMsg(String phoneNumber, String email, String accountType, String uid);
 }

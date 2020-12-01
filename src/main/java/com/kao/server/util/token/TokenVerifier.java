@@ -4,20 +4,16 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.kao.server.service.impl.UserServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author 全鸿润
  */
-public class TokenVerifytor {
-    @Autowired
-    static UserServiceImpl userService;
+public class TokenVerifier {
 
     public static boolean verifyToken(String token) {
 
         try {
-            Algorithm algorithm = Algorithm.HMAC256(TokenContant.getSecretKey());
+            Algorithm algorithm = Algorithm.HMAC256(TokenConstant.getSecretKey());
             JWTVerifier jwtVerifier = JWT.require(algorithm).build();
             DecodedJWT jwt = jwtVerifier.verify(token);
             return true;
@@ -27,10 +23,9 @@ public class TokenVerifytor {
     }
 
     private static DecodedJWT getDecodeJwt(String token) {
-        Algorithm algorithm = Algorithm.HMAC256(TokenContant.getSecretKey());
+        Algorithm algorithm = Algorithm.HMAC256(TokenConstant.getSecretKey());
         JWTVerifier jwtVerifier = JWT.require(algorithm).build();
-        DecodedJWT jwt = jwtVerifier.verify(token);
-        return jwt;
+        return jwtVerifier.verify(token);
     }
 
     public static String getUserNameFromToken(String token) {
@@ -45,7 +40,4 @@ public class TokenVerifytor {
         return getDecodeJwt(token).getClaim("accountType").asString();
     }
 
-    public static int getUidFromToken(String token) {
-        return getDecodeJwt(token).getClaim("uid").asInt();
-    }
 }

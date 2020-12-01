@@ -27,7 +27,7 @@ public class JsonResultStatus {
     static public String UNCOMPLETED_DESC = "未全部完成";
 
     static public Integer NEWS_ALREADY_EXISTS = 1110;
-    static public String  NEWS_ALREADY_EXISTS_DESC = "新闻已存在";
+    static public String NEWS_ALREADY_EXISTS_DESC = "新闻已存在";
 
     static public Integer REAL_AUTH_FAILED = 3060;
     static public String REAL_AUTH_FAILED_DESC = "实名认证未通过";
@@ -38,21 +38,34 @@ public class JsonResultStatus {
     static public Integer TUTOR_AUTH_FAILED = 3062;
     static public String TUTOR_AUTH_FAILED_DESC = "导师认证未通过";
 
-    static public Integer USERNAME_WRONG = 401;
-    static public Integer USERNAME_ISNULL = 403;
-    static public Integer BAD_REQUEST = 404;
-    static public Integer PASSWORD_WRONG = 406;
-    static public Integer PASSWORD_ISNULL = 409;
-    static public Integer PHONENUMBER_ISNULL = 412;
-    static public Integer PHONENUMBER_ISEXITED = 413;
-    static public Integer PHONENUMBERWRONG = 415;
-    static public Integer VERIFICATIONCODE_ISNULL = 418;
-    static public Integer VERIFICATIONCOD_EWRONG = 421;
-    static public Integer VERIFICATIONCODE_GET_FAILED = 423;
-    static public Integer USERNAME_ISEXITED = 424;
-    static public Integer PASSWORD_ISNOT_THESAME = 427;
-    static public Integer UPDATE_PASSWORD_FAILED = 430;
-    static public Integer UNAUTHORIZED_USER = 440;
-    static public Integer COLLEGE_ISNULL = 456;
-    static public Integer GRADUATEDATE_ISNULL = 453;
+    static public Integer UPDATE_PASSWORD_FAILED = 3040;
+    static public String UPDATE_PASSWORD_FAILED_DESC = "修改密码失败";
+
+    static public Integer USERNAME_WRONG = 410;
+    static public String USERNAME_WRONG_DESC = "用户名错误";
+
+    static public Integer USERNAME_ISNULL = 411;
+    static public String USERNAME_ISNULL_DESC = "用户名为空";
+
+    static public Integer USERNAME_IS_EXITED = 413;
+    static public String USERNAME_IS_EXITED_DESC = "用户名已存在";
+
+    static public Integer PASSWORD_WRONG = 414;
+    static public String PASSWORD_WRONG_DESC = "密码错误";
+    static public Integer PASSWORD_ISNULL = 415;
+    static public String PASSWORD_ISNULL_DESC = "密码为空";
+    static public Integer PASSWORD_IS_NOT_THE_SAME = 416;
+    static public String PASSWORD_IS_NOT_THE_SAME_DESC = "两次密码不一致";
+
+    static public Integer PHONE_NUMBER_ISNULL = 419;
+    static public String PHONE_NUMBER_ISNULL_DESC = "手机号为空";
+    static public Integer PHONE_NUMBER_EXISTED = 421;
+    static public String PHONE_NUMBER_EXISTED_DESC = "手机号已经存在";
+
+    static public Integer VERIFICATIONS_ISNULL = 422;
+    static public String VERIFICATIONS_ISNULL_DESC = "验证码输入为空";
+    static public Integer VERIFICATIONS_GET_FAILED = 423;
+    static public String VERIFICATIONS_GET_FAILED_DESC = "验证码获取失败";
+    static public Integer VERIFICATIONS_IS_WRONG = 425;
+    static public String VERIFICATIONS_IS_WRONG_DESC = "验证码输入错误";
 }

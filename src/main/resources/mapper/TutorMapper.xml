@@ -5,37 +5,21 @@
 <!-- namespace指定该xml文件对应的接口 -->
 <!-- 一个xml文件只对应一个接口 -->
 <mapper namespace="com.kao.server.mapper.TutorMapper">
-    <update id="updatePhone">
-        UPDATE tutor_role AS t
-        SET t.contact_phone = #{phone}
-        WHERE t.uid = #{uid}
-    </update>
-    <update id="updateEmail">
-        UPDATE tutor_role AS t
-        SET t.contact_email = #{email}
-        WHERE t.uid = #{uid}
-    </update>
-    <update id="updateCollege">
-        UPDATE tutor_role AS t
-        SET t.cid = (SELECT c.cid FROM college AS c WHERE c.cname = #{college})
-        WHERE t.uid = #{uid}
-    </update>
-    <update id="updateMajor">
-        UPDATE tutor_role AS t
-        SET t.mid = (SELECT m.mid FROM major AS m WHERE m.mname = #{major})
-        WHERE t.uid = #{uid}
-    </update>
-    <update id="updateResearch">
-        UPDATE tutor_role AS t
-        SET t.research = #{research}
-        WHERE t.uid = #{uid}
-    </update>
 
+    <update id="updateTutorMessage">
+        UPDATE tutor_role AS t
+        SET t.contact_phone = #{msg.phoneNumber},
+            t.contact_email = #{msg.email},
+            t.cid           = (SELECT c.cid FROM college AS c WHERE c.cname = #{msg.college}),
+            t.mid           = (SELECT m.mid FROM major AS m WHERE m.mname = #{msg.major}),
+            t.research      = #{msg.research}
+        WHERE t.uid = #{uid}
+    </update>
 
     <select id="findTutorById" resultType="com.kao.server.dto.TutorMessage">
         SELECT *
         FROM tutormsg AS t
-        WHERE t.uid = #{uid};
+        WHERE t.uid = #{uid}
     </select>
     <select id="getQueryableStudentByConditions" resultType="com.kao.server.dto.QueryableStudentMessage">
         SELECT * FROM queryable_student_list
@@ -46,8 +30,8 @@
             <if test="endDate!=null">
                 AND graduation_date &lt; #{endDate}
             </if>
-            <if test="CollegeLevel!=null">
-                AND level LIKE '%${CollegeLevel}%'
+            <if test="collegeLevel!=null">
+                AND level LIKE '%${collegeLevel}%'
             </if>
             <if test="major!=null">
                 AND major = #{major}

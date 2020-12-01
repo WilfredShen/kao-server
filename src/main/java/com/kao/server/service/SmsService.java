@@ -7,8 +7,8 @@ public interface SmsService {
     /**
      * 获取验证码
      *
-     * @param phoneNumber
+     * @param phoneNumber 手机号
      * @return 验证码
      */
-    public String getVerificationCode(String phoneNumber);
+    String getVerificationCode(String phoneNumber);
 }

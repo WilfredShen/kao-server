@@ -44,7 +44,9 @@ public class VerificationCodeGenerator {
         try {
             CommonResponse response = m_client.getCommonResponse(request);
             JSONObject verification = JSON.parseObject(response.getData());
-            if (verification == null || !verification.get("Code").equals("OK")) {
+            String successCode = "OK";
+            String code = "Code";
+            if (verification == null || !successCode.equals(verification.get(code))) {
                 return null;
             }
             return verifiedCode;

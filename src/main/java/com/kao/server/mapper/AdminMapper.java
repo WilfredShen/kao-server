@@ -15,38 +15,39 @@ public interface AdminMapper {
     /**
      * 通过用户名查找管理员
      *
-     * @param username
+     * @param username 用户名
      * @return Admin
      */
-    public Admin findUserByUsername(String username);
+    Admin findUserByUsername(String username);
 
     /**
      * 通过轮次查询评估结果
      *
-     * @param round
+     * @param round 轮次
      * @return 评估结果列表
      */
-    public List<AdminViewEvaluation> findEvaluationByRound(int round);
+    List<AdminViewEvaluation> findEvaluationByRound(int round);
 
     /**
      * 管理员界面的根据轮次获取评估结果
      *
-     * @param result
+     * @param result  更新的评估结果
+     * @param adminId 管理员Id
      * @return 评估结果列表
      */
-    public Integer uploadEvaluationResult(List<EvaluationBase> result);
+    Integer uploadEvaluationResult(List<EvaluationBase> result, int adminId);
 
     /**
      * 更新单条评估结果
      *
-     * @param cid
-     * @param mid
-     * @param round
-     * @param adminId
-     * @param result
+     * @param cid     学校代码
+     * @param mid     专业代码
+     * @param round   轮次
+     * @param adminId 管理员id
+     * @param result  修改的结果
      * @return 修改行数
      */
-    public Integer updateEvaluationResult(String cid, String mid, int round, int adminId, String result);
+    Integer updateEvaluationResult(String cid, String mid, int round, int adminId, String result);
 
     Integer uploadNews(NewsBase news, Integer adminId) throws Exception;
 
