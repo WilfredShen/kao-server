@@ -1,10 +1,14 @@
 package com.kao.server.controller;
 
-import com.alibaba.fastjson.JSONObject;
+import com.kao.server.dto.StudentMessage;
+import com.kao.server.dto.UpdatedStudentMessage;
 import com.kao.server.service.StudentService;
+import com.kao.server.util.cookie.CookieUtil;
 import com.kao.server.util.intercepter.IsLoggedIn;
 import com.kao.server.util.intercepter.IsStudent;
 import com.kao.server.util.json.JsonResult;
+import com.kao.server.util.json.JsonResultStatus;
+import com.kao.server.util.json.ResultFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,33 +31,34 @@ public class StudentController {
     @IsStudent
     public JsonResult getStudentMsg(HttpServletRequest request) {
 
-        String uid = request.getParameter("uid");
-        return studentService.getStudentMsg(uid);
+        Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
+        StudentMessage studentMessage = studentService.getStuMsg(uid);
+        if (studentMessage != null) {
+            return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, studentMessage);
+        } else {
+            return ResultFactory.buildFailJsonResult(JsonResultStatus.UNAUTHORIZED, JsonResultStatus.UNAUTHORIZED_DESC);
+        }
     }
 
     @RequestMapping(value = "/update_stu_info", method = RequestMethod.POST)
     @ResponseBody
     @IsLoggedIn
     @IsStudent
-    public JsonResult updateStudentMsg(@RequestBody JSONObject studentMsg, HttpServletRequest request) {
+    public JsonResult updateStudentMsg(@RequestBody UpdatedStudentMessage studentMessage, HttpServletRequest request) {
 
-        String phone = studentMsg.getString("phoneNumber");
-        String email = studentMsg.getString("email");
-        String college = studentMsg.getString("college");
-        String major = studentMsg.getString("major");
-        String graduationDate = studentMsg.getString("graduationDate");
-        String expectedMajor = studentMsg.getString("expectedMajor");
-        String queryable = studentMsg.getString("queryable");
-        String id = request.getHeader("uid");
-        return studentService.updateStudentMsg(
-                phone,
-                email,
-                college,
-                major,
-                graduationDate,
-                expectedMajor,
-                queryable,
-                id
-        );
+        try {
+            Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
+            if (studentService.getStuMsg(uid) == null) {
+                return ResultFactory.buildFailJsonResult(JsonResultStatus.UNAUTHORIZED, JsonResultStatus.UNAUTHORIZED_DESC);
+            }
+            if (studentService.updateStudentMsg(studentMessage, uid) == 1) {
+                return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, null);
+            } else {
+                return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
+            }
+        } catch (Exception e) {
+            return ResultFactory.buildFailJsonResult(JsonResultStatus.ILLEGAL_PARAM, JsonResultStatus.ILLEGAL_PARAM_DESC);
+        }
+
     }
 }
