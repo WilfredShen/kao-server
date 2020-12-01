@@ -1,7 +1,6 @@
 package com.kao.server.service;
 
 import com.kao.server.entity.User;
-import com.kao.server.util.json.JsonResult;
 
 /**
  * @author 全鸿润
@@ -10,84 +9,76 @@ public interface LoginService {
     /**
      * 根据用户名获取用户对象
      *
-     * @param username
+     * @param username 用户名
      * @return User
      */
-    public User findUserByUsername(String username);
+    User findUserByUsername(String username);
 
     /**
      * 根据获取用户名,用于验证用户名是否已经存在
      *
-     * @param username
+     * @param username 用户名
      * @return User
      */
-    public User findUserNameByUsername(String username);
+    User findUserNameByUsername(String username);
 
     /**
      * 添加一个新用户
      *
-     * @param user
+     * @param user 要添加的用户对象
      * @return 添加行数
      */
-    public Integer addOne(User user);
+    Integer addOne(User user);
 
     /**
      * 修改密码
      *
-     * @param username
-     * @param newPassword
-     * @param phoneNumber
-     * @param verificationCode
-     * @param passwordAgain
+     * @param username         用户名
+     * @param newPassword      密码
+     * @param phoneNumber      手机号
+     * @param verificationCode 验证码
+     * @param passwordAgain    新密码
      * @return 修改行数
      */
-    public Integer updatePassword(String username, String newPassword, String phoneNumber, String verificationCode, String passwordAgain);
-
-    /**
-     * 手机号不能重复注册
-     *
-     * @param phoneNumber
-     * @return
-     */
-    public String findPhoneNumberByPhoneNumber(String phoneNumber);
+    Integer updatePassword(String username, String newPassword, String phoneNumber, String verificationCode, String passwordAgain);
 
     /**
      * 处理登录逻辑功能
      *
-     * @param username
-     * @param password
+     * @param username 用户名
+     * @param password 密码
      * @return json格式的处理结果
      */
-    JsonResult handleLogin(String username, String password);
+    int handleLogin(User user, String username, String password);
 
     /**
      * 处理注册逻辑功能
      *
-     * @param username
-     * @param password
-     * @param phoneNumber
-     * @param verificationCode
-     * @return json格式的处理结果
+     * @param username         用户名
+     * @param password         密码
+     * @param phoneNumber      手机号
+     * @param verificationCode 验证码
+     * @return 状态码
      */
-    JsonResult register(String username, String password, String phoneNumber, String verificationCode);
+    int handleRegister(String username, String password, String phoneNumber, String verificationCode);
 
     /**
      * 处理修改密码逻辑功能
      *
-     * @param username
-     * @param password
-     * @param phoneNumber
-     * @param verificationCode
-     * @param passwordAgain
-     * @return json格式的处理结果
+     * @param username         用户名
+     * @param password         密码
+     * @param phoneNumber      手机号
+     * @param verificationCode 验证码
+     * @param passwordAgain    新密码
+     * @return 状态码
      */
-    JsonResult updateUserPassword(String username, String password, String phoneNumber, String verificationCode, String passwordAgain);
+    int handleUpdateUserPassword(String username, String password, String phoneNumber, String verificationCode, String passwordAgain);
 
     /**
      * 处理获取验证码逻辑
      *
-     * @param phoneNumber
+     * @param phoneNumber 手机号
      * @return 验证码
      */
-    JsonResult getVerificationCode(String phoneNumber);
+    String getVerificationCode(String phoneNumber);
 }

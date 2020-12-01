@@ -2,30 +2,51 @@ package com.kao.server.service;
 
 import com.kao.server.dto.QueryableStudentMessage;
 import com.kao.server.dto.TutorMessage;
-import com.kao.server.util.json.JsonResult;
+import com.kao.server.dto.UpdatedTutorMessage;
 
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author 全鸿润
+ */
 public interface TutorService {
 
-    public TutorMessage findTutorById(int uid);
+    /**
+     * 通过用户id查询老师信息
+     *
+     * @param uid 用户id
+     * @return 教师信息
+     */
+    TutorMessage findTutorById(int uid);
 
-    public Integer updatePhone(int uid, String phone);
+    /**
+     * 通过用户id查询老师信息
+     *
+     * @param uid 用户id
+     * @return 教师信息
+     */
+    TutorMessage getTutorMsg(int uid);
 
-    public Integer updateEmail(int uid, String email);
+    /**
+     * 修改教师信息
+     *
+     * @param message 修改的教师信息
+     * @param uid     用户id
+     * @return 影响的行数
+     */
+    Integer updateTutorMsg(UpdatedTutorMessage message, int uid);
 
-    public Integer updateCollege(int uid, String college);
+    /**
+     * 教师查询学生信息
+     *
+     * @param beginDate     起始时间
+     * @param endDate       截止时间
+     * @param collegeLevel  院校层次
+     * @param major         专业
+     * @param expectedMajor 预期专业
+     * @return 学生信息列表
+     */
+    List<QueryableStudentMessage> getQueryableStudentByConditions(Date beginDate, Date endDate, String collegeLevel, String major, String expectedMajor);
 
-    public Integer updateMajor(int uid, String major);
-
-    public Integer updateResearch(int uid, String research);
-
-    public JsonResult getTutorMsg(String uid);
-
-    public JsonResult updateTutorMsg(String phone, String email, String college, String major, String id, String research);
-
-    public List<QueryableStudentMessage> getQueryableStudentByConditions(Date beginDate, Date endDate, String CollegeLevel, String major, String expectedMajor);
-
-    JsonResult getQueryableStudentMsg(Date beginDate, Date endDate, String collegeLevel, String major, String expectedMajor);
 }
