@@ -1,26 +1,27 @@
 package com.kao.server.mapper;
 
 import com.kao.server.dto.StudentMessage;
+import com.kao.server.dto.UpdatedStudentMessage;
 
-import java.sql.Date;
-
+/**
+ * @author 全鸿润
+ */
 public interface StudentMapper {
 
-    public StudentMessage findStudentById(int uid);
+    /**
+     * 通过uid获取学生信息
+     *
+     * @param uid 用户id
+     * @return 学生信息
+     */
+    StudentMessage findStudentById(int uid);
 
-    public Integer updatePhone(int uid, String phone);
-
-    public Integer updateEmail(int uid, String email);
-
-    public Integer updateAccountType(int uid, String accountType);
-
-    public Integer updateCollege(int uid, String college);
-
-    public Integer updateMajor(int uid, String major);
-
-    public Integer updateGraduateDate(int uid, Date graduationDate);
-
-    public Integer updateExpectedMajor(int uid, String expectedMajor);
-
-    public Integer updateQueryable(int uid, boolean queryable);
+    /**
+     * 修改学生信息
+     *
+     * @param msg 修改的学生信息
+     * @param uid 用户id
+     * @return 影响的行数
+     */
+    Integer updateStudentMsg(UpdatedStudentMessage msg, int uid);
 }
