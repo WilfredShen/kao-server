@@ -21,9 +21,6 @@ import java.lang.reflect.Method;
  */
 public class AuthorityIntercepter implements HandlerInterceptor {
 
-    @Autowired
-    UserServiceImpl userService;
-
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //没有要求实现权限验证的方法请求
