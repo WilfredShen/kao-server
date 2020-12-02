@@ -17,7 +17,7 @@ import java.lang.reflect.Method;
 /**
  * @author 全鸿润
  */
-public class AuthorityIntercepter implements HandlerInterceptor {
+public class AuthorityInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

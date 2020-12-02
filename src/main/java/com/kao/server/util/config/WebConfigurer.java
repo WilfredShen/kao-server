@@ -1,6 +1,6 @@
 package com.kao.server.util.config;
 
-import com.kao.server.util.intercepter.AuthorityIntercepter;
+import com.kao.server.util.intercepter.AuthorityInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -23,7 +23,7 @@ public class WebConfigurer implements WebMvcConfigurer {
         excludes.add("/meta/*");
         excludes.add("/base/*");
         excludes.add("/admin/login");
-        registry.addInterceptor(new AuthorityIntercepter())
+        registry.addInterceptor(new AuthorityInterceptor())
                 .addPathPatterns("/**")
                 .excludePathPatterns(excludes);
     }
