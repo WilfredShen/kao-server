@@ -1,11 +1,9 @@
 package com.kao.server.util.intercepter;
 
 import com.alibaba.fastjson.JSONObject;
-import com.kao.server.service.impl.UserServiceImpl;
 import com.kao.server.util.cookie.CookieUtil;
 import com.kao.server.util.json.JsonResultStatus;
 import com.kao.server.util.token.TokenVerifier;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
