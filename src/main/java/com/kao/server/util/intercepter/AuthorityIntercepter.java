@@ -46,6 +46,7 @@ public class AuthorityIntercepter implements HandlerInterceptor {
                 String accessToken = CookieUtil.findCookie(request.getCookies(), "accessToken").getValue();
                 if (accessToken != null) {
                     boolean isLogin = TokenVerifier.verifyToken(accessToken);
+                    System.err.println(isLogin);
                     //先判断登录
                     if (isLogin) {
                         String username = TokenVerifier.getUserNameFromToken(accessToken);
@@ -92,10 +93,10 @@ public class AuthorityIntercepter implements HandlerInterceptor {
                         PrintWriter out = response.getWriter();
                         jsonResult.put("state", JsonResultStatus.UNAUTHORIZED);
                         jsonResult.put("message", JsonResultStatus.UNAUTHORIZED_DESC);
-                        out.close();
                         out.print(jsonResult.toString());
+                        out.close();
+                        return false;
                     }
-                    return false;
                 } else {
                     PrintWriter out = response.getWriter();
                     jsonResult.put("state", JsonResultStatus.UNAUTHORIZED);
