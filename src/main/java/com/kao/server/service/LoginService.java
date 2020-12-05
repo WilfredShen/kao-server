@@ -23,24 +23,20 @@ public interface LoginService {
     User findUserNameByUsername(String username);
 
     /**
+     * 判断是否该手机号已经存在
+     *
+     * @param phoneNumber 注册的手机号
+     * @return 已经注册的手机号
+     */
+    String findPhoneNumberByPhoneNumber(String phoneNumber);
+
+    /**
      * 添加一个新用户
      *
      * @param user 要添加的用户对象
      * @return 添加行数
      */
     Integer addOne(User user);
-
-    /**
-     * 修改密码
-     *
-     * @param username         用户名
-     * @param newPassword      密码
-     * @param phoneNumber      手机号
-     * @param verificationCode 验证码
-     * @param passwordAgain    新密码
-     * @return 修改行数
-     */
-    Integer updatePassword(String username, String newPassword, String phoneNumber, String verificationCode, String passwordAgain);
 
     /**
      * 处理登录逻辑功能
