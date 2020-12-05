@@ -5,8 +5,8 @@
 
 <mapper namespace="com.kao.server.mapper.VerificationMapper">
     <insert id="studentAuth">
-        INSERT INTO student_role(uid, cid, sid, graduation_date)
-        VALUES (#{uid}, #{cid}, #{sid}, 0)
+        INSERT INTO student_role(uid, cid, sid)
+        VALUES (#{uid}, #{cid}, #{sid})
     </insert>
     <insert id="tutorAuth">
         INSERT INTO tutor_role(uid, cid, tid)
