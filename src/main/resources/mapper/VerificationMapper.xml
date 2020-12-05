@@ -19,15 +19,9 @@
         WHERE uid = #{uid}
     </update>
     <update id="studentAuthVerified">
-        UPDATE student_role
-        SET verified      = 1,
-            verified_time = now()
-        WHERE uid = #{uid}
+        CALL student_auth_verified(#{uid})
     </update>
     <update id="tutorAuthVerified">
-        UPDATE tutor_role
-        SET verified      = 1,
-            verified_time = now()
-        WHERE uid = #{uid}
+        CALL tutor_auth_verified(#{uid})
     </update>
 </mapper>
