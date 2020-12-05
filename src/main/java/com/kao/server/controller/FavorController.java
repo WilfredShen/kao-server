@@ -27,7 +27,7 @@ public class FavorController {
     @PostMapping("/p/major")
     @IsLoggedIn
     @IsStudent
-    public JsonResult favorMajor(List<MajorFavorBase> majorList, HttpServletRequest request) {
+    public JsonResult favorMajor(@RequestBody List<MajorFavorBase> majorList, HttpServletRequest request) {
         JsonResult jsonResult;
         Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
         StudentId studentId = favorService.getStudentId(uid);
@@ -45,7 +45,7 @@ public class FavorController {
     @PostMapping("/p/tutor")
     @IsLoggedIn
     @IsStudent
-    public JsonResult favorTutor(List<TutorFavorBase> tutorList, HttpServletRequest request) {
+    public JsonResult favorTutor(@RequestBody List<TutorFavorBase> tutorList, HttpServletRequest request) {
         JsonResult jsonResult;
         Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
         StudentId studentId = favorService.getStudentId(uid);

@@ -1,5 +1,6 @@
 package com.kao.server.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.kao.server.service.VerificationService;
 import com.kao.server.util.cookie.CookieUtil;
 import com.kao.server.util.intercepter.IsLoggedIn;
@@ -9,6 +10,7 @@ import com.kao.server.util.json.ResultFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,8 +29,10 @@ public class VerificationController {
 
     @PostMapping("/real")
     @IsLoggedIn
-    public JsonResult realAuth(String identity, String name, HttpServletRequest request) {
+    public JsonResult realAuth(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
         Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
+        String identity = jsonObject.getString("identity");
+        String name = jsonObject.getString("name");
         int flag = verificationService.realAuth(uid, identity, name);
         JsonResult jsonResult;
         if (flag == JsonResultStatus.SUCCESS) {
@@ -43,9 +47,13 @@ public class VerificationController {
 
     @PostMapping("/student")
     @IsLoggedIn
-    public JsonResult studentAuth(String cid, String sid, HttpServletRequest request) {
+    public JsonResult studentAuth(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
         Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
+        String cid = jsonObject.getString("cid");
+        String sid = jsonObject.getString("sid");
         int flag = verificationService.studentAuth(uid, cid, sid);
+        System.out.println("cid: " + cid);
+        System.out.println("sid: " + sid);
         JsonResult jsonResult;
         if (flag == JsonResultStatus.SUCCESS) {
             jsonResult = ResultFactory.buildSuccessJsonResult();
@@ -59,8 +67,10 @@ public class VerificationController {
 
     @PostMapping("/tutor")
     @IsLoggedIn
-    public JsonResult tutorAuth(String cid, String tid, HttpServletRequest request) {
+    public JsonResult tutorAuth(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
         Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
+        String cid = jsonObject.getString("cid");
+        String tid = jsonObject.getString("tid");
         int flag = verificationService.tutorAuth(uid, cid, tid);
         JsonResult jsonResult;
         if (flag == JsonResultStatus.SUCCESS) {

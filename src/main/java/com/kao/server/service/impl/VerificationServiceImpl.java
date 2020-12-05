@@ -39,6 +39,7 @@ public class VerificationServiceImpl implements VerificationService {
         try {
             verificationMapper.studentAuth(uid, cid, sid);
         } catch (Exception e) {
+            e.printStackTrace();
             status = JsonResultStatus.FAIL;
             return status;
         }

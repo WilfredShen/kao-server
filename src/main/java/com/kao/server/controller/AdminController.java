@@ -142,7 +142,7 @@ public class AdminController {
     @PostMapping("/p/news")
     @IsLoggedIn
     @IsAdmin
-    public JsonResult uploadNews(NewsBase news, HttpServletRequest request) {
+    public JsonResult uploadNews(@RequestBody NewsBase news, HttpServletRequest request) {
         JsonResult jsonResult;
         Integer adminId = CookieUtil.parseInt(request.getCookies(), "adminId");
         if (adminId == null) {
@@ -176,7 +176,7 @@ public class AdminController {
     @PostMapping("/u/news")
     @IsLoggedIn
     @IsAdmin
-    public JsonResult updateNews(NewsBase news, HttpServletRequest request) {
+    public JsonResult updateNews(@RequestBody NewsBase news, HttpServletRequest request) {
         JsonResult jsonResult;
         Integer adminId = CookieUtil.parseInt(request.getCookies(), "adminId");
         if (adminId == null) {
