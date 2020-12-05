@@ -73,7 +73,7 @@ public class AdminController {
         } else if (state == JsonResultStatus.PASSWORD_WRONG) {
             return ResultFactory.buildFailJsonResult(state, JsonResultStatus.PASSWORD_WRONG_DESC);
         } else if (state == JsonResultStatus.PASSWORD_ISNULL) {
-            return ResultFactory.buildFailJsonResult(state, JsonResultStatus.USERNAME_ISNULL_DESC);
+            return ResultFactory.buildFailJsonResult(state, JsonResultStatus.PASSWORD_ISNULL_DESC);
         }
 
         return jsonResult;
@@ -103,7 +103,7 @@ public class AdminController {
         if (results != null) {
             int len = results.size();
             if (len != adminService.uploadEvaluationResult(results, adminId)) {
-                return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
+                return ResultFactory.buildFailJsonResult(JsonResultStatus.UNCOMPLETED, JsonResultStatus.UNCOMPLETED_DESC);
             }
             return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, null);
         } else {

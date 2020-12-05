@@ -1,11 +1,9 @@
 package com.kao.server.util.intercepter;
 
 import com.alibaba.fastjson.JSONObject;
-import com.kao.server.service.impl.UserServiceImpl;
 import com.kao.server.util.cookie.CookieUtil;
 import com.kao.server.util.json.JsonResultStatus;
 import com.kao.server.util.token.TokenVerifier;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,10 +17,7 @@ import java.lang.reflect.Method;
 /**
  * @author 全鸿润
  */
-public class AuthorityIntercepter implements HandlerInterceptor {
-
-    @Autowired
-    UserServiceImpl userService;
+public class AuthorityInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -46,6 +41,7 @@ public class AuthorityIntercepter implements HandlerInterceptor {
                 String accessToken = CookieUtil.findCookie(request.getCookies(), "accessToken").getValue();
                 if (accessToken != null) {
                     boolean isLogin = TokenVerifier.verifyToken(accessToken);
+                    System.err.println(isLogin);
                     //先判断登录
                     if (isLogin) {
                         String username = TokenVerifier.getUserNameFromToken(accessToken);
@@ -92,10 +88,10 @@ public class AuthorityIntercepter implements HandlerInterceptor {
                         PrintWriter out = response.getWriter();
                         jsonResult.put("state", JsonResultStatus.UNAUTHORIZED);
                         jsonResult.put("message", JsonResultStatus.UNAUTHORIZED_DESC);
-                        out.close();
                         out.print(jsonResult.toString());
+                        out.close();
+                        return false;
                     }
-                    return false;
                 } else {
                     PrintWriter out = response.getWriter();
                     jsonResult.put("state", JsonResultStatus.UNAUTHORIZED);

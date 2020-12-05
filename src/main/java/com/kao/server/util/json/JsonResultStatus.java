@@ -54,16 +54,10 @@ public class JsonResultStatus {
     static public String PASSWORD_WRONG_DESC = "密码错误";
     static public Integer PASSWORD_ISNULL = 415;
     static public String PASSWORD_ISNULL_DESC = "密码为空";
-    static public Integer PASSWORD_IS_NOT_THE_SAME = 416;
-    static public String PASSWORD_IS_NOT_THE_SAME_DESC = "两次密码不一致";
 
-    static public Integer PHONE_NUMBER_ISNULL = 419;
-    static public String PHONE_NUMBER_ISNULL_DESC = "手机号为空";
     static public Integer PHONE_NUMBER_EXISTED = 421;
     static public String PHONE_NUMBER_EXISTED_DESC = "手机号已经存在";
 
-    static public Integer VERIFICATIONS_ISNULL = 422;
-    static public String VERIFICATIONS_ISNULL_DESC = "验证码输入为空";
     static public Integer VERIFICATIONS_GET_FAILED = 423;
     static public String VERIFICATIONS_GET_FAILED_DESC = "验证码获取失败";
     static public Integer VERIFICATIONS_IS_WRONG = 425;

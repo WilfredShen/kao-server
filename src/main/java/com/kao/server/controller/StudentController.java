@@ -36,7 +36,7 @@ public class StudentController {
         if (studentMessage != null) {
             return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, studentMessage);
         } else {
-            return ResultFactory.buildFailJsonResult(JsonResultStatus.UNAUTHORIZED, JsonResultStatus.UNAUTHORIZED_DESC);
+            return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
         }
     }
 

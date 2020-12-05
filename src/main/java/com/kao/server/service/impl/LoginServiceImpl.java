@@ -6,6 +6,7 @@ import com.kao.server.service.LoginService;
 import com.kao.server.service.SmsService;
 import com.kao.server.util.checker.LoginChecker;
 import com.kao.server.util.json.JsonResultStatus;
+import com.kao.server.util.login.DigestGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -68,8 +69,9 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public int handleUpdateUserPassword(String username, String password, String phoneNumber,
                                         String verificationCode, String passwordAgain) {
-
-        int raws = loginMapper.updatePassword(username, password);
+        User user = loginMapper.findUserByUsername(username);
+        String digest = DigestGenerator.getDigest(password,user.getSalt());
+        int raws = loginMapper.updatePassword(username, digest);
         if (raws == 1) {
             return JsonResultStatus.SUCCESS;
         } else {

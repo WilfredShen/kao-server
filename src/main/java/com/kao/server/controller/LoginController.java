@@ -72,7 +72,7 @@ public class LoginController {
         } else if (state == JsonResultStatus.PASSWORD_WRONG) {
             return ResultFactory.buildFailJsonResult(state, JsonResultStatus.PASSWORD_WRONG_DESC);
         } else if (state == JsonResultStatus.PASSWORD_ISNULL) {
-            return ResultFactory.buildFailJsonResult(state, JsonResultStatus.USERNAME_ISNULL_DESC);
+            return ResultFactory.buildFailJsonResult(state, JsonResultStatus.PASSWORD_ISNULL_DESC);
         }
 
         return jsonResult;
@@ -151,7 +151,7 @@ public class LoginController {
         if (verificationCode != null) {
             return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, null);
         } else {
-            return ResultFactory.buildFailJsonResult(JsonResultStatus.ILLEGAL_PARAM, JsonResultStatus.ILLEGAL_PARAM_DESC);
+            return ResultFactory.buildFailJsonResult(JsonResultStatus.VERIFICATIONS_GET_FAILED, JsonResultStatus.VERIFICATIONS_GET_FAILED_DESC);
         }
     }
 }
