@@ -67,12 +67,8 @@ public class LoginController {
 
         } else if (state == JsonResultStatus.USERNAME_WRONG) {
             return ResultFactory.buildFailJsonResult(state, JsonResultStatus.USERNAME_WRONG_DESC);
-        } else if (state == JsonResultStatus.USERNAME_ISNULL) {
-            return ResultFactory.buildFailJsonResult(state, JsonResultStatus.USERNAME_ISNULL_DESC);
         } else if (state == JsonResultStatus.PASSWORD_WRONG) {
             return ResultFactory.buildFailJsonResult(state, JsonResultStatus.PASSWORD_WRONG_DESC);
-        } else if (state == JsonResultStatus.PASSWORD_ISNULL) {
-            return ResultFactory.buildFailJsonResult(state, JsonResultStatus.PASSWORD_ISNULL_DESC);
         }
 
         return jsonResult;

@@ -44,16 +44,11 @@ public class JsonResultStatus {
     static public Integer USERNAME_WRONG = 410;
     static public String USERNAME_WRONG_DESC = "用户名错误";
 
-    static public Integer USERNAME_ISNULL = 411;
-    static public String USERNAME_ISNULL_DESC = "用户名为空";
-
     static public Integer USERNAME_IS_EXITED = 413;
     static public String USERNAME_IS_EXITED_DESC = "用户名已存在";
 
     static public Integer PASSWORD_WRONG = 414;
     static public String PASSWORD_WRONG_DESC = "密码错误";
-    static public Integer PASSWORD_ISNULL = 415;
-    static public String PASSWORD_ISNULL_DESC = "密码为空";
 
     static public Integer PHONE_NUMBER_EXISTED = 421;
     static public String PHONE_NUMBER_EXISTED_DESC = "手机号已经存在";
