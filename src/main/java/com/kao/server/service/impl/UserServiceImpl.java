@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer updateUserMsg(String phoneNumber, String email, String accountType, int uid) {
+    public Integer updateUserMsg(String phoneNumber, String email,int uid) {
 
         int state = 1;
         if (phoneNumber != null) {
@@ -47,11 +47,6 @@ public class UserServiceImpl implements UserService {
         }
         if (email != null) {
             if (userMapper.updateEmail(uid, email) != 1) {
-                state = 0;
-            }
-        }
-        if (accountType != null) {
-            if (userMapper.updateAccountType(uid, accountType) != 1) {
                 state = 0;
             }
         }
