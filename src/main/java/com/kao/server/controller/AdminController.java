@@ -8,9 +8,8 @@ import com.kao.server.dto.NewsBase;
 import com.kao.server.entity.Admin;
 import com.kao.server.service.AdminService;
 import com.kao.server.util.cookie.CookieUtil;
-import com.kao.server.util.intercepter.AccountTypeConstant;
-import com.kao.server.util.intercepter.IsAdmin;
-import com.kao.server.util.intercepter.IsLoggedIn;
+import com.kao.server.util.interceptor.IsAdmin;
+import com.kao.server.util.interceptor.IsLoggedIn;
 import com.kao.server.util.json.JsonResult;
 import com.kao.server.util.json.JsonResultStatus;
 import com.kao.server.util.json.ResultFactory;
@@ -50,8 +49,7 @@ public class AdminController {
             String token = TokenGenerator.generateToken(
                     (admin).getUsername(),
                     String.valueOf(admin.getAdminId()),
-                    (admin).getPassword(),
-                    AccountTypeConstant.getAdminType()
+                    (admin).getPassword()
             );
             session.setAttribute("username", username);
             session.setAttribute("password", password);
@@ -59,11 +57,11 @@ public class AdminController {
             Cookie tokenCookie = new Cookie("accessToken", token);
             Cookie uidCookie = new Cookie("uid", String.valueOf(admin.getAdminId()));
             tokenCookie.setMaxAge(24 * 60 * 60);
-            tokenCookie.setDomain("test.com");
+            tokenCookie.setDomain("localhost");
             tokenCookie.setPath("/");
             uidCookie.setMaxAge(24 * 60 * 60);
             uidCookie.setPath("/");
-            uidCookie.setDomain("test.com");
+            uidCookie.setDomain("localhost");
             response.addCookie(tokenCookie);
             response.addCookie(uidCookie);
         } else if (state == JsonResultStatus.USERNAME_WRONG) {
