@@ -18,12 +18,6 @@
         WHERE u.uid = #{uid};
     </update>
 
-    <update id="updateAccountType">
-        UPDATE user AS u
-        SET u.account_type = #{accountType}
-        WHERE u.uid = #{uid};
-    </update>
-
     <select id="findUserByUserId" resultType="com.kao.server.entity.User">
         SELECT u.*
         FROM user AS u

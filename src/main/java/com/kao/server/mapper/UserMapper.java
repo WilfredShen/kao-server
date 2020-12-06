@@ -35,15 +35,6 @@ public interface UserMapper {
     Integer updateEmail(int uid, String email);
 
     /**
-     * 修改用户类型
-     *
-     * @param uid         用户id
-     * @param accountType 用户类型
-     * @return 影响的行数
-     */
-    Integer updateAccountType(int uid, String accountType);
-
-    /**
      * 获取未注册用户信息
      *
      * @param uid 用户id

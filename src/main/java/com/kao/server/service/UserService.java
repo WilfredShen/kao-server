@@ -20,11 +20,10 @@ public interface UserService {
      *
      * @param phoneNumber 手机号
      * @param email       邮箱
-     * @param accountType 用户类型
      * @param uid         用户id
      * @return 影响的行数
      */
-    Integer updateUserMsg(String phoneNumber, String email, String accountType, int uid);
+    Integer updateUserMsg(String phoneNumber, String email,int uid);
 
     /**
      * 获取未注册用户信息

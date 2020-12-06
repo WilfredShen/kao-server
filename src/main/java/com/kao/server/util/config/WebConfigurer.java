@@ -19,6 +19,7 @@ public class WebConfigurer implements WebMvcConfigurer {
         List<String> excludes = new ArrayList<>();
         excludes.add("/visitor/login");
         excludes.add("/visitor/register");
+        excludes.add("/visitor/update_password");
         excludes.add("/visitor/getvfcode");
         excludes.add("/meta/*");
         excludes.add("/base/*");
