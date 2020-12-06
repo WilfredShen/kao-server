@@ -1,9 +1,13 @@
-package com.kao.server.util.intercepter;
+package com.kao.server.util.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
+import com.kao.server.entity.User;
+import com.kao.server.service.UserService;
 import com.kao.server.util.cookie.CookieUtil;
 import com.kao.server.util.json.JsonResultStatus;
 import com.kao.server.util.token.TokenVerifier;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,7 +21,11 @@ import java.lang.reflect.Method;
 /**
  * @author 全鸿润
  */
+@Component
 public class AuthorityInterceptor implements HandlerInterceptor {
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -39,17 +47,20 @@ public class AuthorityInterceptor implements HandlerInterceptor {
         if (annotation != null) {
             try {
                 String accessToken = CookieUtil.findCookie(request.getCookies(), "accessToken").getValue();
+                System.err.println(accessToken);
+                int uid = CookieUtil.parseInt(request.getCookies(),"uid");
                 if (accessToken != null) {
                     boolean isLogin = TokenVerifier.verifyToken(accessToken);
-                    System.err.println(isLogin);
+                    System.err.println("is LoggedIn:"+isLogin);
                     //先判断登录
                     if (isLogin) {
                         String username = TokenVerifier.getUserNameFromToken(accessToken);
                         String password = TokenVerifier.getPasswordFromToken(accessToken);
-                        String accountType = TokenVerifier.getAccountTypeFromToken(accessToken);
+                        String userName = (String) session.getAttribute("username");
+                        String passWord = (String) session.getAttribute("password");
+                        User user = userService.findUserByUserId(uid);
                         //判断token是否属于当前用户
-                        if (!session.getAttribute("username").equals(username) || !session.getAttribute("password").equals(password)) {
-
+                        if (!userName.equals(username) || !passWord.equals(password)) {
                             PrintWriter out = response.getWriter();
                             jsonResult.put("state", JsonResultStatus.UNAUTHORIZED);
                             jsonResult.put("message", JsonResultStatus.UNAUTHORIZED_DESC);
@@ -58,7 +69,9 @@ public class AuthorityInterceptor implements HandlerInterceptor {
                             return false;
                         } else {
                             //判断权限
+                            String accountType = user.getAccountType();
                             if (method.getAnnotation(IsStudent.class) != null && !AccountTypeConstant.getStudentType().equals(accountType)) {
+                                System.err.println("学生身份验证失败");
                                 PrintWriter out = response.getWriter();
                                 jsonResult.put("state", JsonResultStatus.UNAUTHORIZED);
                                 jsonResult.put("message", JsonResultStatus.UNAUTHORIZED_DESC);
@@ -67,6 +80,7 @@ public class AuthorityInterceptor implements HandlerInterceptor {
                                 return false;
                             }
                             if (method.getAnnotation(IsTutor.class) != null && !AccountTypeConstant.getTeacherType().equals(accountType)) {
+                                System.err.println("老师身份验证失败");
                                 PrintWriter out = response.getWriter();
                                 jsonResult.put("state", JsonResultStatus.UNAUTHORIZED);
                                 jsonResult.put("message", JsonResultStatus.UNAUTHORIZED_DESC);
@@ -75,6 +89,7 @@ public class AuthorityInterceptor implements HandlerInterceptor {
                                 return false;
                             }
                             if (method.getAnnotation(IsAdmin.class) != null && !AccountTypeConstant.getAdminType().equals(accountType)) {
+                                System.err.println("管理员身份验证失败");
                                 PrintWriter out = response.getWriter();
                                 jsonResult.put("state", JsonResultStatus.UNAUTHORIZED);
                                 jsonResult.put("message", JsonResultStatus.UNAUTHORIZED_DESC);
@@ -93,6 +108,7 @@ public class AuthorityInterceptor implements HandlerInterceptor {
                         return false;
                     }
                 } else {
+                    System.err.println("accessToken is null");
                     PrintWriter out = response.getWriter();
                     jsonResult.put("state", JsonResultStatus.UNAUTHORIZED);
                     jsonResult.put("message", JsonResultStatus.UNAUTHORIZED_DESC);
@@ -101,7 +117,8 @@ public class AuthorityInterceptor implements HandlerInterceptor {
                     return false;
                 }
             } catch (Exception e) {
-                System.err.println("token格式不对或没有token");
+                e.printStackTrace();
+                System.err.println("token格式不对或没有token或其他异常");
                 PrintWriter out = response.getWriter();
                 jsonResult.put("state", JsonResultStatus.UNAUTHORIZED);
                 jsonResult.put("message", JsonResultStatus.UNAUTHORIZED_DESC);

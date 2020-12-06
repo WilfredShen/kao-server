@@ -1,4 +1,4 @@
-package com.kao.server.util.intercepter;
+package com.kao.server.util.interceptor;
 
 /**
  * @author 全鸿润

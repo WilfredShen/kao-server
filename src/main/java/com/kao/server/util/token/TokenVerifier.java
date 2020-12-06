@@ -36,8 +36,4 @@ public class TokenVerifier {
         return getDecodeJwt(token).getClaim("password").asString();
     }
 
-    public static String getAccountTypeFromToken(String token) {
-        return getDecodeJwt(token).getClaim("accountType").asString();
-    }
-
 }

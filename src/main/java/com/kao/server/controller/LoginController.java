@@ -47,20 +47,19 @@ public class LoginController {
             String token = TokenGenerator.generateToken(
                     (user).getUsername(),
                     String.valueOf(user.getUid()),
-                    (user).getPassword(),
-                    (user).getAccountType()
+                    (user).getPassword()
             );
             session.setAttribute("username", username);
-            session.setAttribute("password", user.getPassword());
+            session.setAttribute("password", user.getPassword().substring(0,10));
             jsonResult.setStatus(state);
             Cookie tokenCookie = new Cookie("accessToken", token);
             Cookie uidCookie = new Cookie("uid", String.valueOf(user.getUid()));
             tokenCookie.setMaxAge(24 * 60 * 60);
-            tokenCookie.setDomain("test.com");
+            tokenCookie.setDomain("localhost");
             tokenCookie.setPath("/");
             uidCookie.setMaxAge(24 * 60 * 60);
             uidCookie.setPath("/");
-            uidCookie.setDomain("test.com");
+            uidCookie.setDomain("localhost");
             response.addCookie(tokenCookie);
             response.addCookie(uidCookie);
 
