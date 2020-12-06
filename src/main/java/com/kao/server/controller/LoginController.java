@@ -116,7 +116,6 @@ public class LoginController {
 
     @RequestMapping(value = "/update_password", method = RequestMethod.POST)
     @ResponseBody
-    @IsLoggedIn
     public JsonResult updatePassword(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
 
         String username = jsonObject.getString("username");
