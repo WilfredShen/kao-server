@@ -70,6 +70,11 @@ public class LoginServiceImpl implements LoginService {
     public int handleUpdateUserPassword(String username, String password, String phoneNumber,
                                         String verificationCode, String passwordAgain) {
         User user = loginMapper.findUserByUsername(username);
+        if (user==null){
+            return JsonResultStatus.NOT_FOUND;
+        }else if (!user.getPhone().equals(phoneNumber)){
+            return JsonResultStatus.PHONE_NUMBER_IS_WRONG;
+        }
         String digest = DigestGenerator.getDigest(password, user.getSalt());
         int raws = loginMapper.updatePassword(username, digest);
         if (raws == 1) {
