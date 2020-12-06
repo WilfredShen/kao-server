@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.kao.server.entity.User;
 import com.kao.server.service.LoginService;
 import com.kao.server.service.SmsService;
-import com.kao.server.util.intercepter.IsLoggedIn;
 import com.kao.server.util.json.JsonResult;
 import com.kao.server.util.json.JsonResultStatus;
 import com.kao.server.util.json.ResultFactory;
@@ -133,6 +132,10 @@ public class LoginController {
         );
         if (state == JsonResultStatus.SUCCESS) {
             return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, null);
+        } else if (state == JsonResultStatus.NOT_FOUND) {
+            return ResultFactory.buildFailJsonResult(JsonResultStatus.NOT_FOUND, JsonResultStatus.NOT_FOUND_DESC);
+        } else if (state == JsonResultStatus.PHONE_NUMBER_IS_WRONG) {
+            return ResultFactory.buildFailJsonResult(JsonResultStatus.PHONE_NUMBER_IS_WRONG, JsonResultStatus.PHONE_NUMBER_IS_WRONG_DESC);
         } else {
             return ResultFactory.buildFailJsonResult(JsonResultStatus.UPDATE_PASSWORD_FAILED, JsonResultStatus.UPDATE_PASSWORD_FAILED_DESC);
         }
