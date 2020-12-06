@@ -52,6 +52,8 @@ public class JsonResultStatus {
 
     static public Integer PHONE_NUMBER_EXISTED = 421;
     static public String PHONE_NUMBER_EXISTED_DESC = "手机号已经存在";
+    static public Integer PHONE_NUMBER_IS_WRONG = 422;
+    static public String PHONE_NUMBER_IS_WRONG_DESC = "请输入该账户注册的手机号";
 
     static public Integer VERIFICATIONS_GET_FAILED = 423;
     static public String VERIFICATIONS_GET_FAILED_DESC = "验证码获取失败";
