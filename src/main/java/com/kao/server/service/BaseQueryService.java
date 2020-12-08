@@ -1,8 +1,6 @@
 package com.kao.server.service;
 
-import com.kao.server.dto.EvaluationBase;
-import com.kao.server.dto.NewsBase;
-import com.kao.server.dto.TutorRoleBaseWithName;
+import com.kao.server.dto.*;
 import com.kao.server.entity.College;
 
 import java.util.List;
@@ -50,4 +48,35 @@ public interface BaseQueryService {
      * @return 导师
      */
     List<TutorRoleBaseWithName> queryTutor(String cid);
+
+    /**
+     * 查询夏令营信息
+     *
+     * @return 按时间降序排列的夏令营信息列表
+     */
+    List<SummerCampMessage> querySummerCamp();
+
+    /**
+     * 查询九月推免信息
+     *
+     * @return 按时间降序排列的九月推免信息列表
+     */
+    List<ExemptionMessage> queryExemption();
+
+    /**
+     * 根据学校代码查找录取率
+     *
+     * @param cid 学校代码
+     * @return 近几年的录取率(时间降序)
+     */
+    List<AcceptanceRateMessage> queryAcceptanceRate(String cid);
+
+    /**
+     * 查询学校最新排名结果
+     *
+     * @param cid 学校代码
+     * @return 各个排行榜最新的排名结果
+     */
+    List<LatestCollegeRank> queryLatestCollegeRank(String cid);
+
 }
