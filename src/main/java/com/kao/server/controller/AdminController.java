@@ -32,9 +32,9 @@ import java.util.List;
 public class AdminController {
 
     @Autowired
-    AdminService adminService;
+    private AdminService adminService;
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @PostMapping("/login")
     public JsonResult login(@RequestBody JSONObject adminMsg, HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         String username = adminMsg.getString("username");
@@ -73,20 +73,17 @@ public class AdminController {
         return jsonResult;
     }
 
-    @RequestMapping(value = "/get_evaluation", method = RequestMethod.GET)
+    @GetMapping("/get_evaluation")
     @IsLoggedIn
     @IsAdmin
     public JsonResult getEvaluation(@RequestParam() int round) {
+        JsonResult jsonResult;
         List<AdminViewEvaluation> data = adminService.findEvaluationByRound(round);
-        if (data != null) {
-            return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
-        } else {
-            return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
-        }
-
+        jsonResult = ResultFactory.listPack(data);
+        return jsonResult;
     }
 
-    @RequestMapping(value = "/upload_evaluation", method = RequestMethod.POST)
+    @PostMapping("/upload_evaluation")
     @IsLoggedIn
     @IsAdmin
     public JsonResult uploadEvaluations(@RequestBody JSONObject evaluations, HttpServletRequest request) {
@@ -99,14 +96,14 @@ public class AdminController {
             if (len != adminService.uploadEvaluationResult(results, adminId)) {
                 return ResultFactory.buildFailJsonResult(JsonResultStatus.UNCOMPLETED, JsonResultStatus.UNCOMPLETED_DESC);
             }
-            return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, null);
+            return ResultFactory.buildSuccessJsonResult();
         } else {
             return ResultFactory.buildFailJsonResult(JsonResultStatus.ILLEGAL_PARAM, JsonResultStatus.ILLEGAL_PARAM_DESC);
         }
 
     }
 
-    @RequestMapping(value = "/update_evaluation", method = RequestMethod.POST)
+    @PostMapping("/update_evaluation")
     @IsLoggedIn
     @IsAdmin
     public JsonResult updateEvaluation(@RequestBody JSONObject evaluation, HttpServletRequest request) {
@@ -117,6 +114,8 @@ public class AdminController {
         String result = evaluation.getString("newResult");
         String round = evaluation.getString("round");
 
+        JsonResult jsonResult;
+
         int raws = adminService.updateEvaluationResult(
                 cid,
                 mid,
@@ -126,10 +125,12 @@ public class AdminController {
         );
 
         if (raws == 1) {
-            return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, null);
+            jsonResult = ResultFactory.buildSuccessJsonResult();
+        } else {
+            jsonResult = ResultFactory.buildFailJsonResult();
         }
 
-        return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
+        return jsonResult;
 
     }
 

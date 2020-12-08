@@ -23,7 +23,7 @@ public interface UserService {
      * @param uid         用户id
      * @return 影响的行数
      */
-    Integer updateUserMsg(String phoneNumber, String email,int uid);
+    Integer updateUserMsg(String phoneNumber, String email, int uid);
 
     /**
      * 获取未注册用户信息

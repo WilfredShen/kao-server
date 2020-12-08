@@ -29,11 +29,11 @@ import java.sql.Timestamp;
 public class LoginController {
 
     @Autowired
-    LoginService loginService;
+    private LoginService loginService;
     @Autowired
-    SmsService smsService;
+    private SmsService smsService;
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @PostMapping("/login")
     @ResponseBody
     public JsonResult login(@RequestBody JSONObject jsonObject, HttpServletRequest request, HttpServletResponse response) {
 
@@ -41,7 +41,7 @@ public class LoginController {
         String username = jsonObject.getString("username");
         String password = jsonObject.getString("password");
         User user = loginService.findUserByUsername(username);
-        JsonResult jsonResult = new JsonResult(null, null, null);
+        JsonResult jsonResult = null;
         int state = loginService.handleLogin(user, username, password);
         if (state == JsonResultStatus.SUCCESS) {
             String token = TokenGenerator.generateToken(
@@ -50,8 +50,8 @@ public class LoginController {
                     (user).getPassword()
             );
             session.setAttribute("username", username);
-            session.setAttribute("password", user.getPassword().substring(0,10));
-            jsonResult.setStatus(state);
+            session.setAttribute("password", user.getPassword().substring(0, 10));
+            jsonResult = ResultFactory.buildSuccessJsonResult();
             Cookie tokenCookie = new Cookie("accessToken", token);
             Cookie uidCookie = new Cookie("uid", String.valueOf(user.getUid()));
             tokenCookie.setMaxAge(24 * 60 * 60);
@@ -72,7 +72,7 @@ public class LoginController {
         return jsonResult;
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @PostMapping("/register")
     @ResponseBody
     public JsonResult register(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
 
@@ -97,7 +97,7 @@ public class LoginController {
             newUser.setRegisterTime(new Timestamp(System.currentTimeMillis()));
 
             loginService.addOne(newUser);
-            return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, null);
+            return ResultFactory.buildSuccessJsonResult();
         } else {
             JsonResult jsonResult = ResultFactory.buildFailJsonResult(state, null);
             if (state == JsonResultStatus.PHONE_NUMBER_EXISTED) {
@@ -112,7 +112,7 @@ public class LoginController {
         }
     }
 
-    @RequestMapping(value = "/update_password", method = RequestMethod.POST)
+    @PostMapping("/update_password")
     @ResponseBody
     public JsonResult updatePassword(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
 
@@ -130,7 +130,7 @@ public class LoginController {
                 passwordAgain
         );
         if (state == JsonResultStatus.SUCCESS) {
-            return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, null);
+            return ResultFactory.buildSuccessJsonResult();
         } else if (state == JsonResultStatus.NOT_FOUND) {
             return ResultFactory.buildFailJsonResult(JsonResultStatus.NOT_FOUND, JsonResultStatus.NOT_FOUND_DESC);
         } else if (state == JsonResultStatus.PHONE_NUMBER_IS_WRONG) {
@@ -140,7 +140,7 @@ public class LoginController {
         }
     }
 
-    @RequestMapping(value = "/getvfcode", method = RequestMethod.POST)
+    @PostMapping("/getvfcode")
     @ResponseBody
     public JsonResult getVerificationCode(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
         String phoneNumber = jsonObject.getString("phoneNumber");

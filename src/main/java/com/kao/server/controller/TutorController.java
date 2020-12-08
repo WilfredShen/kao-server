@@ -28,24 +28,22 @@ import java.util.List;
 public class TutorController {
 
     @Autowired
-    TutorService tutorService;
+    private TutorService tutorService;
 
-    @RequestMapping(value = "/get_tutor_msg", method = RequestMethod.GET)
-    @ResponseBody
+    @GetMapping("/get_tutor_msg")
     @IsLoggedIn
     @IsTutor
     public JsonResult getTutorMsg(HttpServletRequest request) {
         Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
         TutorMessage data = tutorService.getTutorMsg(uid);
         if (data != null) {
-            return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
+            return ResultFactory.buildSuccessJsonResult();
         } else {
-            return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
+            return ResultFactory.buildFailJsonResult();
         }
     }
 
-    @RequestMapping(value = "/update_tutor_msg", method = RequestMethod.POST)
-    @ResponseBody
+    @PostMapping("/update_tutor_msg")
     @IsLoggedIn
     @IsTutor
     public JsonResult updateTutorMsg(@RequestBody UpdatedTutorMessage message, HttpServletRequest request) {
@@ -55,14 +53,13 @@ public class TutorController {
             return ResultFactory.buildFailJsonResult(JsonResultStatus.UNAUTHORIZED, JsonResultStatus.UNAUTHORIZED_DESC);
         }
         if (tutorService.updateTutorMsg(message, uid) == 1) {
-            return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, null);
+            return ResultFactory.buildSuccessJsonResult();
         } else {
-            return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
+            return ResultFactory.buildFailJsonResult();
         }
     }
 
-    @RequestMapping(value = "/get_queryableStu_msg", method = RequestMethod.GET)
-    @ResponseBody
+    @GetMapping("/get_queryableStu_msg")
     @IsLoggedIn
     @IsTutor
     public JsonResult getQueryableStudentByConditions(HttpServletRequest request) {
@@ -83,11 +80,13 @@ public class TutorController {
         String major = request.getParameter("major");
         String expectedMajor = request.getParameter("expectedMajor");
         List<QueryableStudentMessage> data = tutorService.getQueryableStudentByConditions(beginDate, endDate, collegeLevel, major, expectedMajor);
+        JsonResult jsonResult;
         if (data != null) {
-            return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, data);
+            jsonResult = ResultFactory.buildSuccessJsonResult(data);
         } else {
-            return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
+            jsonResult = ResultFactory.buildFailJsonResult();
         }
+        return jsonResult;
     }
 
 }

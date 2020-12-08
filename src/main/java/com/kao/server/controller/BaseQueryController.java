@@ -19,7 +19,7 @@ import java.util.List;
 public class BaseQueryController {
 
     @Autowired
-    BaseQueryService baseQueryService;
+    private BaseQueryService baseQueryService;
 
     @GetMapping("/evaluation")
     public JsonResult queryEvaluation(@RequestParam(required = false) Integer round) {

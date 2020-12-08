@@ -22,7 +22,7 @@ import java.util.List;
 public class FavorController {
 
     @Autowired
-    FavorService favorService;
+    private FavorService favorService;
 
     @PostMapping("/p/major")
     @IsLoggedIn

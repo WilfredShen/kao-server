@@ -28,7 +28,7 @@ public class TokenGenerator {
                 .withHeader(header)
                 .withClaim("uid", userid)
                 .withClaim("username", username)
-                .withClaim("password", password.substring(0,10))
+                .withClaim("password", password.substring(0, 10))
                 .withExpiresAt(date)
                 .sign(algorithm);
     }
