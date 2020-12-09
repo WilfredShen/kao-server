@@ -59,4 +59,22 @@ public interface FavorService {
      * @return 查询结果
      */
     List<TutorFavorMessage> queryTutor(String stuCid, String stuSid);
+
+    /**
+     * 删除专业
+     *
+     * @param cid 学校代码
+     * @param sid 学号
+     * @return 删除的行数
+     */
+    Integer deleteMajor(String cid, String sid);
+
+    /**
+     * 删除导师
+     *
+     * @param cid 学校代码
+     * @param sid 学号
+     * @return 删除行数
+     */
+    Integer deleteTutor(String cid, String sid);
 }
