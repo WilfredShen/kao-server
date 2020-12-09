@@ -20,4 +20,8 @@ public interface FavorMapper {
     List<MajorFavorMessage> queryMajor(String stuCid, String stuSid) throws Exception;
 
     List<TutorFavorMessage> queryTutor(String stuCid, String stuSid) throws Exception;
+
+    Integer deleteMajor(String cid, String sid);
+
+    Integer deleteTutor(String cid, String sid);
 }

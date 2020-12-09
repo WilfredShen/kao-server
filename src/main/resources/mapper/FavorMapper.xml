@@ -18,6 +18,16 @@
             (#{stuCid}, #{stuSid}, #{item.tutCid}, #{item.tutTid}, now())
         </foreach>
     </insert>
+    <delete id="deleteMajor">
+        DELETE FROM major_favorite
+        WHERE stu_cid = {#cid}
+          AND stu_sid = {#sid}
+    </delete>
+    <delete id="deleteTutor">
+        DELETE FROM tutor_favorite
+        WHERE stu_cid = {#cid}
+          AND stu_sid = {#sid}
+    </delete>
     <select id="getStudentId" resultType="com.kao.server.dto.StudentId">
         SELECT uid, cid, sid, mid
         FROM student_role

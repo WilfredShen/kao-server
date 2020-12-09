@@ -2,6 +2,7 @@ package com.kao.server.controller;
 
 import com.kao.server.dto.*;
 import com.kao.server.service.FavorService;
+import com.kao.server.service.StudentService;
 import com.kao.server.util.cookie.CookieUtil;
 import com.kao.server.util.interceptor.IsLoggedIn;
 import com.kao.server.util.interceptor.IsStudent;
@@ -23,6 +24,8 @@ public class FavorController {
 
     @Autowired
     private FavorService favorService;
+    @Autowired
+    private StudentService studentService;
 
     @PostMapping("/p/major")
     @IsLoggedIn
@@ -93,6 +96,42 @@ public class FavorController {
         StudentId studentId = favorService.getStudentId(uid);
         List<TutorFavorMessage> data = favorService.queryTutor(studentId.getCid(), studentId.getSid());
         jsonResult = ResultFactory.listPack(data);
+        return jsonResult;
+    }
+
+    @PostMapping("/d/major")
+    @IsLoggedIn
+    @IsStudent
+    public JsonResult deleteMajor(HttpServletRequest request) {
+
+        Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
+        StudentId studentId = favorService.getStudentId(uid);
+        JsonResult jsonResult;
+        Integer raw = favorService.deleteMajor(studentId.getCid(), studentId.getSid());
+        if (raw != null && raw == 1) {
+            jsonResult = ResultFactory.buildSuccessJsonResult();
+        } else {
+            jsonResult = ResultFactory.buildFailJsonResult();
+        }
+
+        return jsonResult;
+    }
+
+    @PostMapping("/d/tutor")
+    @IsLoggedIn
+    @IsStudent
+    public JsonResult deleteTutor(HttpServletRequest request) {
+
+        Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
+        StudentId studentId = favorService.getStudentId(uid);
+        JsonResult jsonResult;
+        Integer raw = favorService.deleteTutor(studentId.getCid(), studentId.getSid());
+        if (raw != null && raw == 1) {
+            jsonResult = ResultFactory.buildSuccessJsonResult();
+        } else {
+            jsonResult = ResultFactory.buildFailJsonResult();
+        }
+
         return jsonResult;
     }
 }
