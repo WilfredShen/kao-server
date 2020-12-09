@@ -45,4 +45,38 @@
                  join user u on u.uid = tutor_role.uid
         WHERE cid = #{cid};
     </select>
+    <select id="querySummerCamp" resultType="com.kao.server.dto.SummerCampMessage">
+        SELECT s.title,
+               s.image,
+               s.official_link,
+               s.content,
+               s.date
+        FROM summer_camp_message AS s
+    </select>
+    <select id="queryExemption" resultType="com.kao.server.dto.ExemptionMessage">
+        SELECT e.title,
+               e.image,
+               e.official_link,
+               e.content,
+               e.date
+        FROM exemption_message AS e
+    </select>
+    <select id="queryAcceptanceRate" resultType="com.kao.server.dto.AcceptanceRateMessage">
+        SELECT l.cid,
+               l.year,
+               l.total,
+               l.enrollment,
+               l.exemption,
+               l.exemption_rate,
+               l.enrollment_rate
+        FROM latest_acceptance_rate AS l
+        WHERE l.cid = #{cid}
+    </select>
+    <select id="queryLatestCollegeRank" resultType="com.kao.server.dto.LatestCollegeRank">
+        SELECT c.rank_from,
+               c.rank,
+               c.date
+        FROM college_rank_message AS c
+        WHERE c.cid = #{cid}
+    </select>
 </mapper>

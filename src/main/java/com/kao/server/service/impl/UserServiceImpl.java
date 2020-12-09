@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer updateUserMsg(String phoneNumber, String email,int uid) {
+    public Integer updateUserMsg(String phoneNumber, String email, int uid) {
 
         int state = 1;
         if (phoneNumber != null) {

@@ -1,8 +1,6 @@
 package com.kao.server.controller;
 
-import com.kao.server.dto.EvaluationBase;
-import com.kao.server.dto.NewsBase;
-import com.kao.server.dto.TutorRoleBaseWithName;
+import com.kao.server.dto.*;
 import com.kao.server.entity.College;
 import com.kao.server.service.BaseQueryService;
 import com.kao.server.util.json.JsonResult;
@@ -21,7 +19,7 @@ import java.util.List;
 public class BaseQueryController {
 
     @Autowired
-    BaseQueryService baseQueryService;
+    private BaseQueryService baseQueryService;
 
     @GetMapping("/evaluation")
     public JsonResult queryEvaluation(@RequestParam(required = false) Integer round) {
@@ -56,6 +54,38 @@ public class BaseQueryController {
     public JsonResult queryTutor(@RequestParam String cid) {
         JsonResult jsonResult;
         List<TutorRoleBaseWithName> data = baseQueryService.queryTutor(cid);
+        jsonResult = ResultFactory.listPack(data);
+        return jsonResult;
+    }
+
+    @GetMapping("/summer-camp")
+    public JsonResult querySummerCamp() {
+        JsonResult jsonResult = null;
+        List<SummerCampMessage> data = baseQueryService.querySummerCamp();
+        jsonResult = ResultFactory.listPack(data);
+        return jsonResult;
+    }
+
+    @GetMapping("/exemption")
+    public JsonResult queryExemption() {
+        JsonResult jsonResult;
+        List<ExemptionMessage> data = baseQueryService.queryExemption();
+        jsonResult = ResultFactory.listPack(data);
+        return jsonResult;
+    }
+
+    @GetMapping("/acceptance-rate")
+    public JsonResult queryEnrollmentRate(@RequestParam String cid) {
+        JsonResult jsonResult;
+        List<AcceptanceRateMessage> data = baseQueryService.queryAcceptanceRate(cid);
+        jsonResult = ResultFactory.listPack(data);
+        return jsonResult;
+    }
+
+    @GetMapping("/latest-college-rank")
+    public JsonResult queryLatestCollegeRank(@RequestParam String cid) {
+        JsonResult jsonResult;
+        List<LatestCollegeRank> data = baseQueryService.queryLatestCollegeRank(cid);
         jsonResult = ResultFactory.listPack(data);
         return jsonResult;
     }

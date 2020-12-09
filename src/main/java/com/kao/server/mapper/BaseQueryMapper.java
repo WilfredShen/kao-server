@@ -1,8 +1,6 @@
 package com.kao.server.mapper;
 
-import com.kao.server.dto.EvaluationBase;
-import com.kao.server.dto.NewsBase;
-import com.kao.server.dto.TutorRoleBaseWithName;
+import com.kao.server.dto.*;
 import com.kao.server.entity.College;
 
 import java.util.List;
@@ -21,4 +19,12 @@ public interface BaseQueryMapper {
     List<College> queryCollege(List<String> cidList) throws Exception;
 
     List<TutorRoleBaseWithName> queryTutor(String cid) throws Exception;
+
+    List<SummerCampMessage> querySummerCamp() throws Exception;
+
+    List<ExemptionMessage> queryExemption() throws Exception;
+
+    List<AcceptanceRateMessage> queryAcceptanceRate(String cid) throws Exception;
+
+    List<LatestCollegeRank> queryLatestCollegeRank(String cid) throws Exception;
 }

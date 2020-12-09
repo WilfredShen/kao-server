@@ -48,10 +48,10 @@ public class AuthorityInterceptor implements HandlerInterceptor {
             try {
                 String accessToken = CookieUtil.findCookie(request.getCookies(), "accessToken").getValue();
                 System.err.println(accessToken);
-                int uid = CookieUtil.parseInt(request.getCookies(),"uid");
+                int uid = CookieUtil.parseInt(request.getCookies(), "uid");
                 if (accessToken != null) {
                     boolean isLogin = TokenVerifier.verifyToken(accessToken);
-                    System.err.println("is LoggedIn:"+isLogin);
+                    System.err.println("is LoggedIn:" + isLogin);
                     //先判断登录
                     if (isLogin) {
                         String username = TokenVerifier.getUserNameFromToken(accessToken);

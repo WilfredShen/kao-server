@@ -17,7 +17,7 @@ import java.util.List;
 public class WebConfigurer implements WebMvcConfigurer {
 
     @Bean
-    public HandlerInterceptor getAuthorityInterceptor(){
+    public HandlerInterceptor getAuthorityInterceptor() {
         return new AuthorityInterceptor();
     }
 

@@ -24,11 +24,10 @@ import javax.servlet.http.HttpServletRequest;
 public class UserController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
-    @RequestMapping(value = "/get_user_info")
+    @GetMapping("/get_user_info")
     @IsLoggedIn
-    @ResponseBody
     public JsonResult getUserMessage(HttpServletRequest request) {
 
         try {
@@ -45,18 +44,17 @@ public class UserController {
             }
 
             if (userMessage != null) {
-                return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, userMessage);
+                return ResultFactory.buildSuccessJsonResult(userMessage);
             } else {
-                return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
+                return ResultFactory.buildFailJsonResult();
             }
         } catch (Exception e) {
             return ResultFactory.buildFailJsonResult(JsonResultStatus.ILLEGAL_PARAM, JsonResultStatus.ILLEGAL_PARAM_DESC);
         }
     }
 
-    @RequestMapping(value = "/update_user_msg", method = RequestMethod.POST)
+    @PostMapping("/update_user_msg")
     @IsLoggedIn
-    @ResponseBody
     public JsonResult updateUserMsg(@RequestBody JSONObject userMsg, HttpServletRequest request) {
 
         Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
@@ -64,9 +62,9 @@ public class UserController {
         String email = userMsg.getString("email");
 
         if (userService.updateUserMsg(phoneNumber, email, uid) == 1) {
-            return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, null);
+            return ResultFactory.buildSuccessJsonResult();
         } else {
-            return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
+            return ResultFactory.buildFailJsonResult();
         }
     }
 }

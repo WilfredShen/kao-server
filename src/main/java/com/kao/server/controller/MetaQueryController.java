@@ -23,7 +23,7 @@ import java.util.List;
 public class MetaQueryController {
 
     @Autowired
-    MetaQueryService metaQueryService;
+    private MetaQueryService metaQueryService;
 
     @GetMapping("/college")
     public JsonResult queryCollegeIdAndName() {

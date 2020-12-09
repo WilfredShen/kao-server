@@ -23,10 +23,9 @@ import javax.servlet.http.HttpServletRequest;
 public class StudentController {
 
     @Autowired
-    StudentService studentService;
+    private StudentService studentService;
 
-    @RequestMapping(value = "/get_stu_info", method = RequestMethod.GET)
-    @ResponseBody
+    @GetMapping("/get_stu_info")
     @IsLoggedIn
     @IsStudent
     public JsonResult getStudentMsg(HttpServletRequest request) {
@@ -34,14 +33,13 @@ public class StudentController {
         Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
         StudentMessage studentMessage = studentService.getStuMsg(uid);
         if (studentMessage != null) {
-            return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, studentMessage);
+            return ResultFactory.buildSuccessJsonResult();
         } else {
-            return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
+            return ResultFactory.buildFailJsonResult();
         }
     }
 
-    @RequestMapping(value = "/update_stu_info", method = RequestMethod.POST)
-    @ResponseBody
+    @PostMapping("/update_stu_info")
     @IsLoggedIn
     @IsStudent
     public JsonResult updateStudentMsg(@RequestBody UpdatedStudentMessage studentMessage, HttpServletRequest request) {
@@ -52,9 +50,9 @@ public class StudentController {
                 return ResultFactory.buildFailJsonResult(JsonResultStatus.UNAUTHORIZED, JsonResultStatus.UNAUTHORIZED_DESC);
             }
             if (studentService.updateStudentMsg(studentMessage, uid) == 1) {
-                return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, null);
+                return ResultFactory.buildSuccessJsonResult();
             } else {
-                return ResultFactory.buildFailJsonResult(JsonResultStatus.FAIL, JsonResultStatus.FAIL_DESC);
+                return ResultFactory.buildFailJsonResult();
             }
         } catch (Exception e) {
             return ResultFactory.buildFailJsonResult(JsonResultStatus.ILLEGAL_PARAM, JsonResultStatus.ILLEGAL_PARAM_DESC);

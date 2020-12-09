@@ -1,8 +1,6 @@
 package com.kao.server.service.impl;
 
-import com.kao.server.dto.EvaluationBase;
-import com.kao.server.dto.NewsBase;
-import com.kao.server.dto.TutorRoleBaseWithName;
+import com.kao.server.dto.*;
 import com.kao.server.entity.College;
 import com.kao.server.mapper.BaseQueryMapper;
 import com.kao.server.service.BaseQueryService;
@@ -75,6 +73,52 @@ public class BaseQueryServiceImpl implements BaseQueryService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return data;
+    }
+
+    @Override
+    public List<SummerCampMessage> querySummerCamp() {
+
+        List<SummerCampMessage> data = null;
+        try {
+            data = baseQueryMapper.querySummerCamp();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return data;
+    }
+
+    @Override
+    public List<ExemptionMessage> queryExemption() {
+        List<ExemptionMessage> data = null;
+        try {
+            data = baseQueryMapper.queryExemption();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return data;
+    }
+
+    @Override
+    public List<LatestCollegeRank> queryLatestCollegeRank(String cid) {
+        List<LatestCollegeRank> data = null;
+        try {
+            data = baseQueryMapper.queryLatestCollegeRank(cid);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return data;
+    }
+
+    @Override
+    public List<AcceptanceRateMessage> queryAcceptanceRate(String cid) {
+        List<AcceptanceRateMessage> data = null;
+        try {
+            data = baseQueryMapper.queryAcceptanceRate(cid);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return data;
     }
 }
