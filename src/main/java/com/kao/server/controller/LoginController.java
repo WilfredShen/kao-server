@@ -146,7 +146,7 @@ public class LoginController {
         String phoneNumber = jsonObject.getString("phoneNumber");
         String verificationCode = loginService.getVerificationCode(phoneNumber);
         if (verificationCode != null) {
-            return ResultFactory.buildSuccessJsonResult(JsonResultStatus.SUCCESS_DESC, null);
+            return ResultFactory.buildSuccessJsonResult();
         } else {
             return ResultFactory.buildFailJsonResult(JsonResultStatus.VERIFICATIONS_GET_FAILED, JsonResultStatus.VERIFICATIONS_GET_FAILED_DESC);
         }

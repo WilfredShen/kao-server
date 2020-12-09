@@ -37,7 +37,7 @@ public class TutorController {
         Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
         TutorMessage data = tutorService.getTutorMsg(uid);
         if (data != null) {
-            return ResultFactory.buildSuccessJsonResult();
+            return ResultFactory.buildSuccessJsonResult(data);
         } else {
             return ResultFactory.buildFailJsonResult();
         }
