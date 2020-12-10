@@ -102,16 +102,16 @@ public class FavorController {
     @PostMapping("/d/major")
     @IsLoggedIn
     @IsStudent
-    public JsonResult deleteMajor(HttpServletRequest request) {
+    public JsonResult deleteMajor(String majorCid, String majorMid, HttpServletRequest request) {
 
         Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
         StudentId studentId = favorService.getStudentId(uid);
         JsonResult jsonResult;
-        Integer raw = favorService.deleteMajor(studentId.getCid(), studentId.getSid());
+        Integer raw = favorService.deleteMajor(studentId.getCid(), studentId.getSid(), majorCid, majorMid);
         if (raw != null && raw == 1) {
             jsonResult = ResultFactory.buildSuccessJsonResult();
         } else {
-            jsonResult = ResultFactory.buildFailJsonResult();
+            jsonResult = ResultFactory.buildFailJsonResult("CANCEL_COLLECTION_FAILED");
         }
 
         return jsonResult;
@@ -120,16 +120,16 @@ public class FavorController {
     @PostMapping("/d/tutor")
     @IsLoggedIn
     @IsStudent
-    public JsonResult deleteTutor(HttpServletRequest request) {
+    public JsonResult deleteTutor(String tutorCid, String tutorTid, HttpServletRequest request) {
 
         Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
         StudentId studentId = favorService.getStudentId(uid);
         JsonResult jsonResult;
-        Integer raw = favorService.deleteTutor(studentId.getCid(), studentId.getSid());
+        Integer raw = favorService.deleteTutor(studentId.getCid(), studentId.getSid(), tutorCid, tutorTid);
         if (raw != null && raw == 1) {
             jsonResult = ResultFactory.buildSuccessJsonResult();
         } else {
-            jsonResult = ResultFactory.buildFailJsonResult();
+            jsonResult = ResultFactory.buildFailJsonResult("CANCEL_COLLECTION_FAILED");
         }
 
         return jsonResult;
