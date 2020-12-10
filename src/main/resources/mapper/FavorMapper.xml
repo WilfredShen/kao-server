@@ -20,13 +20,17 @@
     </insert>
     <delete id="deleteMajor">
         DELETE FROM major_favorite
-        WHERE stu_cid = {#cid}
-          AND stu_sid = {#sid}
+        WHERE major_cid = #{majorCid}
+          AND major_mid = #{majorMid}
+          AND stu_cid = #{cid}
+          AND stu_sid = #{sid}
     </delete>
     <delete id="deleteTutor">
         DELETE FROM tutor_favorite
-        WHERE stu_cid = {#cid}
-          AND stu_sid = {#sid}
+        WHERE stu_cid = #{cid}
+          AND stu_sid = #{sid}
+          AND tut_cid = #{tutorCid}
+          AND tut_tid = #{tutorTid}
     </delete>
     <select id="getStudentId" resultType="com.kao.server.dto.StudentId">
         SELECT uid, cid, sid, mid
