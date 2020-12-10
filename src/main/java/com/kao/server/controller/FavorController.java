@@ -1,5 +1,6 @@
 package com.kao.server.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.kao.server.dto.*;
 import com.kao.server.service.FavorService;
 import com.kao.server.service.StudentService;
@@ -7,6 +8,7 @@ import com.kao.server.util.cookie.CookieUtil;
 import com.kao.server.util.interceptor.IsLoggedIn;
 import com.kao.server.util.interceptor.IsStudent;
 import com.kao.server.util.json.JsonResult;
+import com.kao.server.util.json.JsonResultStatus;
 import com.kao.server.util.json.ResultFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -102,8 +104,10 @@ public class FavorController {
     @PostMapping("/d/major")
     @IsLoggedIn
     @IsStudent
-    public JsonResult deleteMajor(String majorCid, String majorMid, HttpServletRequest request) {
+    public JsonResult deleteMajor(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
 
+        String majorCid = jsonObject.getString("majorCid");
+        String majorMid = jsonObject.getString("majorMid");
         Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
         StudentId studentId = favorService.getStudentId(uid);
         JsonResult jsonResult;
@@ -111,7 +115,7 @@ public class FavorController {
         if (raw != null && raw == 1) {
             jsonResult = ResultFactory.buildSuccessJsonResult();
         } else {
-            jsonResult = ResultFactory.buildFailJsonResult("CANCEL_COLLECTION_FAILED");
+            jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.CANCEL_COLLECTION_FAILED, JsonResultStatus.CANCEL_COLLECTION_FAILED_DESC);
         }
 
         return jsonResult;
@@ -120,8 +124,10 @@ public class FavorController {
     @PostMapping("/d/tutor")
     @IsLoggedIn
     @IsStudent
-    public JsonResult deleteTutor(String tutorCid, String tutorTid, HttpServletRequest request) {
+    public JsonResult deleteTutor(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
 
+        String tutorCid = jsonObject.getString("tutorCid");
+        String tutorTid = jsonObject.getString("tutorTid");
         Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
         StudentId studentId = favorService.getStudentId(uid);
         JsonResult jsonResult;
@@ -129,7 +135,7 @@ public class FavorController {
         if (raw != null && raw == 1) {
             jsonResult = ResultFactory.buildSuccessJsonResult();
         } else {
-            jsonResult = ResultFactory.buildFailJsonResult("CANCEL_COLLECTION_FAILED");
+            jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.CANCEL_COLLECTION_FAILED, JsonResultStatus.CANCEL_COLLECTION_FAILED_DESC);
         }
 
         return jsonResult;
