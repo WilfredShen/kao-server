@@ -1,5 +1,7 @@
 package com.kao.server.service.impl;
 
+import com.kao.server.entity.User;
+import com.kao.server.mapper.UserMapper;
 import com.kao.server.mapper.VerificationMapper;
 import com.kao.server.service.VerificationService;
 import com.kao.server.util.json.JsonResultStatus;
@@ -15,6 +17,8 @@ public class VerificationServiceImpl implements VerificationService {
 
     @Autowired
     private VerificationMapper verificationMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public Integer realAuth(Integer uid, String identity, String name) {
@@ -36,6 +40,11 @@ public class VerificationServiceImpl implements VerificationService {
     @Override
     public Integer studentAuth(Integer uid, String cid, String sid) {
         int status;
+        User user = userMapper.findUserByUserId(uid);
+        if (user.getAccountType() != null) {
+            status = JsonResultStatus.FAIL;
+            return status;
+        }
         try {
             verificationMapper.studentAuth(uid, cid, sid);
         } catch (Exception e) {
@@ -60,6 +69,11 @@ public class VerificationServiceImpl implements VerificationService {
     @Override
     public Integer tutorAuth(Integer uid, String cid, String tid) {
         int status;
+        User user = userMapper.findUserByUserId(uid);
+        if (user.getAccountType() != null) {
+            status = JsonResultStatus.FAIL;
+            return status;
+        }
         try {
             verificationMapper.tutorAuth(uid, cid, tid);
         } catch (Exception e) {
