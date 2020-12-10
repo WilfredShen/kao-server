@@ -33,7 +33,7 @@ public class StudentController {
         Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
         StudentMessage studentMessage = studentService.getStuMsg(uid);
         if (studentMessage != null) {
-            return ResultFactory.buildSuccessJsonResult();
+            return ResultFactory.buildSuccessJsonResult(studentMessage);
         } else {
             return ResultFactory.buildFailJsonResult();
         }
