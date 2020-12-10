@@ -50,7 +50,7 @@ public class LoginController {
                     (user).getPassword()
             );
             session.setAttribute("username", username);
-            session.setAttribute("password", user.getPassword().substring(0, 10));
+            session.setAttribute("password", user.getPassword());
             jsonResult = ResultFactory.buildSuccessJsonResult();
             Cookie tokenCookie = new Cookie("accessToken", token);
             Cookie uidCookie = new Cookie("uid", String.valueOf(user.getUid()));
