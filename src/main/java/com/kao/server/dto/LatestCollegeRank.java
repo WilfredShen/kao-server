@@ -8,7 +8,7 @@ import java.sql.Date;
 public class LatestCollegeRank {
 
     private String rankFrom;
-    private String rank;
+    private Integer rank;
     private Date date;
 
     public String getRankFrom() {
@@ -19,11 +19,11 @@ public class LatestCollegeRank {
         this.rankFrom = rankFrom;
     }
 
-    public String getRank() {
+    public Integer getRank() {
         return rank;
     }
 
-    public void setRank(String rank) {
+    public void setRank(Integer rank) {
         this.rank = rank;
     }
 
