@@ -29,6 +29,9 @@ public class JsonResultStatus {
     static public Integer NEWS_ALREADY_EXISTS = 1110;
     static public String NEWS_ALREADY_EXISTS_DESC = "新闻已存在";
 
+    static public Integer CANCEL_COLLECTION_FAILED = 2090;
+    static public String CANCEL_COLLECTION_FAILED_DESC = "取消收藏失败";
+
     static public Integer REAL_AUTH_FAILED = 3060;
     static public String REAL_AUTH_FAILED_DESC = "实名认证未通过";
 
