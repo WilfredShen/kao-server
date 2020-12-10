@@ -135,6 +135,8 @@ public class LoginController {
             return ResultFactory.buildFailJsonResult(JsonResultStatus.NOT_FOUND, JsonResultStatus.NOT_FOUND_DESC);
         } else if (state == JsonResultStatus.PHONE_NUMBER_IS_WRONG) {
             return ResultFactory.buildFailJsonResult(JsonResultStatus.PHONE_NUMBER_IS_WRONG, JsonResultStatus.PHONE_NUMBER_IS_WRONG_DESC);
+        } else if (state == JsonResultStatus.VERIFICATIONS_IS_WRONG) {
+            return ResultFactory.buildFailJsonResult(JsonResultStatus.VERIFICATIONS_IS_WRONG, JsonResultStatus.VERIFICATIONS_IS_WRONG_DESC);
         } else {
             return ResultFactory.buildFailJsonResult(JsonResultStatus.UPDATE_PASSWORD_FAILED, JsonResultStatus.UPDATE_PASSWORD_FAILED_DESC);
         }
