@@ -35,7 +35,7 @@ public interface AdminMapper {
      * @param adminId 管理员Id
      * @return 评估结果列表
      */
-    Integer uploadEvaluationResult(List<EvaluationBase> result, int adminId);
+    Integer uploadEvaluationResult(EvaluationBase result, int adminId);
 
     /**
      * 更新单条评估结果
