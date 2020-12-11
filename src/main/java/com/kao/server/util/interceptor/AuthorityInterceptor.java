@@ -1,7 +1,9 @@
 package com.kao.server.util.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
+import com.kao.server.entity.Admin;
 import com.kao.server.entity.User;
+import com.kao.server.service.AdminService;
 import com.kao.server.service.UserService;
 import com.kao.server.util.cookie.CookieUtil;
 import com.kao.server.util.json.JsonResultStatus;
@@ -26,6 +28,8 @@ public class AuthorityInterceptor implements HandlerInterceptor {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private AdminService adminService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -47,8 +51,8 @@ public class AuthorityInterceptor implements HandlerInterceptor {
         if (annotation != null) {
             try {
                 String accessToken = CookieUtil.findCookie(request.getCookies(), "accessToken").getValue();
-                System.err.println(accessToken);
                 int uid = CookieUtil.parseInt(request.getCookies(), "uid");
+                //带有token
                 if (accessToken != null) {
                     boolean isLogin = TokenVerifier.verifyToken(accessToken);
                     System.err.println("is LoggedIn:" + isLogin);
@@ -58,7 +62,6 @@ public class AuthorityInterceptor implements HandlerInterceptor {
                         String password = TokenVerifier.getPasswordFromToken(accessToken);
                         String userName = (String) session.getAttribute("username");
                         String passWord = (String) session.getAttribute("password");
-                        User user = userService.findUserByUserId(uid);
                         //判断token是否属于当前用户
                         if (!userName.equals(username) || !passWord.equals(password)) {
                             PrintWriter out = response.getWriter();
@@ -69,6 +72,20 @@ public class AuthorityInterceptor implements HandlerInterceptor {
                             return false;
                         } else {
                             //判断权限
+                            User user = userService.findUserByUserId(uid);
+                            if (user == null) {
+                                Admin admin = adminService.findUserByUsername(username);
+                                if (admin != null) {
+                                    return true;
+                                } else {
+                                    PrintWriter out = response.getWriter();
+                                    jsonResult.put("state", JsonResultStatus.UNAUTHORIZED);
+                                    jsonResult.put("message", JsonResultStatus.UNAUTHORIZED_DESC);
+                                    out.print(jsonResult.toString());
+                                    out.close();
+                                    return false;
+                                }
+                            }
                             String accountType = user.getAccountType();
                             if (method.getAnnotation(IsStudent.class) != null && !AccountTypeConstant.getStudentType().equals(accountType)) {
                                 System.err.println("学生身份验证失败");
@@ -126,12 +143,14 @@ public class AuthorityInterceptor implements HandlerInterceptor {
                 out.close();
                 return false;
             }
+        } else {
+            PrintWriter out = response.getWriter();
+            jsonResult.put("state", JsonResultStatus.ILLEGAL_PARAM);
+            jsonResult.put("message", JsonResultStatus.ILLEGAL_PARAM_DESC);
+            out.close();
+            return false;
         }
-        PrintWriter out = response.getWriter();
-        jsonResult.put("state", JsonResultStatus.ILLEGAL_PARAM);
-        jsonResult.put("message", JsonResultStatus.ILLEGAL_PARAM_DESC);
-        out.close();
-        return false;
+
     }
 
     @Override
