@@ -18,11 +18,19 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentMessage getStuMsg(int uid) {
-        return studentMapper.findStudentById(uid);
+        try {
+            return studentMapper.findStudentById(uid);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public Integer updateStudentMsg(UpdatedStudentMessage studentMessage, int uid) {
-        return studentMapper.updateStudentMsg(studentMessage, uid);
+        try {
+            return studentMapper.updateStudentMsg(studentMessage, uid);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

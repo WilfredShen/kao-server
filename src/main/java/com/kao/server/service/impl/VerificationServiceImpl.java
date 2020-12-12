@@ -40,7 +40,12 @@ public class VerificationServiceImpl implements VerificationService {
     @Override
     public Integer studentAuth(Integer uid, String cid, String sid) {
         int status;
-        User user = userMapper.findUserByUserId(uid);
+        User user = null;
+        try {
+            user = userMapper.findUserByUserId(uid);
+        } catch (Exception e) {
+            return null;
+        }
         if (user.getAccountType() != null) {
             status = JsonResultStatus.FAIL;
             return status;
@@ -69,7 +74,12 @@ public class VerificationServiceImpl implements VerificationService {
     @Override
     public Integer tutorAuth(Integer uid, String cid, String tid) {
         int status;
-        User user = userMapper.findUserByUserId(uid);
+        User user = null;
+        try {
+            user = userMapper.findUserByUserId(uid);
+        } catch (Exception e) {
+            return null;
+        }
         if (user.getAccountType() != null) {
             status = JsonResultStatus.FAIL;
             return status;

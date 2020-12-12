@@ -35,7 +35,12 @@ class ServerApplicationTests {
         try {
             Date beginDate = format.parse("2019-02-23");
             Date endDate = format.parse("2023-10-01");
-            List<QueryableStudentMessage> list = tutorService.getQueryableStudentByConditions(null, endDate, "985", null, "计算机科学");
+            List<QueryableStudentMessage> list = null;
+            try {
+                list = tutorService.getQueryableStudentByConditions(null, endDate, "985", null, "计算机科学");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             if (list != null) {
                 System.err.println(list.size());
             }
@@ -61,7 +66,12 @@ class ServerApplicationTests {
         String username = "帅润";
         String password = "534261";
 
-        Admin admin = adminMapper.findUserByUsername(username);
+        Admin admin = null;
+        try {
+            admin = adminMapper.findUserByUsername(username);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         System.err.println(admin.getUsername()+admin.getPassword());
     }
 

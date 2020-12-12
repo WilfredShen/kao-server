@@ -39,29 +39,22 @@ public class AuthorityInterceptor implements HandlerInterceptor {
         }
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         Method method = handlerMethod.getMethod();
-        IsLoggedIn annotation = method.getAnnotation(IsLoggedIn.class);
 
         HttpSession session = request.getSession();
         JSONObject jsonResult = new JSONObject();
         response.setContentType("application/json;charset=utf-8");
         response.setCharacterEncoding("UTF-8");
-
-
         //需要拦截的方法
-        if (annotation != null) {
+        if (method.getAnnotation(IsLoggedIn.class) != null) {
             try {
                 String accessToken = CookieUtil.findCookie(request.getCookies(), "accessToken").getValue();
-                int uid = CookieUtil.parseInt(request.getCookies(), "uid");
-                //带有token
-                if (accessToken != null) {
-                    boolean isLogin = TokenVerifier.verifyToken(accessToken);
-                    System.err.println("is LoggedIn:" + isLogin);
-                    //先判断登录
-                    if (isLogin) {
-                        String username = TokenVerifier.getUserNameFromToken(accessToken);
-                        String password = TokenVerifier.getPasswordFromToken(accessToken);
+                if (method.getAnnotation(IsAdmin.class)!=null){
+                    Admin admin = adminService.findUserByUsername(TokenVerifier.getUserNameFromToken(accessToken));
+                    if (admin != null) {
                         String userName = (String) session.getAttribute("username");
                         String passWord = (String) session.getAttribute("password");
+                        String username = TokenVerifier.getUserNameFromToken(accessToken);
+                        String password = TokenVerifier.getPasswordFromToken(accessToken);
                         //判断token是否属于当前用户
                         if (!userName.equals(username) || !passWord.equals(password)) {
                             PrintWriter out = response.getWriter();
@@ -70,52 +63,8 @@ public class AuthorityInterceptor implements HandlerInterceptor {
                             out.print(jsonResult.toString());
                             out.close();
                             return false;
-                        } else {
-                            //判断权限
-                            User user = userService.findUserByUserId(uid);
-                            if (user == null) {
-                                Admin admin = adminService.findUserByUsername(username);
-                                if (admin != null) {
-                                    return true;
-                                } else {
-                                    PrintWriter out = response.getWriter();
-                                    jsonResult.put("state", JsonResultStatus.UNAUTHORIZED);
-                                    jsonResult.put("message", JsonResultStatus.UNAUTHORIZED_DESC);
-                                    out.print(jsonResult.toString());
-                                    out.close();
-                                    return false;
-                                }
-                            }
-                            String accountType = user.getAccountType();
-                            if (method.getAnnotation(IsStudent.class) != null && !AccountTypeConstant.getStudentType().equals(accountType)) {
-                                System.err.println("学生身份验证失败");
-                                PrintWriter out = response.getWriter();
-                                jsonResult.put("state", JsonResultStatus.UNAUTHORIZED);
-                                jsonResult.put("message", JsonResultStatus.UNAUTHORIZED_DESC);
-                                out.print(jsonResult.toString());
-                                out.close();
-                                return false;
-                            }
-                            if (method.getAnnotation(IsTutor.class) != null && !AccountTypeConstant.getTeacherType().equals(accountType)) {
-                                System.err.println("老师身份验证失败");
-                                PrintWriter out = response.getWriter();
-                                jsonResult.put("state", JsonResultStatus.UNAUTHORIZED);
-                                jsonResult.put("message", JsonResultStatus.UNAUTHORIZED_DESC);
-                                out.print(jsonResult.toString());
-                                out.close();
-                                return false;
-                            }
-                            if (method.getAnnotation(IsAdmin.class) != null && !AccountTypeConstant.getAdminType().equals(accountType)) {
-                                System.err.println("管理员身份验证失败");
-                                PrintWriter out = response.getWriter();
-                                jsonResult.put("state", JsonResultStatus.UNAUTHORIZED);
-                                jsonResult.put("message", JsonResultStatus.UNAUTHORIZED_DESC);
-                                out.print(jsonResult.toString());
-                                out.close();
-                                return false;
-                            }
-                            return true;
                         }
+                        return true;
                     } else {
                         PrintWriter out = response.getWriter();
                         jsonResult.put("state", JsonResultStatus.UNAUTHORIZED);
@@ -124,18 +73,80 @@ public class AuthorityInterceptor implements HandlerInterceptor {
                         out.close();
                         return false;
                     }
-                } else {
-                    System.err.println("accessToken is null");
-                    PrintWriter out = response.getWriter();
-                    jsonResult.put("state", JsonResultStatus.UNAUTHORIZED);
-                    jsonResult.put("message", JsonResultStatus.UNAUTHORIZED_DESC);
-                    out.close();
-                    out.print(jsonResult.toString());
-                    return false;
+                }else{
+                    int uid = CookieUtil.parseInt(request.getCookies(), "uid");
+                    //带有token
+                    if (accessToken != null) {
+                        boolean isLogin = TokenVerifier.verifyToken(accessToken);
+                        System.err.println("is LoggedIn:" + isLogin);
+                        //先判断token是否有效
+                        if (isLogin) {
+                            String username = TokenVerifier.getUserNameFromToken(accessToken);
+                            String password = TokenVerifier.getPasswordFromToken(accessToken);
+                            String userName = (String) session.getAttribute("username");
+                            String passWord = (String) session.getAttribute("password");
+                            //判断token是否属于当前用户
+                            if (!userName.equals(username) || !passWord.equals(password)) {
+                                PrintWriter out = response.getWriter();
+                                jsonResult.put("state", JsonResultStatus.UNAUTHORIZED);
+                                jsonResult.put("message", JsonResultStatus.UNAUTHORIZED_DESC);
+                                out.print(jsonResult.toString());
+                                out.close();
+                                return false;
+                            } else {
+                                //判断权限
+                                User user = userService.findUserByUserId(uid);
+                                String accountType = user.getAccountType();
+                                if (method.getAnnotation(IsStudent.class) != null && !AccountTypeConstant.getStudentType().equals(accountType)) {
+                                    System.err.println("学生身份验证失败");
+                                    PrintWriter out = response.getWriter();
+                                    jsonResult.put("state", JsonResultStatus.UNAUTHORIZED);
+                                    jsonResult.put("message", JsonResultStatus.UNAUTHORIZED_DESC);
+                                    out.print(jsonResult.toString());
+                                    out.close();
+                                    return false;
+                                }
+                                if (method.getAnnotation(IsTutor.class) != null && !AccountTypeConstant.getTeacherType().equals(accountType)) {
+                                    System.err.println("老师身份验证失败");
+                                    PrintWriter out = response.getWriter();
+                                    jsonResult.put("state", JsonResultStatus.UNAUTHORIZED);
+                                    jsonResult.put("message", JsonResultStatus.UNAUTHORIZED_DESC);
+                                    out.print(jsonResult.toString());
+                                    out.close();
+                                    return false;
+                                }
+                                if (method.getAnnotation(IsAdmin.class) != null && !AccountTypeConstant.getAdminType().equals(accountType)) {
+                                    System.err.println("管理员身份验证失败");
+                                    PrintWriter out = response.getWriter();
+                                    jsonResult.put("state", JsonResultStatus.UNAUTHORIZED);
+                                    jsonResult.put("message", JsonResultStatus.UNAUTHORIZED_DESC);
+                                    out.print(jsonResult.toString());
+                                    out.close();
+                                    return false;
+                                }
+                                return true;
+                            }
+                        } else {
+                            PrintWriter out = response.getWriter();
+                            jsonResult.put("state", JsonResultStatus.UNAUTHORIZED);
+                            jsonResult.put("message", JsonResultStatus.UNAUTHORIZED_DESC);
+                            out.print(jsonResult.toString());
+                            out.close();
+                            return false;
+                        }
+                    } else {
+                        System.err.println("accessToken is null");
+                        PrintWriter out = response.getWriter();
+                        jsonResult.put("state", JsonResultStatus.UNAUTHORIZED);
+                        jsonResult.put("message", JsonResultStatus.UNAUTHORIZED_DESC);
+                        out.close();
+                        out.print(jsonResult.toString());
+                        return false;
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                System.err.println("token格式不对或没有token或其他异常");
+                System.err.println("token格式不对/没有token/其他异常");
                 PrintWriter out = response.getWriter();
                 jsonResult.put("state", JsonResultStatus.UNAUTHORIZED);
                 jsonResult.put("message", JsonResultStatus.UNAUTHORIZED_DESC);

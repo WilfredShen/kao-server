@@ -13,7 +13,7 @@ public interface LoginMapper {
      * @param username 用户名
      * @return 用户对象
      */
-    User findUserByUsername(String username);
+    User findUserByUsername(String username) throws Exception;
 
     /**
      * 验证用户名是否存在
@@ -21,7 +21,7 @@ public interface LoginMapper {
      * @param username 用户名
      * @return 用户名
      */
-    User findUserNameByUsername(String username);
+    User findUserNameByUsername(String username) throws Exception;
 
     /**
      * None
@@ -29,7 +29,7 @@ public interface LoginMapper {
      * @param phoneNumber 手机号码
      * @return 手机号
      */
-    String findPhoneNumberByPhoneNumber(String phoneNumber);
+    String findPhoneNumberByPhoneNumber(String phoneNumber) throws Exception;
 
     /**
      * 添加用户
@@ -37,7 +37,7 @@ public interface LoginMapper {
      * @param user 注册的用户对象
      * @return 影响的行数
      */
-    Integer addOne(User user);
+    Integer addOne(User user) throws Exception;
 
     /**
      * 修改密码
@@ -46,5 +46,5 @@ public interface LoginMapper {
      * @param newPassword 修改后的密码
      * @return 影响的行数
      */
-    Integer updatePassword(String username, String newPassword);
+    Integer updatePassword(String username, String newPassword)throws Exception;
 }

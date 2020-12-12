@@ -45,7 +45,7 @@ public interface LoginService {
      * @param password 密码
      * @return json格式的处理结果
      */
-    int handleLogin(User user, String username, String password);
+    Integer handleLogin(User user, String username, String password);
 
     /**
      * 处理注册逻辑功能
@@ -56,7 +56,7 @@ public interface LoginService {
      * @param verificationCode 验证码
      * @return 状态码
      */
-    int handleRegister(String username, String password, String phoneNumber, String verificationCode);
+    Integer handleRegister(String username, String password, String phoneNumber, String verificationCode);
 
     /**
      * 处理修改密码逻辑功能
@@ -68,7 +68,7 @@ public interface LoginService {
      * @param passwordAgain    新密码
      * @return 状态码
      */
-    int handleUpdateUserPassword(String username, String password, String phoneNumber, String verificationCode, String passwordAgain);
+    Integer handleUpdateUserPassword(String username, String password, String phoneNumber, String verificationCode, String passwordAgain);
 
     /**
      * 处理获取验证码逻辑

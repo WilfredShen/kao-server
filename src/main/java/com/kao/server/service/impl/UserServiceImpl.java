@@ -18,22 +18,38 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserByUserId(int userId) {
-        return userMapper.findUserByUserId(userId);
+        try {
+            return userMapper.findUserByUserId(userId);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public UserMessage getNotVerifiedUserMessageById(int uid) {
-        return userMapper.getNotVerifiedUserMessageById(uid);
+        try {
+            return userMapper.getNotVerifiedUserMessageById(uid);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public UserMessage getStudentUserMessageById(int uid) {
-        return userMapper.getStudentUserMessageById(uid);
+        try {
+            return userMapper.getStudentUserMessageById(uid);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public UserMessage getTutorUserMessageById(int uid) {
-        return userMapper.getTutorUserMessageById(uid);
+        try {
+            return userMapper.getTutorUserMessageById(uid);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
@@ -41,13 +57,21 @@ public class UserServiceImpl implements UserService {
 
         int state = 1;
         if (phoneNumber != null) {
-            if (userMapper.updatePhone(uid, phoneNumber) != 1) {
-                state = 0;
+            try {
+                if (userMapper.updatePhone(uid, phoneNumber) != 1) {
+                    state = 0;
+                }
+            } catch (Exception e) {
+                return null;
             }
         }
         if (email != null) {
-            if (userMapper.updateEmail(uid, email) != 1) {
-                state = 0;
+            try {
+                if (userMapper.updateEmail(uid, email) != 1) {
+                    state = 0;
+                }
+            } catch (Exception e) {
+                return null;
             }
         }
 

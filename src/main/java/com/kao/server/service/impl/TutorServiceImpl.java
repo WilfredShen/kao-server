@@ -21,29 +21,45 @@ public class TutorServiceImpl implements TutorService {
 
     @Override
     public TutorMessage findTutorById(int uid) {
-        return tutorMapper.findTutorById(uid);
+        try {
+            return tutorMapper.findTutorById(uid);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public TutorMessage getTutorMsg(int uid) {
 
-        return tutorMapper.findTutorById(uid);
+        try {
+            return tutorMapper.findTutorById(uid);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public List<QueryableStudentMessage> getQueryableStudentByConditions(Date beginDate, Date endDate, String collegeLevel, String major, String expectedMajor) {
-        return tutorMapper.getQueryableStudentByConditions(
-                beginDate,
-                endDate,
-                collegeLevel,
-                major,
-                expectedMajor
-        );
+        try {
+            return tutorMapper.getQueryableStudentByConditions(
+                    beginDate,
+                    endDate,
+                    collegeLevel,
+                    major,
+                    expectedMajor
+            );
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public Integer updateTutorMsg(UpdatedTutorMessage message, int uid) {
-        return tutorMapper.updateTutorMessage(message, uid);
+        try {
+            return tutorMapper.updateTutorMessage(message, uid);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 }

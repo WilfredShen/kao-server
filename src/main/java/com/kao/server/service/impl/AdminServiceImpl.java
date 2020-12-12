@@ -23,7 +23,11 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Admin findUserByUsername(String username) {
-        return adminMapper.findUserByUsername(username);
+        try {
+            return adminMapper.findUserByUsername(username);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
@@ -34,23 +38,35 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<AdminViewEvaluation> findEvaluationByRound(int round) {
-        return adminMapper.findEvaluationByRound(round);
+        try {
+            return adminMapper.findEvaluationByRound(round);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public Integer updateEvaluationResult(String cid, String mid, int round, int adminId, String result) {
-        return adminMapper.updateEvaluationResult(
-                cid,
-                mid,
-                round,
-                adminId,
-                result
-        );
+        try {
+            return adminMapper.updateEvaluationResult(
+                    cid,
+                    mid,
+                    round,
+                    adminId,
+                    result
+            );
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public Integer uploadEvaluationResult(EvaluationBase result, int adminId) {
-        return adminMapper.uploadEvaluationResult(result, adminId);
+        try {
+            return adminMapper.uploadEvaluationResult(result, adminId);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override

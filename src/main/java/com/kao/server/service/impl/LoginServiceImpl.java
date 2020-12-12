@@ -23,42 +23,62 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public User findUserByUsername(String username) {
-        return loginMapper.findUserByUsername(username);
+        try {
+            return loginMapper.findUserByUsername(username);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public User findUserNameByUsername(String username) {
-        return loginMapper.findUserNameByUsername(username);
+        try {
+            return loginMapper.findUserNameByUsername(username);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public String findPhoneNumberByPhoneNumber(String phoneNumber) {
-        return loginMapper.findPhoneNumberByPhoneNumber(phoneNumber);
+        try {
+            return loginMapper.findPhoneNumberByPhoneNumber(phoneNumber);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public Integer addOne(User user) {
-        return loginMapper.addOne(user);
+        try {
+            return loginMapper.addOne(user);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
-    public int handleLogin(User user, String username, String password) {
+    public Integer handleLogin(User user, String username, String password) {
 
         return LoginChecker.checkLogin(user, username, password);
     }
 
     @Override
-    public int handleRegister(String username, String password, String phoneNumber, String verificationCode) {
+    public Integer handleRegister(String username, String password, String phoneNumber, String verificationCode) {
         User user = this.findUserNameByUsername(username);
         //验证码先写死成666666
         String verification = "666666";
         if (user == null) {
-            if ((loginMapper.findPhoneNumberByPhoneNumber(phoneNumber) != null)) {
-                return JsonResultStatus.PHONE_NUMBER_EXISTED;
-            } else if (!verification.equals(verificationCode)) {
-                return JsonResultStatus.VERIFICATIONS_IS_WRONG;
-            } else {
-                return JsonResultStatus.SUCCESS;
+            try {
+                if ((loginMapper.findPhoneNumberByPhoneNumber(phoneNumber) != null)) {
+                    return JsonResultStatus.PHONE_NUMBER_EXISTED;
+                } else if (!verification.equals(verificationCode)) {
+                    return JsonResultStatus.VERIFICATIONS_IS_WRONG;
+                } else {
+                    return JsonResultStatus.SUCCESS;
+                }
+            } catch (Exception e) {
+                return null;
             }
 
         } else {
@@ -67,9 +87,14 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public int handleUpdateUserPassword(String username, String password, String phoneNumber,
+    public Integer handleUpdateUserPassword(String username, String password, String phoneNumber,
                                         String verificationCode, String passwordAgain) {
-        User user = loginMapper.findUserByUsername(username);
+        User user;
+        try {
+            user = loginMapper.findUserByUsername(username);
+        } catch (Exception e) {
+            return null;
+        }
         String verification = "666666";
         if (user == null) {
             return JsonResultStatus.NOT_FOUND;
@@ -79,7 +104,12 @@ public class LoginServiceImpl implements LoginService {
             return JsonResultStatus.VERIFICATIONS_IS_WRONG;
         }
         String digest = DigestGenerator.getDigest(password, user.getSalt());
-        int raws = loginMapper.updatePassword(username, digest);
+        int raws;
+        try {
+            raws = loginMapper.updatePassword(username, digest);
+        } catch (Exception e) {
+            return null;
+        }
         if (raws == 1) {
             return JsonResultStatus.SUCCESS;
         } else {

@@ -41,9 +41,7 @@ public class AdminController {
 
         Admin admin = adminService.findUserByUsername(username);
         int state = adminService.handleLogin(admin, username, password);
-
         JsonResult jsonResult = new JsonResult(null, null, null);
-
         if (state == JsonResultStatus.SUCCESS) {
             String token = TokenGenerator.generateToken(
                     (admin).getUsername(),
@@ -109,7 +107,7 @@ public class AdminController {
 
         JsonResult jsonResult;
 
-        int raws = adminService.updateEvaluationResult(
+        Integer raws = adminService.updateEvaluationResult(
                 cid,
                 mid,
                 Integer.parseInt(round),
