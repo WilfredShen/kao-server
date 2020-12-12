@@ -14,7 +14,7 @@ public interface StudentMapper {
      * @param uid 用户id
      * @return 学生信息
      */
-    StudentMessage findStudentById(int uid);
+    StudentMessage findStudentById(int uid)throws Exception;
 
     /**
      * 修改学生信息
@@ -23,5 +23,5 @@ public interface StudentMapper {
      * @param uid 用户id
      * @return 影响的行数
      */
-    Integer updateStudentMsg(UpdatedStudentMessage msg, int uid);
+    Integer updateStudentMsg(UpdatedStudentMessage msg, int uid)throws Exception;
 }

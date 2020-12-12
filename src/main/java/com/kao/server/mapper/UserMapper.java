@@ -14,7 +14,7 @@ public interface UserMapper {
      * @param userId 用户id
      * @return 用户对象
      */
-    User findUserByUserId(int userId);
+    User findUserByUserId(int userId)throws Exception;
 
     /**
      * 修改手机号
@@ -23,7 +23,7 @@ public interface UserMapper {
      * @param phoneNumber 手机号
      * @return 影响的行数
      */
-    Integer updatePhone(int uid, String phoneNumber);
+    Integer updatePhone(int uid, String phoneNumber)throws Exception;
 
     /**
      * 修改邮箱
@@ -32,7 +32,7 @@ public interface UserMapper {
      * @param email 邮箱地址
      * @return 影响的行数
      */
-    Integer updateEmail(int uid, String email);
+    Integer updateEmail(int uid, String email)throws Exception;
 
     /**
      * 获取未注册用户信息
@@ -40,7 +40,7 @@ public interface UserMapper {
      * @param uid 用户id
      * @return 用户信息
      */
-    UserMessage getNotVerifiedUserMessageById(int uid);
+    UserMessage getNotVerifiedUserMessageById(int uid)throws Exception;
 
     /**
      * 获取学生用户信息
@@ -48,7 +48,7 @@ public interface UserMapper {
      * @param uid 用户id
      * @return 学生用户信息
      */
-    UserMessage getStudentUserMessageById(int uid);
+    UserMessage getStudentUserMessageById(int uid)throws Exception;
 
     /**
      * 获取教师用户信息
@@ -56,5 +56,5 @@ public interface UserMapper {
      * @param uid 用户id
      * @return 教师用户信息
      */
-    UserMessage getTutorUserMessageById(int uid);
+    UserMessage getTutorUserMessageById(int uid)throws Exception;
 }

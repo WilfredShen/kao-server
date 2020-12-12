@@ -18,7 +18,7 @@ public interface AdminMapper {
      * @param username 用户名
      * @return Admin
      */
-    Admin findUserByUsername(String username);
+    Admin findUserByUsername(String username) throws Exception;
 
     /**
      * 通过轮次查询评估结果
@@ -26,7 +26,7 @@ public interface AdminMapper {
      * @param round 轮次
      * @return 评估结果列表
      */
-    List<AdminViewEvaluation> findEvaluationByRound(int round);
+    List<AdminViewEvaluation> findEvaluationByRound(int round) throws Exception;
 
     /**
      * 管理员界面的根据轮次获取评估结果
@@ -35,7 +35,7 @@ public interface AdminMapper {
      * @param adminId 管理员Id
      * @return 评估结果列表
      */
-    Integer uploadEvaluationResult(EvaluationBase result, int adminId);
+    Integer uploadEvaluationResult(EvaluationBase result, int adminId) throws Exception;
 
     /**
      * 更新单条评估结果
@@ -47,7 +47,7 @@ public interface AdminMapper {
      * @param result  修改的结果
      * @return 修改行数
      */
-    Integer updateEvaluationResult(String cid, String mid, int round, int adminId, String result);
+    Integer updateEvaluationResult(String cid, String mid, int round, int adminId, String result) throws Exception;
 
     Integer uploadNews(NewsBase news, Integer adminId) throws Exception;
 
