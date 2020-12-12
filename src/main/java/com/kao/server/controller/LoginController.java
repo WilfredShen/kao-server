@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.kao.server.entity.User;
 import com.kao.server.service.LoginService;
 import com.kao.server.service.SmsService;
+import com.kao.server.util.cookie.CookieUtil;
 import com.kao.server.util.json.JsonResult;
 import com.kao.server.util.json.JsonResultStatus;
 import com.kao.server.util.json.ResultFactory;
@@ -12,7 +13,12 @@ import com.kao.server.util.login.SaltGenerator;
 import com.kao.server.util.login.UidGenerator;
 import com.kao.server.util.token.TokenGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -52,14 +58,8 @@ public class LoginController {
             session.setAttribute("username", username);
             session.setAttribute("password", user.getPassword());
             jsonResult = ResultFactory.buildSuccessJsonResult();
-            Cookie tokenCookie = new Cookie("accessToken", token);
-            Cookie uidCookie = new Cookie("uid", String.valueOf(user.getUid()));
-            tokenCookie.setMaxAge(24 * 60 * 60);
-            tokenCookie.setDomain("localhost");
-            tokenCookie.setPath("/");
-            uidCookie.setMaxAge(24 * 60 * 60);
-            uidCookie.setPath("/");
-            uidCookie.setDomain("localhost");
+            Cookie tokenCookie = CookieUtil.buildCookie("accessToken", token);
+            Cookie uidCookie = CookieUtil.buildCookie("uid", String.valueOf(user.getUid()));
             response.addCookie(tokenCookie);
             response.addCookie(uidCookie);
 

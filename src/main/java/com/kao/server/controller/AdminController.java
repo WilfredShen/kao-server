@@ -14,7 +14,13 @@ import com.kao.server.util.json.JsonResultStatus;
 import com.kao.server.util.json.ResultFactory;
 import com.kao.server.util.token.TokenGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -51,16 +57,10 @@ public class AdminController {
             session.setAttribute("username", username);
             session.setAttribute("password", password);
             jsonResult.setStatus(state);
-            Cookie tokenCookie = new Cookie("accessToken", token);
-            Cookie uidCookie = new Cookie("uid", String.valueOf(admin.getAdminId()));
-            tokenCookie.setMaxAge(24 * 60 * 60);
-            tokenCookie.setDomain("localhost");
-            tokenCookie.setPath("/");
-            uidCookie.setMaxAge(24 * 60 * 60);
-            uidCookie.setPath("/");
-            uidCookie.setDomain("localhost");
+            Cookie tokenCookie = CookieUtil.buildCookie("accessToken", token);
+            Cookie adminIdCookie = CookieUtil.buildCookie("adminId", String.valueOf(admin.getAdminId()));
             response.addCookie(tokenCookie);
-            response.addCookie(uidCookie);
+            response.addCookie(adminIdCookie);
         } else if (state == JsonResultStatus.USERNAME_WRONG) {
             return ResultFactory.buildFailJsonResult(state, JsonResultStatus.USERNAME_WRONG_DESC);
         } else if (state == JsonResultStatus.PASSWORD_WRONG) {
@@ -130,12 +130,12 @@ public class AdminController {
     @IsAdmin
     public JsonResult uploadNews(@RequestBody NewsBase news, HttpServletRequest request) {
         JsonResult jsonResult;
-        Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
+        Integer adminId = CookieUtil.parseInt(request.getCookies(), "adminId");
         System.out.println();
-        if (uid == null) {
+        if (adminId == null) {
             jsonResult = ResultFactory.buildFailJsonResult("UNAUTHORIZED");
         } else {
-            Integer count = adminService.uploadNews(news, uid);
+            Integer count = adminService.uploadNews(news, adminId);
             if (count != null && count == 1) {
                 jsonResult = ResultFactory.buildSuccessJsonResult();
             } else {
@@ -150,8 +150,8 @@ public class AdminController {
     @IsAdmin
     public JsonResult queryNews(HttpServletRequest request) {
         JsonResult jsonResult;
-        Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
-        if (uid == null) {
+        Integer adminId = CookieUtil.parseInt(request.getCookies(), "adminId");
+        if (adminId == null) {
             jsonResult = ResultFactory.buildFailJsonResult("UNAUTHORIZED");
         } else {
             List<NewsBase> data = adminService.queryNews();
@@ -165,11 +165,11 @@ public class AdminController {
     @IsAdmin
     public JsonResult updateNews(@RequestBody NewsBase news, HttpServletRequest request) {
         JsonResult jsonResult;
-        Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
-        if (uid == null) {
+        Integer adminId = CookieUtil.parseInt(request.getCookies(), "adminId");
+        if (adminId == null) {
             jsonResult = ResultFactory.buildFailJsonResult("UNAUTHORIZED");
         } else {
-            Integer count = adminService.updateNews(news, uid);
+            Integer count = adminService.updateNews(news, adminId);
             if (count != null && count == 1) {
                 jsonResult = ResultFactory.buildSuccessJsonResult();
             } else {
