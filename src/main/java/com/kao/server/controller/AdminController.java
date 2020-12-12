@@ -1,6 +1,5 @@
 package com.kao.server.controller;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.kao.server.dto.AdminViewEvaluation;
 import com.kao.server.dto.EvaluationBase;
@@ -86,20 +85,14 @@ public class AdminController {
     @PostMapping("/upload_evaluation")
     @IsLoggedIn
     @IsAdmin
-    public JsonResult uploadEvaluations(@RequestBody JSONObject evaluations, HttpServletRequest request) {
+    public JsonResult uploadEvaluations(@RequestBody EvaluationBase results, HttpServletRequest request) {
 
         Integer adminId = CookieUtil.parseInt(request.getCookies(), "adminId");
-        JSONArray res = evaluations.getJSONArray("evaluations");
-        List<EvaluationBase> results = res.toJavaList(EvaluationBase.class);
-        if (results != null) {
-            int len = results.size();
-            if (len != adminService.uploadEvaluationResult(results, adminId)) {
-                return ResultFactory.buildFailJsonResult(JsonResultStatus.UNCOMPLETED, JsonResultStatus.UNCOMPLETED_DESC);
-            }
-            return ResultFactory.buildSuccessJsonResult();
-        } else {
-            return ResultFactory.buildFailJsonResult(JsonResultStatus.ILLEGAL_PARAM, JsonResultStatus.ILLEGAL_PARAM_DESC);
+        Integer raws = adminService.uploadEvaluationResult(results, adminId);
+        if (raws == null || raws != 1) {
+            return ResultFactory.buildFailJsonResult(JsonResultStatus.UNCOMPLETED, JsonResultStatus.UNCOMPLETED_DESC);
         }
+        return ResultFactory.buildSuccessJsonResult();
 
     }
 

@@ -49,7 +49,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Integer uploadEvaluationResult(List<EvaluationBase> result, int adminId) {
+    public Integer uploadEvaluationResult(EvaluationBase result, int adminId) {
         return adminMapper.uploadEvaluationResult(result, adminId);
     }
 

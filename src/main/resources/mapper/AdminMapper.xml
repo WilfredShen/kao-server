@@ -5,23 +5,22 @@
 
 <mapper namespace="com.kao.server.mapper.AdminMapper">
     <insert id="uploadEvaluationResult">
-        INSERT INTO evaluation AS e(
+        INSERT INTO evaluation(
         cid,
         mid,
         round,
-        adminId,
         result,
-        updateTime
+        admin_id,
+        update_time
         )
-        VALUES
-        <foreach collection="list" index="index" item="item" separator=",">
-            (#{item.cid},
-            #{item.mid},
-            #{item.round},
-            #{adminId},
-            #{item.result},
-            now())
-        </foreach>
+        VALUES(
+        #{result.cid},
+        #{result.mid},
+        #{result.round},
+        #{result.result},
+        #{adminId},
+        now()
+        )
     </insert>
 
     <update id="updateEvaluationResult">

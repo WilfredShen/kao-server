@@ -37,7 +37,7 @@ public interface AdminService {
      * @param adminId 管理员id
      * @return 评估结果列表
      */
-    Integer uploadEvaluationResult(List<EvaluationBase> result, int adminId);
+    Integer uploadEvaluationResult(EvaluationBase result, int adminId);
 
     /**
      * 管理员通过轮次查询评估结果
