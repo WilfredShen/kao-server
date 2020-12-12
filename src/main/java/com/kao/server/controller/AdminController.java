@@ -130,11 +130,12 @@ public class AdminController {
     @IsAdmin
     public JsonResult uploadNews(@RequestBody NewsBase news, HttpServletRequest request) {
         JsonResult jsonResult;
-        Integer adminId = CookieUtil.parseInt(request.getCookies(), "adminId");
-        if (adminId == null) {
+        Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
+        System.out.println();
+        if (uid == null) {
             jsonResult = ResultFactory.buildFailJsonResult("UNAUTHORIZED");
         } else {
-            Integer count = adminService.uploadNews(news, adminId);
+            Integer count = adminService.uploadNews(news, uid);
             if (count != null && count == 1) {
                 jsonResult = ResultFactory.buildSuccessJsonResult();
             } else {
@@ -149,8 +150,8 @@ public class AdminController {
     @IsAdmin
     public JsonResult queryNews(HttpServletRequest request) {
         JsonResult jsonResult;
-        Integer adminId = CookieUtil.parseInt(request.getCookies(), "adminId");
-        if (adminId == null) {
+        Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
+        if (uid == null) {
             jsonResult = ResultFactory.buildFailJsonResult("UNAUTHORIZED");
         } else {
             List<NewsBase> data = adminService.queryNews();
@@ -164,11 +165,11 @@ public class AdminController {
     @IsAdmin
     public JsonResult updateNews(@RequestBody NewsBase news, HttpServletRequest request) {
         JsonResult jsonResult;
-        Integer adminId = CookieUtil.parseInt(request.getCookies(), "adminId");
-        if (adminId == null) {
+        Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
+        if (uid == null) {
             jsonResult = ResultFactory.buildFailJsonResult("UNAUTHORIZED");
         } else {
-            Integer count = adminService.updateNews(news, adminId);
+            Integer count = adminService.updateNews(news, uid);
             if (count != null && count == 1) {
                 jsonResult = ResultFactory.buildSuccessJsonResult();
             } else {
