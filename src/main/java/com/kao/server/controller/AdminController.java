@@ -14,13 +14,7 @@ import com.kao.server.util.json.JsonResultStatus;
 import com.kao.server.util.json.ResultFactory;
 import com.kao.server.util.token.TokenGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -73,9 +67,11 @@ public class AdminController {
     @GetMapping("/get_evaluation")
     @IsLoggedIn
     @IsAdmin
-    public JsonResult getEvaluation(@RequestParam() int round) {
+    public JsonResult getEvaluation(@RequestParam("round") int round,
+                                    @RequestParam("major") String major,
+                                    @RequestParam("college") String college) {
         JsonResult jsonResult;
-        List<AdminViewEvaluation> data = adminService.findEvaluationByRound(round);
+        List<AdminViewEvaluation> data = adminService.findEvaluationByRound(round, major, college);
         jsonResult = ResultFactory.listPack(data);
         return jsonResult;
     }

@@ -37,9 +37,9 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<AdminViewEvaluation> findEvaluationByRound(int round) {
+    public List<AdminViewEvaluation> findEvaluationByRound(int round, String major, String college) {
         try {
-            return adminMapper.findEvaluationByRound(round);
+            return adminMapper.findEvaluationByRound(round, major, college);
         } catch (Exception e) {
             return null;
         }

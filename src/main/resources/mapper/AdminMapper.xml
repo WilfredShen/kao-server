@@ -42,7 +42,16 @@
     <select id="findEvaluationByRound" resultType="com.kao.server.dto.AdminViewEvaluation">
         SELECT a.mname, a.mid, a.cname, a.cid, a.result
         FROM admin_view_evaluation AS a
-        WHERE a.round = #{round};
+        <where>
+            a.round = #{round}
+            <if test="major!=null and major!=''">
+                AND a.mid IN (SELECT mid FROM major AS m WHERE m.mname LIKE CONCAT('%',#{major},'%'))
+            </if>
+            <if test="college!=null and college!=''">
+                AND a.cid IN (SELECT cid FROM college AS c WHERE c.cname LIKE CONCAT('%',#{college},'%'))
+            </if>
+        </where>
+        ORDER BY a.cid;
     </select>
 
     <insert id="uploadNews">
