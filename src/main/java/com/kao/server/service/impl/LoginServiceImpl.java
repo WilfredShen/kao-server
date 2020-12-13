@@ -88,7 +88,7 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public Integer handleUpdateUserPassword(String username, String password, String phoneNumber,
-                                        String verificationCode, String passwordAgain) {
+                                            String verificationCode, String passwordAgain) {
         User user;
         try {
             user = loginMapper.findUserByUsername(username);

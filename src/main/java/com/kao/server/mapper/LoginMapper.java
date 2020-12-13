@@ -46,5 +46,5 @@ public interface LoginMapper {
      * @param newPassword 修改后的密码
      * @return 影响的行数
      */
-    Integer updatePassword(String username, String newPassword)throws Exception;
+    Integer updatePassword(String username, String newPassword) throws Exception;
 }
