@@ -1,7 +1,7 @@
 package com.kao.server.entity;
 
+import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.Date;
 
 /**
  * @author 全鸿润
