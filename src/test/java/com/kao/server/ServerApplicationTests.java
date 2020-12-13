@@ -1,10 +1,14 @@
 package com.kao.server;
 
 import com.kao.server.dto.QueryableStudentMessage;
+import com.kao.server.dto.UpdatedStudentMessage;
+import com.kao.server.dto.UpdatedTutorMessage;
 import com.kao.server.entity.Admin;
 import com.kao.server.mapper.AdminMapper;
 import com.kao.server.mapper.LoginMapper;
+import com.kao.server.mapper.StudentMapper;
 import com.kao.server.mapper.TutorMapper;
+import com.kao.server.service.StudentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,6 +28,8 @@ class ServerApplicationTests {
     TutorMapper tutorService;
     @Autowired
     AdminMapper adminMapper;
+    @Autowired
+    StudentService studentService;
 
     @Test
     void contextLoads() {
@@ -73,6 +79,20 @@ class ServerApplicationTests {
             e.printStackTrace();
         }
         System.err.println(admin.getUsername()+admin.getPassword());
+    }
+
+    @Test
+    public void testUpdateStuMsg(){
+        UpdatedStudentMessage updatedTutorMessage = new UpdatedStudentMessage();
+        updatedTutorMessage.setCollege("湖南大学");
+        updatedTutorMessage.setEmail("wewewe@qq.com");
+        updatedTutorMessage.setMajor("软件工程");
+        updatedTutorMessage.setPhoneNumber("1121212");
+        updatedTutorMessage.setQueryable(true);
+        updatedTutorMessage.setExpectedMajor("通信工程");
+        int uid = 260458588;
+        Integer raws = studentService.updateStudentMsg(updatedTutorMessage,uid);
+        System.err.println(raws);
     }
 
 }

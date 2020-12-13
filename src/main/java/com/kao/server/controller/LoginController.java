@@ -75,13 +75,13 @@ public class LoginController {
         String password = jsonObject.getString("password");
         String phoneNumber = jsonObject.getString("phoneNumber");
         String verificationCode = jsonObject.getString("verificationCode");
-        int state = loginService.handleRegister(
+        Integer state = loginService.handleRegister(
                 username,
                 password,
                 phoneNumber,
                 verificationCode
         );
-        if (state == JsonResultStatus.SUCCESS) {
+        if (state != null && state.equals(JsonResultStatus.SUCCESS)) {
             User newUser = new User();
             newUser.setUid(UidGenerator.getUid());
             newUser.setUsername(username);
@@ -95,11 +95,11 @@ public class LoginController {
             return ResultFactory.buildSuccessJsonResult();
         } else {
             JsonResult jsonResult = ResultFactory.buildFailJsonResult(state, null);
-            if (state == JsonResultStatus.PHONE_NUMBER_EXISTED) {
+            if (state != null && state.equals(JsonResultStatus.PHONE_NUMBER_EXISTED)) {
                 jsonResult.setMessage(JsonResultStatus.PHONE_NUMBER_EXISTED_DESC);
-            } else if (state == JsonResultStatus.USERNAME_IS_EXITED) {
+            } else if (state != null && state.equals(JsonResultStatus.USERNAME_IS_EXITED)) {
                 jsonResult.setMessage(JsonResultStatus.USERNAME_IS_EXITED_DESC);
-            } else if (state == JsonResultStatus.VERIFICATIONS_IS_WRONG) {
+            } else if (state != null && state.equals(JsonResultStatus.VERIFICATIONS_IS_WRONG)) {
                 jsonResult.setMessage(JsonResultStatus.VERIFICATIONS_IS_WRONG_DESC);
             }
 
@@ -124,13 +124,13 @@ public class LoginController {
                 verificationCode,
                 passwordAgain
         );
-        if (state!=null && state.equals(JsonResultStatus.SUCCESS)) {
+        if (state != null && state.equals(JsonResultStatus.SUCCESS)) {
             return ResultFactory.buildSuccessJsonResult();
-        } else if (state.equals(JsonResultStatus.NOT_FOUND)) {
+        } else if (state != null && state.equals(JsonResultStatus.NOT_FOUND)) {
             return ResultFactory.buildFailJsonResult(JsonResultStatus.NOT_FOUND, JsonResultStatus.NOT_FOUND_DESC);
-        } else if (state.equals(JsonResultStatus.PHONE_NUMBER_IS_WRONG)) {
+        } else if (state != null && state.equals(JsonResultStatus.PHONE_NUMBER_IS_WRONG)) {
             return ResultFactory.buildFailJsonResult(JsonResultStatus.PHONE_NUMBER_IS_WRONG, JsonResultStatus.PHONE_NUMBER_IS_WRONG_DESC);
-        } else if (state.equals(JsonResultStatus.VERIFICATIONS_IS_WRONG)) {
+        } else if (state != null && state.equals(JsonResultStatus.VERIFICATIONS_IS_WRONG)) {
             return ResultFactory.buildFailJsonResult(JsonResultStatus.VERIFICATIONS_IS_WRONG, JsonResultStatus.VERIFICATIONS_IS_WRONG_DESC);
         } else {
             return ResultFactory.buildFailJsonResult(JsonResultStatus.UPDATE_PASSWORD_FAILED, JsonResultStatus.UPDATE_PASSWORD_FAILED_DESC);
