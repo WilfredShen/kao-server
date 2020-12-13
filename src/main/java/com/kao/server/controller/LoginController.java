@@ -117,20 +117,20 @@ public class LoginController {
         String password = jsonObject.getString("password");
         String passwordAgain = jsonObject.getString("passwordAgain");
 
-        int state = loginService.handleUpdateUserPassword(
+        Integer state = loginService.handleUpdateUserPassword(
                 username,
                 password,
                 phoneNumber,
                 verificationCode,
                 passwordAgain
         );
-        if (state == JsonResultStatus.SUCCESS) {
+        if (state!=null && state.equals(JsonResultStatus.SUCCESS)) {
             return ResultFactory.buildSuccessJsonResult();
-        } else if (state == JsonResultStatus.NOT_FOUND) {
+        } else if (state.equals(JsonResultStatus.NOT_FOUND)) {
             return ResultFactory.buildFailJsonResult(JsonResultStatus.NOT_FOUND, JsonResultStatus.NOT_FOUND_DESC);
-        } else if (state == JsonResultStatus.PHONE_NUMBER_IS_WRONG) {
+        } else if (state.equals(JsonResultStatus.PHONE_NUMBER_IS_WRONG)) {
             return ResultFactory.buildFailJsonResult(JsonResultStatus.PHONE_NUMBER_IS_WRONG, JsonResultStatus.PHONE_NUMBER_IS_WRONG_DESC);
-        } else if (state == JsonResultStatus.VERIFICATIONS_IS_WRONG) {
+        } else if (state.equals(JsonResultStatus.VERIFICATIONS_IS_WRONG)) {
             return ResultFactory.buildFailJsonResult(JsonResultStatus.VERIFICATIONS_IS_WRONG, JsonResultStatus.VERIFICATIONS_IS_WRONG_DESC);
         } else {
             return ResultFactory.buildFailJsonResult(JsonResultStatus.UPDATE_PASSWORD_FAILED, JsonResultStatus.UPDATE_PASSWORD_FAILED_DESC);

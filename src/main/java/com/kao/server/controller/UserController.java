@@ -61,7 +61,7 @@ public class UserController {
         String phoneNumber = userMsg.getString("phoneNumber");
         String email = userMsg.getString("email");
 
-        if (userService.updateUserMsg(phoneNumber, email, uid) == 1) {
+        if (userService.updateUserMsg(phoneNumber, email, uid) !=null &&userService.updateUserMsg(phoneNumber, email, uid) == 1) {
             return ResultFactory.buildSuccessJsonResult();
         } else {
             return ResultFactory.buildFailJsonResult();
