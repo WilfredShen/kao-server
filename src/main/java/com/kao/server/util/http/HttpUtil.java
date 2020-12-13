@@ -11,20 +11,19 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class HttpUtil {
 
-    private static final ServletRequestAttributes SERVLET_REQUEST_ATTRIBUTES = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-
     public static HttpServletRequest getRequest() throws Exception {
-        if (SERVLET_REQUEST_ATTRIBUTES != null) {
-            return SERVLET_REQUEST_ATTRIBUTES.getRequest();
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (servletRequestAttributes != null) {
+            return servletRequestAttributes.getRequest();
         } else {
-            System.err.println("Error");
             throw new Exception();
         }
     }
 
     public static HttpServletResponse getResponse() throws Exception {
-        if (SERVLET_REQUEST_ATTRIBUTES != null) {
-            return SERVLET_REQUEST_ATTRIBUTES.getResponse();
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (servletRequestAttributes != null) {
+            return servletRequestAttributes.getResponse();
         } else {
             throw new Exception();
         }

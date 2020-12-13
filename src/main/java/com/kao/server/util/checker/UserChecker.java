@@ -22,9 +22,8 @@ public class UserChecker {
 
     public static boolean check(Method method, UserService userService) {
 
-        HttpServletRequest request = null;
-        HttpSession session = null;
-        ;
+        HttpServletRequest request;
+        HttpSession session;
         try {
             request = HttpUtil.getRequest();
             session = request.getSession();

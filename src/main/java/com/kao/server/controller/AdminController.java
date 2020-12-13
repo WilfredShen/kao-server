@@ -111,7 +111,7 @@ public class AdminController {
                 result
         );
 
-        if (raws == 1) {
+        if (raws!=null && raws == 1) {
             jsonResult = ResultFactory.buildSuccessJsonResult();
         } else {
             jsonResult = ResultFactory.buildFailJsonResult();

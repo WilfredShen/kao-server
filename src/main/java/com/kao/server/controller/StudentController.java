@@ -46,10 +46,13 @@ public class StudentController {
 
         try {
             Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
+            System.err.println(uid);
+            System.err.println(studentMessage);
             if (studentService.getStuMsg(uid) == null) {
                 return ResultFactory.buildFailJsonResult(JsonResultStatus.UNAUTHORIZED, JsonResultStatus.UNAUTHORIZED_DESC);
             }
-            if (studentService.updateStudentMsg(studentMessage, uid) == 1) {
+            if (studentService.updateStudentMsg(studentMessage, uid) !=null
+                    &&studentService.updateStudentMsg(studentMessage, uid) == 1) {
                 return ResultFactory.buildSuccessJsonResult();
             } else {
                 return ResultFactory.buildFailJsonResult();

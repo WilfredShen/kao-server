@@ -19,8 +19,8 @@ public class AdminChecker {
 
     public static boolean check(AdminService adminService) {
 
-        HttpServletRequest request = null;
-        HttpSession session = null;
+        HttpServletRequest request;
+        HttpSession session;
         try {
             request = getRequest();
             session = request.getSession();
