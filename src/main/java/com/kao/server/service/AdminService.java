@@ -42,10 +42,12 @@ public interface AdminService {
     /**
      * 管理员通过轮次查询评估结果
      *
-     * @param round 评估轮次
+     * @param round   评估轮次
+     * @param major   专业名称
+     * @param college 学校名称
      * @return 评估结果列表
      */
-    List<AdminViewEvaluation> findEvaluationByRound(int round);
+    List<AdminViewEvaluation> findEvaluationByRound(int round, String major, String college);
 
     /**
      * 修改评估结果(单行)

@@ -23,10 +23,12 @@ public interface AdminMapper {
     /**
      * 通过轮次查询评估结果
      *
-     * @param round 轮次
+     * @param round   轮次
+     * @param major   专业名称
+     * @param college 学校名称
      * @return 评估结果列表
      */
-    List<AdminViewEvaluation> findEvaluationByRound(int round) throws Exception;
+    List<AdminViewEvaluation> findEvaluationByRound(int round, String major, String college) throws Exception;
 
     /**
      * 管理员界面的根据轮次获取评估结果

@@ -21,7 +21,6 @@ public class LoginChecker {
                 }
             }
             if (user instanceof Admin) {
-                //String digest = DigestGenerator.getDigest(password, ((Admin) user).getSalt());
                 if (!((Admin) user).getPassword().equals(password)) {
                     return JsonResultStatus.PASSWORD_WRONG;
                 }

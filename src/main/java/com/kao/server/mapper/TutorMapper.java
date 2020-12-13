@@ -18,7 +18,7 @@ public interface TutorMapper {
      * @param uid 用户id
      * @return 教师信息
      */
-    TutorMessage findTutorById(int uid)throws Exception;
+    TutorMessage findTutorById(int uid) throws Exception;
 
     /**
      * 修改教师信息
@@ -27,7 +27,7 @@ public interface TutorMapper {
      * @param uid 用户id
      * @return 影响的行数
      */
-    Integer updateTutorMessage(UpdatedTutorMessage msg, int uid)throws Exception;
+    Integer updateTutorMessage(UpdatedTutorMessage msg, int uid) throws Exception;
 
     /**
      * 教师查询可见学生信息
@@ -39,5 +39,5 @@ public interface TutorMapper {
      * @param expectedMajor 预取专业
      * @return 学生信息列表
      */
-    List<QueryableStudentMessage> getQueryableStudentByConditions(Date beginDate, Date endDate, String collegeLevel, String major, String expectedMajor)throws Exception;
+    List<QueryableStudentMessage> getQueryableStudentByConditions(Date beginDate, Date endDate, String collegeLevel, String major, String expectedMajor) throws Exception;
 }
