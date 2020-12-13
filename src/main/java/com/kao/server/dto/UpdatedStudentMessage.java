@@ -1,6 +1,6 @@
 package com.kao.server.dto;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * @author 全鸿润
