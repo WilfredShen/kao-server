@@ -13,8 +13,10 @@ public class CookieProperties {
 
     @Value("${cookie.domain}")
     public String domain;
+
     @Value("${cookie.path}")
     public String path;
+
     @Value("${cookie.maxAge}")
     public int maxAge;
 }
