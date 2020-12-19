@@ -7,19 +7,29 @@ import com.kao.server.dto.NewsBase;
 import com.kao.server.entity.Admin;
 import com.kao.server.service.AdminService;
 import com.kao.server.util.cookie.CookieUtil;
+import com.kao.server.util.image.QiniuCloudUtil;
 import com.kao.server.util.interceptor.IsAdmin;
 import com.kao.server.util.interceptor.IsLoggedIn;
 import com.kao.server.util.json.JsonResult;
 import com.kao.server.util.json.JsonResultStatus;
 import com.kao.server.util.json.ResultFactory;
+import com.kao.server.util.security.SecurityUtil;
 import com.kao.server.util.token.TokenGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -174,4 +184,23 @@ public class AdminController {
         }
         return jsonResult;
     }
+
+    @PostMapping("/p/image")
+    @IsLoggedIn
+    @IsAdmin
+    public JsonResult uploadImage(MultipartFile image) {
+        JsonResult jsonResult;
+        try {
+            byte[] bytes = image.getBytes();
+            String key = SecurityUtil.encodeBase64(SecurityUtil.sha256(bytes));
+            String filename = QiniuCloudUtil.upload(image.getBytes(), key);
+            String url = QiniuCloudUtil.packUrl(filename);
+            jsonResult = ResultFactory.buildSuccessJsonResult(url);
+        } catch (IOException e) {
+            e.printStackTrace();
+            jsonResult = ResultFactory.buildFailJsonResult();
+        }
+        return jsonResult;
+    }
+
 }
