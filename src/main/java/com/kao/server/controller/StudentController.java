@@ -25,7 +25,7 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
-    @GetMapping("/get_stu_info")
+    @GetMapping("/q/stu-info")
     @IsLoggedIn
     @IsStudent
     public JsonResult getStudentMsg(HttpServletRequest request) {
@@ -39,7 +39,7 @@ public class StudentController {
         }
     }
 
-    @PostMapping("/update_stu_info")
+    @PostMapping("/u/stu-info")
     @IsLoggedIn
     @IsStudent
     public JsonResult updateStudentMsg(@RequestBody UpdatedStudentMessage studentMessage, HttpServletRequest request) {

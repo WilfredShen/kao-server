@@ -7,6 +7,27 @@ spring:
     url: jdbc:mysql://47.93.91.154:3306/kao?characterEncoding=utf-8
     username: kao
     password: kao666
+  redis:
+    host: localhost
+    databse: 0
+    port: 6379
+    password:
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1ms
+        max-idle: 0
+    timeout: 3000ms
+
+redis:
+  key:
+    prefix:
+      authCode: "protal:authCode:"
+      username: "username:"
+      password: "password:"
+    expire:
+      authCode: 60
+
 
 mybatis:
   configuration:

@@ -64,7 +64,7 @@ public class AdminController {
         return jsonResult;
     }
 
-    @GetMapping("/get_evaluation")
+    @GetMapping("/q/evaluation")
     @IsLoggedIn
     @IsAdmin
     public JsonResult getEvaluation(@RequestParam("round") int round,
@@ -76,7 +76,7 @@ public class AdminController {
         return jsonResult;
     }
 
-    @PostMapping("/upload_evaluation")
+    @PostMapping("/p/evaluation")
     @IsLoggedIn
     @IsAdmin
     public JsonResult uploadEvaluations(@RequestBody EvaluationBase results, HttpServletRequest request) {
@@ -90,7 +90,7 @@ public class AdminController {
 
     }
 
-    @PostMapping("/update_evaluation")
+    @PostMapping("/u/evaluation")
     @IsLoggedIn
     @IsAdmin
     public JsonResult updateEvaluation(@RequestBody JSONObject evaluation, HttpServletRequest request) {

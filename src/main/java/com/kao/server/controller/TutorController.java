@@ -30,7 +30,7 @@ public class TutorController {
     @Autowired
     private TutorService tutorService;
 
-    @GetMapping("/get_tutor_msg")
+    @GetMapping("/q/tutor-info")
     @IsLoggedIn
     @IsTutor
     public JsonResult getTutorMsg(HttpServletRequest request) {
@@ -43,7 +43,7 @@ public class TutorController {
         }
     }
 
-    @PostMapping("/update_tutor_msg")
+    @PostMapping("/u/tutor-info")
     @IsLoggedIn
     @IsTutor
     public JsonResult updateTutorMsg(@RequestBody UpdatedTutorMessage message, HttpServletRequest request) {
@@ -60,7 +60,7 @@ public class TutorController {
         }
     }
 
-    @GetMapping("/get_queryableStu_msg")
+    @GetMapping("/q/queryable-stu-info")
     @IsLoggedIn
     @IsTutor
     public JsonResult getQueryableStudentByConditions(HttpServletRequest request) {
