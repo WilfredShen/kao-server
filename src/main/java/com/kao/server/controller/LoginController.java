@@ -107,7 +107,7 @@ public class LoginController {
         }
     }
 
-    @PostMapping("/update_password")
+    @PostMapping("/update-password")
     @ResponseBody
     public JsonResult updatePassword(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
 

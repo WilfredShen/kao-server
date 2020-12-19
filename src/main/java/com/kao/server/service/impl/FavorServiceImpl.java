@@ -85,11 +85,19 @@ public class FavorServiceImpl implements FavorService {
 
     @Override
     public Integer deleteMajor(String cid, String sid, String majorCid, String majorMid) {
-        return favorMapper.deleteMajor(cid, sid, majorCid, majorMid);
+        try {
+            return favorMapper.deleteMajor(cid, sid, majorCid, majorMid);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public Integer deleteTutor(String cid, String sid, String tutorCid, String tutorTid) {
-        return favorMapper.deleteTutor(cid, sid, tutorCid, tutorTid);
+        try {
+            return favorMapper.deleteTutor(cid, sid, tutorCid, tutorTid);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

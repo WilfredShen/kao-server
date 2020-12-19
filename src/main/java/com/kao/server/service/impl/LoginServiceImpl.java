@@ -3,11 +3,13 @@ package com.kao.server.service.impl;
 import com.kao.server.entity.User;
 import com.kao.server.mapper.LoginMapper;
 import com.kao.server.service.LoginService;
+import com.kao.server.service.RedisService;
 import com.kao.server.service.SmsService;
 import com.kao.server.util.checker.LoginChecker;
 import com.kao.server.util.json.JsonResultStatus;
 import com.kao.server.util.login.DigestGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,6 +22,13 @@ public class LoginServiceImpl implements LoginService {
     private LoginMapper loginMapper;
     @Autowired
     private SmsService smsService;
+    @Autowired
+    private RedisService redisService;
+    @Value("${redis.key.prefix.authCode}")
+    private String authCode;
+    @Value("${redis.key.expire.authCode}")
+    private Long expireTime;
+
 
     @Override
     public User findUserByUsername(String username) {
@@ -95,7 +104,7 @@ public class LoginServiceImpl implements LoginService {
         } catch (Exception e) {
             return null;
         }
-        String verification = "666666";
+        String verification = redisService.get(authCode + phoneNumber);
         if (user == null) {
             return JsonResultStatus.NOT_FOUND;
         } else if (!user.getPhone().equals(phoneNumber)) {
@@ -119,8 +128,12 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public String getVerificationCode(String phoneNumber) {
-
-        return smsService.getVerificationCode(phoneNumber);
+        String verificationCode = "666666";
+        if (verificationCode != null) {
+            redisService.set(authCode + phoneNumber, verificationCode);
+            redisService.expire(authCode + phoneNumber, expireTime);
+        }
+        return verificationCode;
     }
 
 }

@@ -26,7 +26,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/get_user_info")
+    @GetMapping("/q/user-info")
     @IsLoggedIn
     public JsonResult getUserMessage(HttpServletRequest request) {
 
@@ -53,7 +53,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/update_user_msg")
+    @PostMapping("/u/user-info")
     @IsLoggedIn
     public JsonResult updateUserMsg(@RequestBody JSONObject userMsg, HttpServletRequest request) {
 
