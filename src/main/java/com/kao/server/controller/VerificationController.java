@@ -2,8 +2,8 @@ package com.kao.server.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.kao.server.service.VerificationService;
+import com.kao.server.util.accounttype.IsLoggedIn;
 import com.kao.server.util.cookie.CookieUtil;
-import com.kao.server.util.interceptor.IsLoggedIn;
 import com.kao.server.util.json.JsonResult;
 import com.kao.server.util.json.JsonResultStatus;
 import com.kao.server.util.json.ResultFactory;

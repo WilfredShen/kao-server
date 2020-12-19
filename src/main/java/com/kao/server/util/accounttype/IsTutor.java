@@ -1,5 +1,4 @@
-package com.kao.server.util.interceptor;
-
+package com.kao.server.util.accounttype;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -8,5 +7,5 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface IsStudent {
+public @interface IsTutor {
 }

@@ -1,4 +1,4 @@
-package com.kao.server.util.interceptor;
+package com.kao.server.util.accounttype;
 
 import java.lang.annotation.*;
 
