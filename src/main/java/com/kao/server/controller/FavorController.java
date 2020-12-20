@@ -3,7 +3,6 @@ package com.kao.server.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.kao.server.dto.*;
 import com.kao.server.service.FavorService;
-import com.kao.server.service.StudentService;
 import com.kao.server.util.accounttype.IsLoggedIn;
 import com.kao.server.util.accounttype.IsStudent;
 import com.kao.server.util.cookie.CookieUtil;
@@ -26,9 +25,14 @@ public class FavorController {
 
     @Autowired
     private FavorService favorService;
-    @Autowired
-    private StudentService studentService;
 
+    /**
+     * 收藏专业
+     *
+     * @param majorList 专业列表
+     * @param request   HTTP 请求
+     * @return 请求结果
+     */
     @PostMapping("/p/major")
     @IsLoggedIn
     @IsStudent
@@ -47,6 +51,13 @@ public class FavorController {
         return jsonResult;
     }
 
+    /**
+     * 收藏导师
+     *
+     * @param tutorList 导师列表
+     * @param request   HTTP 请求
+     * @return 请求结果
+     */
     @PostMapping("/p/tutor")
     @IsLoggedIn
     @IsStudent
@@ -65,6 +76,12 @@ public class FavorController {
         return jsonResult;
     }
 
+    /**
+     * 查询收藏的院校的新闻
+     *
+     * @param request HTTP 请求
+     * @return 请求结果
+     */
     @GetMapping("/q/news")
     @IsLoggedIn
     @IsStudent
@@ -77,6 +94,12 @@ public class FavorController {
         return jsonResult;
     }
 
+    /**
+     * 查询收藏的专业
+     *
+     * @param request HTTP 请求
+     * @return 请求结果
+     */
     @GetMapping("/q/major")
     @IsLoggedIn
     @IsStudent
@@ -89,6 +112,12 @@ public class FavorController {
         return jsonResult;
     }
 
+    /**
+     * 查询收藏的导师
+     *
+     * @param request HTTP 请求
+     * @return 请求结果
+     */
     @GetMapping("/q/tutor")
     @IsLoggedIn
     @IsStudent

@@ -25,6 +25,11 @@ public class MetaQueryController {
     @Autowired
     private MetaQueryService metaQueryService;
 
+    /**
+     * 查询院校列表
+     *
+     * @return 请求结果
+     */
     @GetMapping("/college")
     public JsonResult queryCollegeIdAndName() {
         JsonResult jsonResult;
@@ -33,6 +38,11 @@ public class MetaQueryController {
         return jsonResult;
     }
 
+    /**
+     * 查询学科列表
+     *
+     * @return 请求结果
+     */
     @GetMapping("/discipline")
     public JsonResult queryDiscipline() {
         JsonResult jsonResult;
@@ -41,6 +51,11 @@ public class MetaQueryController {
         return jsonResult;
     }
 
+    /**
+     * 查询专业列表
+     *
+     * @return 请求结果
+     */
     @GetMapping("/major")
     public JsonResult queryMajor() {
         JsonResult jsonResult;
@@ -49,6 +64,11 @@ public class MetaQueryController {
         return jsonResult;
     }
 
+    /**
+     * 查询评估伦次
+     *
+     * @return 请求结果
+     */
     @GetMapping("/round")
     public JsonResult queryRound() {
         JsonResult jsonResult;

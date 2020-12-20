@@ -28,6 +28,13 @@ public class QiniuCloudUtil {
     @Autowired
     private QiniuCloudProperties properties;
 
+    /**
+     * 上传图片到七牛云
+     *
+     * @param bytes 图片的字节序列
+     * @param key   图片名
+     * @return 图片名
+     */
     public static String upload(byte[] bytes, String key) {
         String uploadToken = auth.uploadToken(qiniuCloudUtil.properties.bucketName);
         String res = null;
@@ -41,10 +48,20 @@ public class QiniuCloudUtil {
         return res;
     }
 
+    /**
+     * 将图片名包装成可以访问的 url
+     *
+     * @param filename 图片名
+     * @return url
+     */
     public static String packUrl(String filename) {
         return "http://" + qiniuCloudUtil.properties.domain + "/" + filename;
     }
 
+    /**
+     * 构造函数调用后自动调用该函数，对静态变量进行初始化
+     * 借此实现 Spring 框架对静态变量进行注入
+     */
     @PostConstruct
     public void init() {
         qiniuCloudUtil = this;
