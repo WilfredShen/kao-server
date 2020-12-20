@@ -35,7 +35,7 @@ public class TutorAspect {
     public void print(IsTutor isTutor) {
     }
 
-    @Around("print(isTutor)")
+    @Around(value = "print(isTutor)", argNames = "proceedingJoinPoint,isTutor")
     public Object authorityVerify(ProceedingJoinPoint proceedingJoinPoint, IsTutor isTutor) {
 
         try {

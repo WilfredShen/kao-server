@@ -12,6 +12,7 @@ public interface LoginMapper {
      *
      * @param username 用户名
      * @return 用户对象
+     * @throws Exception 数据库操作异常
      */
     User findUserByUsername(String username) throws Exception;
 
@@ -20,6 +21,7 @@ public interface LoginMapper {
      *
      * @param username 用户名
      * @return 用户名
+     * @throws Exception 数据库操作异常
      */
     User findUserNameByUsername(String username) throws Exception;
 
@@ -28,6 +30,7 @@ public interface LoginMapper {
      *
      * @param phoneNumber 手机号码
      * @return 手机号
+     * @throws Exception 数据库操作异常
      */
     String findPhoneNumberByPhoneNumber(String phoneNumber) throws Exception;
 
@@ -36,6 +39,7 @@ public interface LoginMapper {
      *
      * @param user 注册的用户对象
      * @return 影响的行数
+     * @throws Exception 数据库操作异常
      */
     Integer addOne(User user) throws Exception;
 
@@ -45,6 +49,7 @@ public interface LoginMapper {
      * @param username    用户名
      * @param newPassword 修改后的密码
      * @return 影响的行数
+     * @throws Exception 数据库操作异常
      */
     Integer updatePassword(String username, String newPassword) throws Exception;
 }

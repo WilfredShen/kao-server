@@ -29,7 +29,7 @@ public class LoginAspect {
     public void print(IsLoggedIn isLoggedIn) {
     }
 
-    @Around("print(isLoggedIn)")
+    @Around(value = "print(isLoggedIn)", argNames = "pjp,isLoggedIn")
     public Object authorityVerify(ProceedingJoinPoint pjp, IsLoggedIn isLoggedIn) {
         try {
             HttpServletRequest request = HttpUtil.getRequest();

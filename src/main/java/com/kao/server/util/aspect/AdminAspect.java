@@ -36,7 +36,7 @@ public class AdminAspect {
     public void print(IsAdmin isAdmin) {
     }
 
-    @Around("print(isAdmin)")
+    @Around(value = "print(isAdmin)", argNames = "proceedingJoinPoint,isAdmin")
     public Object authorityVerify(ProceedingJoinPoint proceedingJoinPoint, IsAdmin isAdmin) {
 
         try {

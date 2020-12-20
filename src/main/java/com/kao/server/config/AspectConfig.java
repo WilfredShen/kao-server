@@ -1,4 +1,4 @@
-package com.kao.server.util.config;
+package com.kao.server.config;
 
 import com.kao.server.service.AdminService;
 import com.kao.server.service.StudentService;

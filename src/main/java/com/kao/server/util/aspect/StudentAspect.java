@@ -35,7 +35,7 @@ public class StudentAspect {
     public void print(IsStudent isStudent) {
     }
 
-    @Around("print(isStudent)")
+    @Around(value = "print(isStudent)", argNames = "proceedingJoinPoint,isStudent")
     public Object authorityVerify(ProceedingJoinPoint proceedingJoinPoint, IsStudent isStudent) {
 
         try {

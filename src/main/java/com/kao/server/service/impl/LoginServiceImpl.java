@@ -52,15 +52,6 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public String findPhoneNumberByPhoneNumber(String phoneNumber) {
-        try {
-            return loginMapper.findPhoneNumberByPhoneNumber(phoneNumber);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    @Override
     public Integer addOne(User user) {
         try {
             return loginMapper.addOne(user);

@@ -35,7 +35,6 @@ public class LoginController {
     private SmsService smsService;
 
     @PostMapping("/login")
-    @ResponseBody
     public JsonResult login(@RequestBody JSONObject jsonObject, HttpServletRequest request, HttpServletResponse response) {
 
         HttpSession session = request.getSession();
@@ -68,7 +67,6 @@ public class LoginController {
     }
 
     @PostMapping("/register")
-    @ResponseBody
     public JsonResult register(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
 
         String username = jsonObject.getString("username");
@@ -91,8 +89,12 @@ public class LoginController {
             newUser.setPassword(DigestGenerator.getDigest(password, newUser.getSalt()));
             newUser.setRegisterTime(new Timestamp(System.currentTimeMillis()));
 
-            loginService.addOne(newUser);
-            return ResultFactory.buildSuccessJsonResult();
+            Integer raw = loginService.addOne(newUser);
+            if (raw != null && raw == 1) {
+                return ResultFactory.buildSuccessJsonResult();
+            } else {
+                return ResultFactory.buildFailJsonResult();
+            }
         } else {
             JsonResult jsonResult = ResultFactory.buildFailJsonResult(state, null);
             if (state != null && state.equals(JsonResultStatus.PHONE_NUMBER_EXISTED)) {
@@ -108,7 +110,6 @@ public class LoginController {
     }
 
     @PostMapping("/update-password")
-    @ResponseBody
     public JsonResult updatePassword(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
 
         String username = jsonObject.getString("username");

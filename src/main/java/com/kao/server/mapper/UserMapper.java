@@ -13,6 +13,7 @@ public interface UserMapper {
      *
      * @param userId 用户id
      * @return 用户对象
+     * @throws Exception 数据库操作异常
      */
     User findUserByUserId(int userId) throws Exception;
 
@@ -22,6 +23,7 @@ public interface UserMapper {
      * @param uid         用户id
      * @param phoneNumber 手机号
      * @return 影响的行数
+     * @throws Exception 数据库操作异常
      */
     Integer updatePhone(int uid, String phoneNumber) throws Exception;
 
@@ -31,6 +33,7 @@ public interface UserMapper {
      * @param uid   用户id
      * @param email 邮箱地址
      * @return 影响的行数
+     * @throws Exception 数据库操作异常
      */
     Integer updateEmail(int uid, String email) throws Exception;
 
@@ -39,6 +42,7 @@ public interface UserMapper {
      *
      * @param uid 用户id
      * @return 用户信息
+     * @throws Exception 数据库操作异常
      */
     UserMessage getNotVerifiedUserMessageById(int uid) throws Exception;
 
@@ -47,6 +51,7 @@ public interface UserMapper {
      *
      * @param uid 用户id
      * @return 学生用户信息
+     * @throws Exception 数据库操作异常
      */
     UserMessage getStudentUserMessageById(int uid) throws Exception;
 
@@ -55,6 +60,7 @@ public interface UserMapper {
      *
      * @param uid 用户id
      * @return 教师用户信息
+     * @throws Exception 数据库操作异常
      */
     UserMessage getTutorUserMessageById(int uid) throws Exception;
 }

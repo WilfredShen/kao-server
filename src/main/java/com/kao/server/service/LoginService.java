@@ -23,14 +23,6 @@ public interface LoginService {
     User findUserNameByUsername(String username);
 
     /**
-     * 判断是否该手机号已经存在
-     *
-     * @param phoneNumber 注册的手机号
-     * @return 已经注册的手机号
-     */
-    String findPhoneNumberByPhoneNumber(String phoneNumber);
-
-    /**
      * 添加一个新用户
      *
      * @param user 要添加的用户对象
