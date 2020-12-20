@@ -125,6 +125,13 @@ public class AdminController {
 
     }
 
+    /**
+     * 上传新闻
+     *
+     * @param news    新闻
+     * @param request HTTP 请求
+     * @return 请求结果
+     */
     @PostMapping("/p/news")
     @IsLoggedIn
     @IsAdmin
@@ -145,6 +152,12 @@ public class AdminController {
         return jsonResult;
     }
 
+    /**
+     * 查询新闻
+     *
+     * @param request HTTP 请求
+     * @return 请求结果
+     */
     @GetMapping("/q/news")
     @IsLoggedIn
     @IsAdmin
@@ -160,6 +173,13 @@ public class AdminController {
         return jsonResult;
     }
 
+    /**
+     * 更新新闻
+     *
+     * @param news    新闻
+     * @param request HTTP 请求
+     * @return 请求结果
+     */
     @PostMapping("/u/news")
     @IsLoggedIn
     @IsAdmin
@@ -179,6 +199,12 @@ public class AdminController {
         return jsonResult;
     }
 
+    /**
+     * 上传图片
+     *
+     * @param image 图片
+     * @return 请求结果
+     */
     @PostMapping("/p/image")
     @IsLoggedIn
     @IsAdmin

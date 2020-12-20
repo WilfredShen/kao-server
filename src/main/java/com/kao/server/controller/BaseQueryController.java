@@ -21,6 +21,12 @@ public class BaseQueryController {
     @Autowired
     private BaseQueryService baseQueryService;
 
+    /**
+     * 查询评估结果
+     *
+     * @param round 轮次
+     * @return 请求结果
+     */
     @GetMapping("/evaluation")
     public JsonResult queryEvaluation(@RequestParam(required = false) Integer round) {
         JsonResult jsonResult;
@@ -34,6 +40,11 @@ public class BaseQueryController {
         return jsonResult;
     }
 
+    /**
+     * 查询最近的新闻
+     *
+     * @return 请求结果
+     */
     @GetMapping("/latest-news")
     public JsonResult queryLatestNews() {
         JsonResult jsonResult;
@@ -42,6 +53,12 @@ public class BaseQueryController {
         return jsonResult;
     }
 
+    /**
+     * 查询院校的详细信息
+     *
+     * @param cidList 院校列表
+     * @return 请求结果
+     */
     @GetMapping("/college")
     public JsonResult queryCollege(@RequestParam List<String> cidList) {
         JsonResult jsonResult;
@@ -50,6 +67,12 @@ public class BaseQueryController {
         return jsonResult;
     }
 
+    /**
+     * 查询某院校的导师信息
+     *
+     * @param cid 院校编号
+     * @return 请求结果
+     */
     @GetMapping("/tutor")
     public JsonResult queryTutor(@RequestParam String cid) {
         JsonResult jsonResult;
@@ -60,7 +83,7 @@ public class BaseQueryController {
 
     @GetMapping("/summer-camp")
     public JsonResult querySummerCamp() {
-        JsonResult jsonResult = null;
+        JsonResult jsonResult;
         List<SummerCampMessage> data = baseQueryService.querySummerCamp();
         jsonResult = ResultFactory.listPack(data);
         return jsonResult;

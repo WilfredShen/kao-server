@@ -23,6 +23,13 @@ public class VerificationController {
     @Autowired
     private VerificationService verificationService;
 
+    /**
+     * 实名认证
+     *
+     * @param jsonObject 请求数据
+     * @param request    HTTP 请求
+     * @return 请求结果
+     */
     @PostMapping("/real")
     @IsLoggedIn
     public JsonResult realAuth(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
@@ -41,6 +48,13 @@ public class VerificationController {
         return jsonResult;
     }
 
+    /**
+     * 学生身份认证
+     *
+     * @param jsonObject 请求数据
+     * @param request    HTTP 请求
+     * @return 请求结果
+     */
     @PostMapping("/student")
     @IsLoggedIn
     public JsonResult studentAuth(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
@@ -61,6 +75,13 @@ public class VerificationController {
         return jsonResult;
     }
 
+    /**
+     * 导师身份认证
+     *
+     * @param jsonObject 请求数据
+     * @param request    HTTP 请求
+     * @return 请求结果
+     */
     @PostMapping("/tutor")
     @IsLoggedIn
     public JsonResult tutorAuth(@RequestBody JSONObject jsonObject, HttpServletRequest request) {

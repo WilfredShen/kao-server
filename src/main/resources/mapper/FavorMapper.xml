@@ -5,28 +5,30 @@
 
 <mapper namespace="com.kao.server.mapper.FavorMapper">
     <insert id="favorMajor" parameterType="com.kao.server.dto.MajorFavorBase">
-        INSERT INTO major_favorite (major_cid, major_mid, stu_cid, stu_sid, date)
+        INSERT IGNORE INTO major_favorite (major_cid, major_mid, stu_cid, stu_sid, date)
         VALUES
         <foreach collection="list" item="item" separator=",">
             (#{item.majorCid}, #{item.majorMid}, #{stuCid}, #{stuSid}, now())
         </foreach>
     </insert>
     <insert id="favorTutor" parameterType="com.kao.server.dto.TutorFavorBase">
-        INSERT INTO tutor_favorite (stu_cid, stu_sid, tut_cid, tut_tid, date)
+        INSERT IGNORE INTO tutor_favorite (stu_cid, stu_sid, tut_cid, tut_tid, date)
         VALUES
         <foreach collection="list" item="item" separator=",">
             (#{stuCid}, #{stuSid}, #{item.tutCid}, #{item.tutTid}, now())
         </foreach>
     </insert>
     <delete id="deleteMajor">
-        DELETE FROM major_favorite
+        DELETE
+        FROM major_favorite
         WHERE major_cid = #{majorCid}
           AND major_mid = #{majorMid}
           AND stu_cid = #{cid}
           AND stu_sid = #{sid}
     </delete>
     <delete id="deleteTutor">
-        DELETE FROM tutor_favorite
+        DELETE
+        FROM tutor_favorite
         WHERE stu_cid = #{cid}
           AND stu_sid = #{sid}
           AND tut_cid = #{tutorCid}
