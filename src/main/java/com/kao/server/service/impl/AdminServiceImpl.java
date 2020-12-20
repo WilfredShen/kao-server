@@ -8,6 +8,8 @@ import com.kao.server.mapper.AdminMapper;
 import com.kao.server.service.AdminService;
 import com.kao.server.util.checker.LoginChecker;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.List;
  * @author 全鸿润、沈伟峰
  */
 @Service
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class AdminServiceImpl implements AdminService {
 
     @Autowired

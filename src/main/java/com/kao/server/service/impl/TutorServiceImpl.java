@@ -6,6 +6,8 @@ import com.kao.server.dto.UpdatedTutorMessage;
 import com.kao.server.mapper.TutorMapper;
 import com.kao.server.service.TutorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -15,6 +17,7 @@ import java.util.List;
  * @author 全鸿润
  */
 @Service
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class TutorServiceImpl implements TutorService {
     @Autowired
     private TutorMapper tutorMapper;

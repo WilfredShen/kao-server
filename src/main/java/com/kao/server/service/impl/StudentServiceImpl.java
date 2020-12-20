@@ -5,12 +5,15 @@ import com.kao.server.dto.UpdatedStudentMessage;
 import com.kao.server.mapper.StudentMapper;
 import com.kao.server.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 /**
  * @author 全鸿润
  */
 @Service
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class StudentServiceImpl implements StudentService {
 
     @Autowired

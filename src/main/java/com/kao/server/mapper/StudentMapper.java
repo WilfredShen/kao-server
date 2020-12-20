@@ -13,6 +13,7 @@ public interface StudentMapper {
      *
      * @param uid 用户id
      * @return 学生信息
+     * @throws Exception 数据库操作异常
      */
     StudentMessage findStudentById(int uid) throws Exception;
 
@@ -22,6 +23,7 @@ public interface StudentMapper {
      * @param msg 修改的学生信息
      * @param uid 用户id
      * @return 影响的行数
+     * @throws Exception 数据库操作异常
      */
     Integer updateStudentMsg(UpdatedStudentMessage msg, int uid) throws Exception;
 }

@@ -10,12 +10,15 @@ import com.kao.server.util.json.JsonResultStatus;
 import com.kao.server.util.login.DigestGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 /**
  * @author 全鸿润
  */
 @Service
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class LoginServiceImpl implements LoginService {
 
     @Autowired
@@ -43,15 +46,6 @@ public class LoginServiceImpl implements LoginService {
     public User findUserNameByUsername(String username) {
         try {
             return loginMapper.findUserNameByUsername(username);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    @Override
-    public String findPhoneNumberByPhoneNumber(String phoneNumber) {
-        try {
-            return loginMapper.findPhoneNumberByPhoneNumber(phoneNumber);
         } catch (Exception e) {
             return null;
         }

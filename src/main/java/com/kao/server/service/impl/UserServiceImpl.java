@@ -5,12 +5,15 @@ import com.kao.server.entity.User;
 import com.kao.server.mapper.UserMapper;
 import com.kao.server.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 /**
  * @author 全鸿润
  */
 @Service
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class UserServiceImpl implements UserService {
 
     @Autowired

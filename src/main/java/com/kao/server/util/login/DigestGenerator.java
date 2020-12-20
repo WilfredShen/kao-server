@@ -2,10 +2,6 @@ package com.kao.server.util.login;
 
 import com.kao.server.util.security.SecurityUtil;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
-
 /**
  * @author 全鸿润
  */

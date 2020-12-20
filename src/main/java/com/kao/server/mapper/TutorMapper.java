@@ -17,6 +17,7 @@ public interface TutorMapper {
      *
      * @param uid 用户id
      * @return 教师信息
+     * @throws Exception 数据库操作异常
      */
     TutorMessage findTutorById(int uid) throws Exception;
 
@@ -26,6 +27,7 @@ public interface TutorMapper {
      * @param msg 修改的教师信息
      * @param uid 用户id
      * @return 影响的行数
+     * @throws Exception 数据库操作异常
      */
     Integer updateTutorMessage(UpdatedTutorMessage msg, int uid) throws Exception;
 
@@ -38,6 +40,7 @@ public interface TutorMapper {
      * @param major         专业
      * @param expectedMajor 预取专业
      * @return 学生信息列表
+     * @throws Exception 数据库操作异常
      */
     List<QueryableStudentMessage> getQueryableStudentByConditions(Date beginDate, Date endDate, String collegeLevel, String major, String expectedMajor) throws Exception;
 }
