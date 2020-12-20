@@ -26,6 +26,12 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    /**
+     * 查询用户信息
+     *
+     * @param request HttpServletRequest
+     * @return 用户信息
+     */
     @GetMapping("/q/user-info")
     @IsLoggedIn
     public JsonResult getUserMessage(HttpServletRequest request) {
@@ -53,6 +59,13 @@ public class UserController {
         }
     }
 
+    /**
+     * 修改用户信息
+     *
+     * @param userMsg 修改过的用户信息
+     * @param request HttpServletRequest
+     * @return 封装的Json数据
+     */
     @PostMapping("/u/user-info")
     @IsLoggedIn
     public JsonResult updateUserMsg(@RequestBody JSONObject userMsg, HttpServletRequest request) {

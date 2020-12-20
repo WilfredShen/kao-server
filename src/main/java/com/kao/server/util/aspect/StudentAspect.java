@@ -31,10 +31,22 @@ public class StudentAspect {
     @Qualifier("StudentServiceOfAspect")
     private StudentService studentService;
 
+    /**
+     * 切点方法
+     *
+     * @param isStudent 标识学生用户权限的注解
+     */
     @Pointcut("@annotation(isStudent)")
     public void print(IsStudent isStudent) {
     }
 
+    /**
+     * 学生身份验证
+     *
+     * @param proceedingJoinPoint 切入点对象
+     * @param isStudent           表示学生用户的注解
+     * @return 切面执行的结果
+     */
     @Around(value = "print(isStudent)", argNames = "proceedingJoinPoint,isStudent")
     public Object authorityVerify(ProceedingJoinPoint proceedingJoinPoint, IsStudent isStudent) {
 

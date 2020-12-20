@@ -9,6 +9,11 @@ public class UidGenerator {
 
     private static int UID = 0;
 
+    /**
+     * 生成用户id
+     *
+     * @return 用户id
+     */
     public synchronized static int getUid() {
         int res = new Random().nextInt(1000000000);
         if (UID == res) {

@@ -63,8 +63,10 @@ public interface FavorService {
     /**
      * 删除专业
      *
-     * @param cid 学校代码
-     * @param sid 学号
+     * @param cid      学校代码
+     * @param sid      学号
+     * @param majorCid 专业所属学校代码
+     * @param majorMid 专业代码
      * @return 删除的行数
      */
     Integer deleteMajor(String cid, String sid, String majorCid, String majorMid);
@@ -72,8 +74,10 @@ public interface FavorService {
     /**
      * 删除导师
      *
-     * @param cid 学校代码
-     * @param sid 学号
+     * @param cid      学校代码
+     * @param sid      学号
+     * @param tutorCid 教师所属学校代码
+     * @param tutorTid 教师工号
      * @return 删除行数
      */
     Integer deleteTutor(String cid, String sid, String tutorCid, String tutorTid);

@@ -11,6 +11,11 @@ public class SaltGenerator {
         return SALT_NUMBERS;
     }
 
+    /**
+     * 随机生成8个字母的盐值
+     *
+     * @return 8个字母的盐值
+     */
     public static String getSalt() {
 
         StringBuilder builder = new StringBuilder();

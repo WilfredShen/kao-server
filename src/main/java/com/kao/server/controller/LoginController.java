@@ -34,6 +34,14 @@ public class LoginController {
     @Autowired
     private SmsService smsService;
 
+    /**
+     * 登录
+     *
+     * @param jsonObject 包括用户名,密码
+     * @param request    HttpServletResponse
+     * @param response   HttpServletRequest
+     * @return 封装的Json数据
+     */
     @PostMapping("/login")
     public JsonResult login(@RequestBody JSONObject jsonObject, HttpServletRequest request, HttpServletResponse response) {
 
@@ -66,6 +74,13 @@ public class LoginController {
         return jsonResult;
     }
 
+    /**
+     * 注册
+     *
+     * @param jsonObject 包括用户名，密码，手机号，验证码
+     * @param request    HttpServletRequest
+     * @return 封装的Json数据
+     */
     @PostMapping("/register")
     public JsonResult register(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
 
@@ -109,6 +124,13 @@ public class LoginController {
         }
     }
 
+    /**
+     * 修改密码
+     *
+     * @param jsonObject 包括用户名，密码，新密码，手机号，验证码
+     * @param request    HttpServletRequest
+     * @return 封装的Json数据
+     */
     @PostMapping("/update-password")
     public JsonResult updatePassword(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
 
@@ -138,6 +160,13 @@ public class LoginController {
         }
     }
 
+    /**
+     * 获取验证码
+     *
+     * @param jsonObject 包括手机号
+     * @param request    HttpServletRequest
+     * @return 封装的Json数据
+     */
     @PostMapping("/getvfcode")
     @ResponseBody
     public JsonResult getVerificationCode(@RequestBody JSONObject jsonObject, HttpServletRequest request) {

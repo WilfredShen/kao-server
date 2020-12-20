@@ -32,10 +32,22 @@ public class AdminAspect {
     @Qualifier("AdminServiceOfAspect")
     private AdminService adminService;
 
+    /**
+     * 切点方法
+     *
+     * @param isAdmin 标识管理员的注解
+     */
     @Pointcut("@annotation(isAdmin)")
     public void print(IsAdmin isAdmin) {
     }
 
+    /**
+     * 切面方法,处理管理员权限验证
+     *
+     * @param proceedingJoinPoint 切入点对象
+     * @param isAdmin             标识管理员的注解
+     * @return 切面执行的结果
+     */
     @Around(value = "print(isAdmin)", argNames = "proceedingJoinPoint,isAdmin")
     public Object authorityVerify(ProceedingJoinPoint proceedingJoinPoint, IsAdmin isAdmin) {
 

@@ -24,18 +24,33 @@ public class ServerApplication {
         SpringApplication.run(ServerApplication.class, args);
     }
 
+    /**
+     * 生成并注入AdminServiceImpl
+     *
+     * @return AdminServiceImpl
+     */
     @Bean
     @Primary
     public AdminService getAdminService() {
         return new AdminServiceImpl();
     }
 
+    /**
+     * 生成并注入StudentServiceImpl
+     *
+     * @return StudentServiceImpl
+     */
     @Bean
     @Primary
     public StudentService getStudentService() {
         return new StudentServiceImpl();
     }
 
+    /**
+     * 生成并注入TutorServiceImpl
+     *
+     * @return TutorServiceImpl
+     */
     @Bean
     @Primary
     public TutorService getTutorService() {

@@ -30,6 +30,12 @@ public class TutorController {
     @Autowired
     private TutorService tutorService;
 
+    /**
+     * 查询教师信息
+     *
+     * @param request HttpServletRequest
+     * @return 教师信息
+     */
     @GetMapping("/q/tutor-info")
     @IsLoggedIn
     @IsTutor
@@ -43,6 +49,13 @@ public class TutorController {
         }
     }
 
+    /**
+     * 修改教师信息
+     *
+     * @param message 修改过的教师信息
+     * @param request HttpServletRequest
+     * @return 封装的Json数据
+     */
     @PostMapping("/u/tutor-info")
     @IsLoggedIn
     @IsTutor
@@ -60,6 +73,12 @@ public class TutorController {
         }
     }
 
+    /**
+     * 导师获取学生信息
+     *
+     * @param request HttpServletRequest
+     * @return 学生信息列表
+     */
     @GetMapping("/q/queryable-stu-info")
     @IsLoggedIn
     @IsTutor
