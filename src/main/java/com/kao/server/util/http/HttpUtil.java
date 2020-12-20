@@ -11,6 +11,12 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class HttpUtil {
 
+    /**
+     * 获取当前请求的HttpServletRequest对象
+     *
+     * @return 当前请求的HttpServletRequest对象
+     * @throws Exception 获取异常
+     */
     public static HttpServletRequest getRequest() throws Exception {
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (servletRequestAttributes != null) {
@@ -20,6 +26,12 @@ public class HttpUtil {
         }
     }
 
+    /**
+     * 获取当前请求的HttpServletResponse对象
+     *
+     * @return 当前请求的HttpServletResponse对象
+     * @throws Exception 获取异常
+     */
     public static HttpServletResponse getResponse() throws Exception {
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (servletRequestAttributes != null) {

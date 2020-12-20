@@ -17,6 +17,12 @@ import java.util.Random;
  */
 public class VerificationCodeGenerator {
 
+    /**
+     * 调用阿里云接口获取短信验证码
+     *
+     * @param phoneNumber 手机号
+     * @return 短信验证码
+     */
     public static String generateVerificationCode(String phoneNumber) {
         String verifiedCode = String.valueOf(new Random().nextInt(899999) + 100000);
         //配置密钥

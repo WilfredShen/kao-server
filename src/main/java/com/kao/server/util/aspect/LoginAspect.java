@@ -25,10 +25,22 @@ import javax.servlet.http.HttpSession;
 @Order(-1)
 public class LoginAspect {
 
+    /**
+     * 切点方法
+     *
+     * @param isLoggedIn 标识登录的注解
+     */
     @Pointcut("@annotation(isLoggedIn)")
     public void print(IsLoggedIn isLoggedIn) {
     }
 
+    /**
+     * 进行登录验证
+     *
+     * @param pjp        切入点对象
+     * @param isLoggedIn 表示登录的注解
+     * @return 切面执行的结果
+     */
     @Around(value = "print(isLoggedIn)", argNames = "pjp,isLoggedIn")
     public Object authorityVerify(ProceedingJoinPoint pjp, IsLoggedIn isLoggedIn) {
         try {

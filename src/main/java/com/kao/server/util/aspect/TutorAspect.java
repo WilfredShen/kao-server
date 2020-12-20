@@ -31,10 +31,22 @@ public class TutorAspect {
     @Qualifier("TutorServiceOfAspect")
     private TutorService tutorService;
 
+    /**
+     * 切点方法
+     *
+     * @param isTutor 标识学生用户权限的注解
+     */
     @Pointcut("@annotation(isTutor)")
     public void print(IsTutor isTutor) {
     }
 
+    /**
+     * 教师身份验证
+     *
+     * @param proceedingJoinPoint 切入点对象
+     * @param isTutor             表示教师用户的注解
+     * @return 切面执行的结果
+     */
     @Around(value = "print(isTutor)", argNames = "proceedingJoinPoint,isTutor")
     public Object authorityVerify(ProceedingJoinPoint proceedingJoinPoint, IsTutor isTutor) {
 

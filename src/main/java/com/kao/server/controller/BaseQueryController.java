@@ -81,6 +81,11 @@ public class BaseQueryController {
         return jsonResult;
     }
 
+    /**
+     * 查询夏令营信息
+     *
+     * @return 夏令营信息列表
+     */
     @GetMapping("/summer-camp")
     public JsonResult querySummerCamp() {
         JsonResult jsonResult;
@@ -89,6 +94,11 @@ public class BaseQueryController {
         return jsonResult;
     }
 
+    /**
+     * 查询九月推免信息
+     *
+     * @return 九月推免信息列表
+     */
     @GetMapping("/exemption")
     public JsonResult queryExemption() {
         JsonResult jsonResult;
@@ -97,6 +107,12 @@ public class BaseQueryController {
         return jsonResult;
     }
 
+    /**
+     * 查询学校录取率
+     *
+     * @param cid 学校代码
+     * @return 该学校近5年录取率列表
+     */
     @GetMapping("/acceptance-rate")
     public JsonResult queryEnrollmentRate(@RequestParam String cid) {
         JsonResult jsonResult;
@@ -105,6 +121,12 @@ public class BaseQueryController {
         return jsonResult;
     }
 
+    /**
+     * 查询学校最新排名
+     *
+     * @param cid 学校代码
+     * @return 排名列表
+     */
     @GetMapping("/latest-college-rank")
     public JsonResult queryLatestCollegeRank(@RequestParam String cid) {
         JsonResult jsonResult;

@@ -130,6 +130,11 @@ public class FavorController {
         return jsonResult;
     }
 
+    /**
+     * @param jsonObject 接收前端的数据,包括学校代码和专业代码
+     * @param request    HttpServletRequest
+     * @return 封装的Json数据
+     */
     @PostMapping("/d/major")
     @IsLoggedIn
     @IsStudent
@@ -150,6 +155,11 @@ public class FavorController {
         return jsonResult;
     }
 
+    /**
+     * @param jsonObject 接收前端的数据,包括教师所属学校代码和专业代码
+     * @param request    HttpServletRequest
+     * @return 封装的Json数据
+     */
     @PostMapping("/d/tutor")
     @IsLoggedIn
     @IsStudent

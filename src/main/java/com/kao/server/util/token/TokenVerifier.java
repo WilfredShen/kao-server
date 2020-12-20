@@ -10,6 +10,12 @@ import com.auth0.jwt.interfaces.DecodedJWT;
  */
 public class TokenVerifier {
 
+    /**
+     * 解析token
+     *
+     * @param token 密钥
+     * @return 解析结果
+     */
     public static boolean verifyToken(String token) {
 
         try {
@@ -22,16 +28,34 @@ public class TokenVerifier {
         }
     }
 
+    /**
+     * 获取DecodeJwt对象
+     *
+     * @param token 密钥
+     * @return DecodeJwt对象
+     */
     private static DecodedJWT getDecodeJwt(String token) {
         Algorithm algorithm = Algorithm.HMAC256(TokenConstant.getSecretKey());
         JWTVerifier jwtVerifier = JWT.require(algorithm).build();
         return jwtVerifier.verify(token);
     }
 
+    /**
+     * 获取token中的用户名
+     *
+     * @param token 密钥
+     * @return 用户名
+     */
     public static String getUserNameFromToken(String token) {
         return getDecodeJwt(token).getClaim("username").asString();
     }
 
+    /**
+     * 获取token中的密码
+     *
+     * @param token 密钥
+     * @return 密码
+     */
     public static String getPasswordFromToken(String token) {
         return getDecodeJwt(token).getClaim("password").asString();
     }

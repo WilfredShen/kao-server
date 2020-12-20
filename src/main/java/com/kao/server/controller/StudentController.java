@@ -25,6 +25,12 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
+    /**
+     * 查询学生信息
+     *
+     * @param request HttpServletRequest
+     * @return 学生信息
+     */
     @GetMapping("/q/stu-info")
     @IsLoggedIn
     @IsStudent
@@ -39,6 +45,13 @@ public class StudentController {
         }
     }
 
+    /**
+     * 修改学生信息
+     *
+     * @param studentMessage 修改过的学生信息
+     * @param request        HttpServletRequest
+     * @return 封装的Json数据
+     */
     @PostMapping("/u/stu-info")
     @IsLoggedIn
     @IsStudent

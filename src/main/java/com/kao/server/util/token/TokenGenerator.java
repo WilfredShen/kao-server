@@ -14,7 +14,12 @@ public class TokenGenerator {
 
     /**
      * 根据传入的用户名和用户ID生成token
-     * 这里使用的是HS256加密算法
+     * * 这里使用的是HS256加密算法
+     *
+     * @param username 用户名
+     * @param userid   用户ID
+     * @param password 密码
+     * @return token
      */
     public static String generateToken(String username, String userid, String password) {
 

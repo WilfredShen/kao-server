@@ -37,6 +37,12 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
+    /**
+     * @param adminMsg 修改的管理员信息
+     * @param request  HttpRequest
+     * @param response HttpResponse
+     * @return 封装的Json数据
+     */
     @PostMapping("/login")
     public JsonResult login(@RequestBody JSONObject adminMsg, HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
@@ -68,6 +74,14 @@ public class AdminController {
         return jsonResult;
     }
 
+    /**
+     * 查询评估结果
+     *
+     * @param round   评估轮次
+     * @param major   专业
+     * @param college 学校
+     * @return 封装的Json数据
+     */
     @GetMapping("/q/evaluation")
     @IsLoggedIn
     @IsAdmin
@@ -80,6 +94,13 @@ public class AdminController {
         return jsonResult;
     }
 
+    /**
+     * 上传评估结果
+     *
+     * @param results 评估结果信息
+     * @param request HttpServletRequest
+     * @return 封装的Json数据
+     */
     @PostMapping("/p/evaluation")
     @IsLoggedIn
     @IsAdmin
@@ -94,6 +115,13 @@ public class AdminController {
 
     }
 
+    /**
+     * 修改评估结果
+     *
+     * @param evaluation 修改的评估结果
+     * @param request    HttpServletRequest
+     * @return 封装的Json数据
+     */
     @PostMapping("/u/evaluation")
     @IsLoggedIn
     @IsAdmin

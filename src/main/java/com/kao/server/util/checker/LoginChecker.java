@@ -10,7 +10,12 @@ import com.kao.server.util.login.DigestGenerator;
  */
 public class LoginChecker {
 
-
+    /**
+     * @param user     用户对象
+     * @param username 用户名
+     * @param password 密码
+     * @return 验证结果
+     */
     public static int checkLogin(Object user, String username, String password) {
 
         if (user != null) {
