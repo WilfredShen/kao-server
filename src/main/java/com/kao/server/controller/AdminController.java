@@ -1,9 +1,7 @@
 package com.kao.server.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.kao.server.dto.AdminViewEvaluation;
-import com.kao.server.dto.EvaluationBase;
-import com.kao.server.dto.NewsBase;
+import com.kao.server.dto.*;
 import com.kao.server.entity.Admin;
 import com.kao.server.service.AdminService;
 import com.kao.server.util.accounttype.IsAdmin;
@@ -249,6 +247,46 @@ public class AdminController {
             jsonResult = ResultFactory.buildFailJsonResult();
         }
         return jsonResult;
+    }
+
+    @GetMapping("/q/userList")
+    @IsLoggedIn
+    @IsAdmin
+    public JsonResult getUserList() {
+
+        List<UserMessageByAdmin> data = adminService.getUserMessageList();
+        return ResultFactory.listPack(data);
+    }
+
+    @PostMapping("/d/user")
+    @IsLoggedIn
+    @IsAdmin
+    public JsonResult deleteUser(@RequestBody JSONObject jsonObject) {
+
+        try {
+            Integer uid = Integer.valueOf(jsonObject.getString("uid"));
+            Integer raw = adminService.deleteUser(uid);
+            if (raw != null && raw == 1) {
+                return ResultFactory.buildSuccessJsonResult();
+            } else {
+                return ResultFactory.buildFailJsonResult();
+            }
+        } catch (Exception e) {
+            return ResultFactory.buildFailJsonResult();
+        }
+    }
+
+    @PostMapping("/u/user")
+    @IsLoggedIn
+    @IsAdmin
+    public JsonResult updateUser(@RequestBody UpdatedUserMessage updatedUserMessage){
+
+        Integer raw = adminService.updateUser(updatedUserMessage);
+        if (raw!=null && raw == 1){
+            return ResultFactory.buildSuccessJsonResult();
+        }else{
+            return ResultFactory.buildFailJsonResult();
+        }
     }
 
 }
