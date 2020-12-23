@@ -1,6 +1,7 @@
 package com.kao.server.service.impl;
 
 import com.kao.server.dto.CollegeIdAndName;
+import com.kao.server.dto.RankBase;
 import com.kao.server.entity.Discipline;
 import com.kao.server.entity.Major;
 import com.kao.server.mapper.MetaQueryMapper;
@@ -61,5 +62,15 @@ public class MetaQueryServiceImpl implements MetaQueryService {
             e.printStackTrace();
         }
         return data;
+    }
+
+    @Override
+    public List<RankBase> queryRank() {
+        try {
+            return metaQueryMapper.queryRank();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

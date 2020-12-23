@@ -1,6 +1,8 @@
 package com.kao.server.mapper;
 
 import com.kao.server.dto.CollegeIdAndName;
+import com.kao.server.dto.CollegeRankBase;
+import com.kao.server.dto.RankBase;
 import com.kao.server.entity.Discipline;
 import com.kao.server.entity.Major;
 
@@ -38,4 +40,6 @@ public interface MetaQueryMapper {
      * @return 轮次列表
      */
     List<Integer> queryRound() throws Exception;
+
+    List<RankBase> queryRank() throws Exception;
 }
