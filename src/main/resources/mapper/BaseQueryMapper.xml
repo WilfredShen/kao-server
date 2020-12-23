@@ -79,4 +79,7 @@
         FROM college_rank_message AS c
         WHERE c.cid = #{cid}
     </select>
+    <select id="queryCollegeRank" resultType="com.kao.server.dto.CollegeRankBase">
+        SELECT c.cid,c.rid,c.date,c.rank FROM college_rank AS c;
+    </select>
 </mapper>

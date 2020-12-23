@@ -134,4 +134,16 @@ public class BaseQueryController {
         jsonResult = ResultFactory.listPack(data);
         return jsonResult;
     }
+
+    /**
+     * 查询所有排名结果
+     * @return 所有排名列表
+     */
+    @GetMapping("/college-rank")
+    public JsonResult queryCollegeRank() {
+        JsonResult jsonResult;
+        List<CollegeRankBase> data = baseQueryService.queryCollegeRank();
+        jsonResult = ResultFactory.listPack(data);
+        return jsonResult;
+    }
 }

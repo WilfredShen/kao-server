@@ -1,6 +1,7 @@
 package com.kao.server.service;
 
 import com.kao.server.dto.CollegeIdAndName;
+import com.kao.server.dto.RankBase;
 import com.kao.server.entity.Discipline;
 import com.kao.server.entity.Major;
 
@@ -38,4 +39,11 @@ public interface MetaQueryService {
      * @return 轮次列表
      */
     List<Integer> queryRound();
+
+    /**
+     * 获取所有排名
+     * @return 排名列表
+     */
+    List<RankBase> queryRank();
+
 }

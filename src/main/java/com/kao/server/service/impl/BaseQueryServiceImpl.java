@@ -111,6 +111,16 @@ public class BaseQueryServiceImpl implements BaseQueryService {
     }
 
     @Override
+    public List<CollegeRankBase> queryCollegeRank() {
+        try {
+            return baseQueryMapper.queryCollegeRank();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
     public List<AcceptanceRateMessage> queryAcceptanceRate(String cid) {
         List<AcceptanceRateMessage> data = null;
         try {

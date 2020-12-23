@@ -23,4 +23,8 @@
         SELECT DISTINCT round
         FROM evaluation;
     </select>
+
+    <select id="queryRank" resultType="com.kao.server.dto.RankBase">
+        SELECT rid,rank_from FROM rank_list;
+    </select>
 </mapper>

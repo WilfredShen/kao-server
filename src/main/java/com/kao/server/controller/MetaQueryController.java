@@ -1,6 +1,7 @@
 package com.kao.server.controller;
 
 import com.kao.server.dto.CollegeIdAndName;
+import com.kao.server.dto.RankBase;
 import com.kao.server.entity.Discipline;
 import com.kao.server.entity.Major;
 import com.kao.server.service.MetaQueryService;
@@ -73,6 +74,19 @@ public class MetaQueryController {
     public JsonResult queryRound() {
         JsonResult jsonResult;
         List<Integer> data = metaQueryService.queryRound();
+        jsonResult = ResultFactory.listPack(data);
+        return jsonResult;
+    }
+
+    /**
+     * 查询排名列表
+     *
+     * @return 排名列表
+     */
+    @GetMapping("/rank")
+    public JsonResult queryRank() {
+        JsonResult jsonResult;
+        List<RankBase> data = metaQueryService.queryRank();
         jsonResult = ResultFactory.listPack(data);
         return jsonResult;
     }
