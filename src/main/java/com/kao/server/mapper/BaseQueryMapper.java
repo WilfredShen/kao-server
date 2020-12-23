@@ -82,4 +82,13 @@ public interface BaseQueryMapper {
      * @throws Exception 数据库操作异常
      */
     List<LatestCollegeRank> queryLatestCollegeRank(String cid) throws Exception;
+
+    /**
+     * 查询所有学校排名结果
+     * @return 所有学校的排名结果
+     * @throws Exception 数据库操作异常
+     */
+    List<CollegeRankBase> queryCollegeRank() throws Exception;
+
+
 }

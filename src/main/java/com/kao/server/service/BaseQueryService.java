@@ -79,4 +79,10 @@ public interface BaseQueryService {
      */
     List<LatestCollegeRank> queryLatestCollegeRank(String cid);
 
+    /**
+     * 查询所有学校的排名结果
+     *
+     * @return 所有学校的排名结果
+     */
+    List<CollegeRankBase> queryCollegeRank();
 }
