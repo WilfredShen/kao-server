@@ -1,8 +1,6 @@
 package com.kao.server.service;
 
-import com.kao.server.dto.AdminViewEvaluation;
-import com.kao.server.dto.EvaluationBase;
-import com.kao.server.dto.NewsBase;
+import com.kao.server.dto.*;
 import com.kao.server.entity.Admin;
 
 import java.util.List;
@@ -85,5 +83,26 @@ public interface AdminService {
      * @return 更新结果
      */
     Integer updateNews(NewsBase news, Integer adminId);
+
+    /**
+     * 获取用户信息列表
+     * @return 用户信息列表
+     */
+    List<UserMessageByAdmin> getUserMessageList();
+
+
+    /**
+     * 删除用户
+     * @param uid 用户id
+     * @return 删除行数
+     */
+    Integer deleteUser(Integer uid);
+
+    /**
+     * 管理员修改用户信息
+     * @param message 修改的用户信息
+     * @return 修改的行数
+     */
+    Integer updateUser(UpdatedUserMessage message);
 
 }

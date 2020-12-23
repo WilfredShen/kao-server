@@ -1,8 +1,6 @@
 package com.kao.server.service.impl;
 
-import com.kao.server.dto.AdminViewEvaluation;
-import com.kao.server.dto.EvaluationBase;
-import com.kao.server.dto.NewsBase;
+import com.kao.server.dto.*;
 import com.kao.server.entity.Admin;
 import com.kao.server.mapper.AdminMapper;
 import com.kao.server.service.AdminService;
@@ -103,5 +101,35 @@ public class AdminServiceImpl implements AdminService {
             e.printStackTrace();
         }
         return count;
+    }
+
+    @Override
+    public List<UserMessageByAdmin> getUserMessageList() {
+        try {
+            return adminMapper.getUserMessageList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public Integer deleteUser(Integer uid) {
+        try {
+            return adminMapper.deleteUser(uid);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public Integer updateUser(UpdatedUserMessage message) {
+        try {
+            return adminMapper.updateUser(message);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

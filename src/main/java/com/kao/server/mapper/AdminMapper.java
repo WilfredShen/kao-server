@@ -1,8 +1,6 @@
 package com.kao.server.mapper;
 
-import com.kao.server.dto.AdminViewEvaluation;
-import com.kao.server.dto.EvaluationBase;
-import com.kao.server.dto.NewsBase;
+import com.kao.server.dto.*;
 import com.kao.server.entity.Admin;
 
 import java.util.List;
@@ -82,5 +80,29 @@ public interface AdminMapper {
      * @throws Exception 数据库操作异常
      */
     Integer updateNews(NewsBase news, Integer adminId) throws Exception;
+
+    /**
+     * 管理员获取用户信息列表
+     *
+     * @return 用户信息列表
+     * @throws Exception 数据库操作异常
+     */
+    List<UserMessageByAdmin> getUserMessageList() throws Exception;
+
+    /**
+     * 删除用户
+     * @param uid 用户id
+     * @return 删除的行数
+     * @throws Exception 数据库操作异常
+     */
+    Integer deleteUser(Integer uid) throws Exception;
+
+    /**
+     * 修改用户信息
+     * @param message 修改的用户信息
+     * @return 修改的行数
+     * @throws Exception 数据库操作异常
+     */
+    Integer updateUser(UpdatedUserMessage message) throws Exception;
 
 }
