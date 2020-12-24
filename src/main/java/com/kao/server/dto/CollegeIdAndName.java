@@ -1,9 +1,11 @@
 package com.kao.server.dto;
 
+import java.io.Serializable;
+
 /**
  * @author 沈伟峰
  */
-public class CollegeIdAndName {
+public class CollegeIdAndName implements Serializable {
     private String cid;
     private String cname;
 
