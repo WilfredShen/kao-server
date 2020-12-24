@@ -6,6 +6,7 @@ import com.kao.server.mapper.StudentMapper;
 import com.kao.server.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,8 @@ public class StudentServiceImpl implements StudentService {
     private StudentMapper studentMapper;
 
     @Override
-    public StudentMessage getStuMsg(int uid) {
+    @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName+#uid")
+    public StudentMessage getStuMsg(Integer uid) {
         try {
             return studentMapper.findStudentById(uid);
         } catch (Exception e) {

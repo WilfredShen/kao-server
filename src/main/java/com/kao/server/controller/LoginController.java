@@ -13,6 +13,8 @@ import com.kao.server.util.login.SaltGenerator;
 import com.kao.server.util.login.UidGenerator;
 import com.kao.server.util.token.TokenGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -33,6 +35,8 @@ public class LoginController {
     private LoginService loginService;
     @Autowired
     private SmsService smsService;
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 
     /**
      * 登录
@@ -48,22 +52,27 @@ public class LoginController {
         HttpSession session = request.getSession();
         String username = jsonObject.getString("username");
         String password = jsonObject.getString("password");
-        User user = loginService.findUserByUsername(username);
         JsonResult jsonResult = null;
-        int state = loginService.handleLogin(user, username, password);
+        int state = loginService.handleLogin(username, password);
         if (state == JsonResultStatus.SUCCESS) {
-            String token = TokenGenerator.generateToken(
-                    (user).getUsername(),
-                    String.valueOf(user.getUid()),
-                    (user).getPassword()
-            );
-            session.setAttribute("username", username);
-            session.setAttribute("password", user.getPassword());
-            jsonResult = ResultFactory.buildSuccessJsonResult();
-            Cookie tokenCookie = CookieUtil.buildCookie("accessToken", token);
-            Cookie uidCookie = CookieUtil.buildCookie("uid", String.valueOf(user.getUid()));
-            response.addCookie(tokenCookie);
-            response.addCookie(uidCookie);
+            //先去redis找
+            ValueOperations<String, Object> operations = redisTemplate.opsForValue();
+            User user = (User) operations.get(username);
+            String token = null;
+            if (user != null) {
+                token = TokenGenerator.generateToken(
+                        (user).getUsername(),
+                        String.valueOf(user.getUid()),
+                        (user).getPassword()
+                );
+                session.setAttribute("username", username);
+                session.setAttribute("password", user.getPassword());
+                jsonResult = ResultFactory.buildSuccessJsonResult();
+                Cookie tokenCookie = CookieUtil.buildCookie("accessToken", token);
+                Cookie uidCookie = CookieUtil.buildCookie("uid", String.valueOf(user.getUid()));
+                response.addCookie(tokenCookie);
+                response.addCookie(uidCookie);
+            }
 
         } else if (state == JsonResultStatus.USERNAME_WRONG) {
             return ResultFactory.buildFailJsonResult(state, JsonResultStatus.USERNAME_WRONG_DESC);
@@ -171,6 +180,7 @@ public class LoginController {
     @ResponseBody
     public JsonResult getVerificationCode(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
         String phoneNumber = jsonObject.getString("phoneNumber");
+        System.err.println(phoneNumber);
         String verificationCode = loginService.getVerificationCode(phoneNumber);
         if (verificationCode != null) {
             return ResultFactory.buildSuccessJsonResult();

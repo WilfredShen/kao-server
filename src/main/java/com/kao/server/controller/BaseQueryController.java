@@ -137,6 +137,7 @@ public class BaseQueryController {
 
     /**
      * 查询所有排名结果
+     *
      * @return 所有排名列表
      */
     @GetMapping("/college-rank")

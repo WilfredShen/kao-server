@@ -37,7 +37,7 @@ public interface LoginService {
      * @param password 密码
      * @return json格式的处理结果
      */
-    Integer handleLogin(User user, String username, String password);
+    Integer handleLogin(String username, String password);
 
     /**
      * 处理注册逻辑功能

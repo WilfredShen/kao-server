@@ -13,7 +13,7 @@ public interface StudentService {
      * @param uid 用户id
      * @return 学生信息
      */
-    StudentMessage getStuMsg(int uid);
+    StudentMessage getStuMsg(Integer uid);
 
     /**
      * 修改学生信息

@@ -18,7 +18,7 @@ public interface TutorService {
      * @param uid 用户id
      * @return 教师信息
      */
-    TutorMessage findTutorById(int uid);
+    TutorMessage findTutorById(Integer uid);
 
     /**
      * 通过用户id查询老师信息
@@ -26,7 +26,7 @@ public interface TutorService {
      * @param uid 用户id
      * @return 教师信息
      */
-    TutorMessage getTutorMsg(int uid);
+    TutorMessage getTutorMsg(Integer uid);
 
     /**
      * 修改教师信息

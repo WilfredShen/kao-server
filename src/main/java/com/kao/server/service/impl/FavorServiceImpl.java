@@ -4,6 +4,7 @@ import com.kao.server.dto.*;
 import com.kao.server.mapper.FavorMapper;
 import com.kao.server.service.FavorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +19,8 @@ public class FavorServiceImpl implements FavorService {
     private FavorMapper favorMapper;
 
     @Override
-    public StudentId getStudentId(int uid) {
+    @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName+#uid")
+    public StudentId getStudentId(Integer uid) {
         StudentId data = null;
         try {
             data = favorMapper.getStudentId(uid);
@@ -29,6 +31,7 @@ public class FavorServiceImpl implements FavorService {
     }
 
     @Override
+    @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName+#stuCid+#stuSid")
     public Integer favorMajor(String stuCid, String stuSid, List<MajorFavorBase> majorList) {
         Integer count = null;
         try {
@@ -40,6 +43,7 @@ public class FavorServiceImpl implements FavorService {
     }
 
     @Override
+    @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName+#stuCid+#stuSid")
     public Integer favorTutor(String stuCid, String stuSid, List<TutorFavorBase> tutorList) {
         Integer count = null;
         try {
@@ -51,6 +55,7 @@ public class FavorServiceImpl implements FavorService {
     }
 
     @Override
+    @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName+#stuCid+#stuSid")
     public List<NewsFavorMessage> queryNews(String stuCid, String stuSid) {
         List<NewsFavorMessage> data = null;
         try {
@@ -62,6 +67,7 @@ public class FavorServiceImpl implements FavorService {
     }
 
     @Override
+    @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName+#stuCid+#stuSid")
     public List<MajorFavorMessage> queryMajor(String stuCid, String stuSid) {
         List<MajorFavorMessage> data = null;
         try {
@@ -73,6 +79,7 @@ public class FavorServiceImpl implements FavorService {
     }
 
     @Override
+    @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName+#stuCid+#stuSid")
     public List<TutorFavorMessage> queryTutor(String stuCid, String stuSid) {
         List<TutorFavorMessage> data = null;
         try {
