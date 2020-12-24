@@ -1,11 +1,12 @@
 package com.kao.server.dto;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 /**
  * @author 全鸿润
  */
-public class QueryableStudentMessage {
+public class QueryableStudentMessage implements Serializable {
 
     private String phone;
     private String email;
