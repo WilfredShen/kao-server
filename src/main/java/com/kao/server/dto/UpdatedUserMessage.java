@@ -1,9 +1,11 @@
 package com.kao.server.dto;
 
+import java.io.Serializable;
+
 /**
  * @author 全鸿润
  */
-public class UpdatedUserMessage {
+public class UpdatedUserMessage implements Serializable {
     private Integer uid;
     private String username;
     private String phone;

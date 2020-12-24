@@ -1,9 +1,11 @@
 package com.kao.server.entity;
 
+import java.io.Serializable;
+
 /**
  * @author 沈伟峰
  */
-public class Discipline {
+public class Discipline implements Serializable {
     private String did;
     private String dname;
 

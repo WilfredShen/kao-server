@@ -1,9 +1,11 @@
 package com.kao.server.dto;
 
+import java.io.Serializable;
+
 /**
  * @author 沈伟峰
  */
-public class TutorRoleBaseWithName {
+public class TutorRoleBaseWithName implements Serializable {
 
     private String cid;
     private String tid;

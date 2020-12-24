@@ -1,9 +1,11 @@
 package com.kao.server.dto;
 
+import java.io.Serializable;
+
 /**
  * @author 沈伟峰
  */
-public class MajorFavorBase {
+public class MajorFavorBase implements Serializable {
 
     private String majorCid;
     private String majorMid;

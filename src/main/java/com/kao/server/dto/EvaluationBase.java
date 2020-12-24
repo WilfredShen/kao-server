@@ -1,9 +1,11 @@
 package com.kao.server.dto;
 
+import java.io.Serializable;
+
 /**
  * @author 沈伟峰
  */
-public class EvaluationBase {
+public class EvaluationBase implements Serializable {
 
     private String cid;
     private String mid;

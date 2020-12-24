@@ -1,11 +1,12 @@
 package com.kao.server.dto;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 /**
  * @author 全鸿润
  */
-public class StudentMessage {
+public class StudentMessage implements Serializable {
 
     private Integer uid;
     private String phone;

@@ -1,9 +1,11 @@
 package com.kao.server.dto;
 
+import java.io.Serializable;
+
 /**
  * @author 沈伟峰
  */
-public class TutorFavorBase {
+public class TutorFavorBase implements Serializable {
 
     private String tutCid;
     private String tutTid;
