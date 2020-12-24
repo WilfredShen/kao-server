@@ -6,7 +6,9 @@ import com.kao.server.mapper.UserMapper;
 import com.kao.server.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,8 +20,11 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Override
+    @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName+userId")
     public User findUserByUserId(int userId) {
         try {
             return userMapper.findUserByUserId(userId);
@@ -29,6 +34,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName+#uid")
     public UserMessage getNotVerifiedUserMessageById(int uid) {
         try {
             return userMapper.getNotVerifiedUserMessageById(uid);
@@ -38,6 +44,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName+#uid")
     public UserMessage getStudentUserMessageById(int uid) {
         try {
             return userMapper.getStudentUserMessageById(uid);
@@ -47,6 +54,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName+#uid")
     public UserMessage getTutorUserMessageById(int uid) {
         try {
             return userMapper.getTutorUserMessageById(uid);

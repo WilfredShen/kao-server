@@ -42,6 +42,7 @@ public interface MetaQueryService {
 
     /**
      * 获取所有排名
+     *
      * @return 排名列表
      */
     List<RankBase> queryRank();

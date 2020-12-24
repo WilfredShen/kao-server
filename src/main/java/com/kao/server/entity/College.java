@@ -1,9 +1,11 @@
 package com.kao.server.entity;
 
+import java.io.Serializable;
+
 /**
  * @author 沈伟峰
  */
-public class College {
+public class College implements Serializable {
     private String cid;
     private String cname;
     private String location;

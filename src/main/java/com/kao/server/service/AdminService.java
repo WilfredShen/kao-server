@@ -26,7 +26,7 @@ public interface AdminService {
      * @param password 密码
      * @return 处理状态码
      */
-    int handleLogin(Admin admin, String username, String password);
+    Integer handleLogin(String username, String password);
 
     /**
      * 管理员界面的根据轮次获取评估结果
@@ -86,6 +86,7 @@ public interface AdminService {
 
     /**
      * 获取用户信息列表
+     *
      * @return 用户信息列表
      */
     List<UserMessageByAdmin> getUserMessageList();
@@ -93,6 +94,7 @@ public interface AdminService {
 
     /**
      * 删除用户
+     *
      * @param uid 用户id
      * @return 删除行数
      */
@@ -100,6 +102,7 @@ public interface AdminService {
 
     /**
      * 管理员修改用户信息
+     *
      * @param message 修改的用户信息
      * @return 修改的行数
      */

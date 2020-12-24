@@ -1,7 +1,6 @@
 package com.kao.server.mapper;
 
 import com.kao.server.dto.CollegeIdAndName;
-import com.kao.server.dto.CollegeRankBase;
 import com.kao.server.dto.RankBase;
 import com.kao.server.entity.Discipline;
 import com.kao.server.entity.Major;

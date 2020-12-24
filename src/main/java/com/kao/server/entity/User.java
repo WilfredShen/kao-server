@@ -1,12 +1,13 @@
 package com.kao.server.entity;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
  * @author 全鸿润
  */
-public class User {
+public class User implements Serializable {
 
     private Integer uid;
     private String username;

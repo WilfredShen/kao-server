@@ -1,11 +1,12 @@
 package com.kao.server.dto;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 /**
  * @author 沈伟峰
  */
-public class NewsBase {
+public class NewsBase implements Serializable {
 
     private String cid;
     private Date date;

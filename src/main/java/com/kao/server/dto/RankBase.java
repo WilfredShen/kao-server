@@ -1,9 +1,11 @@
 package com.kao.server.dto;
 
+import java.io.Serializable;
+
 /**
  * @author 全鸿润
  */
-public class RankBase {
+public class RankBase implements Serializable {
     private String rid;
     private String rankFrom;
 

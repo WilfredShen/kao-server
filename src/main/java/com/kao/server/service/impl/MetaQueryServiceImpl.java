@@ -7,6 +7,7 @@ import com.kao.server.entity.Major;
 import com.kao.server.mapper.MetaQueryMapper;
 import com.kao.server.service.MetaQueryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class MetaQueryServiceImpl implements MetaQueryService {
     private MetaQueryMapper metaQueryMapper;
 
     @Override
+    @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName")
     public List<CollegeIdAndName> queryCollegeIdAndName() {
         List<CollegeIdAndName> data = null;
         try {
@@ -32,6 +34,7 @@ public class MetaQueryServiceImpl implements MetaQueryService {
     }
 
     @Override
+    @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName")
     public List<Discipline> queryDiscipline() {
         List<Discipline> data = null;
         try {
@@ -43,6 +46,7 @@ public class MetaQueryServiceImpl implements MetaQueryService {
     }
 
     @Override
+    @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName")
     public List<Major> queryMajor() {
         List<Major> data = null;
         try {
@@ -54,6 +58,7 @@ public class MetaQueryServiceImpl implements MetaQueryService {
     }
 
     @Override
+    @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName")
     public List<Integer> queryRound() {
         List<Integer> data = null;
         try {
@@ -65,6 +70,7 @@ public class MetaQueryServiceImpl implements MetaQueryService {
     }
 
     @Override
+    @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName")
     public List<RankBase> queryRank() {
         try {
             return metaQueryMapper.queryRank();

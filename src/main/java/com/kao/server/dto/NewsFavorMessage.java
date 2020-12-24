@@ -1,11 +1,12 @@
 package com.kao.server.dto;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
  * @author 沈伟峰
  */
-public class NewsFavorMessage {
+public class NewsFavorMessage implements Serializable {
 
     private String cid;
     private String cname;

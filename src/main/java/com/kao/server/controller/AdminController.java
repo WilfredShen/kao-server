@@ -14,6 +14,8 @@ import com.kao.server.util.json.ResultFactory;
 import com.kao.server.util.security.SecurityUtil;
 import com.kao.server.util.token.TokenGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,6 +36,8 @@ public class AdminController {
 
     @Autowired
     private AdminService adminService;
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 
     /**
      * @param adminMsg 修改的管理员信息
@@ -47,22 +51,26 @@ public class AdminController {
         String username = adminMsg.getString("username");
         String password = adminMsg.getString("password");
 
-        Admin admin = adminService.findUserByUsername(username);
-        int state = adminService.handleLogin(admin, username, password);
+        int state = adminService.handleLogin(username, password);
         JsonResult jsonResult = new JsonResult(null, null, null);
         if (state == JsonResultStatus.SUCCESS) {
-            String token = TokenGenerator.generateToken(
-                    (admin).getUsername(),
-                    String.valueOf(admin.getAdminId()),
-                    (admin).getPassword()
-            );
-            session.setAttribute("username", username);
-            session.setAttribute("password", password);
-            jsonResult.setStatus(state);
-            Cookie tokenCookie = CookieUtil.buildCookie("accessToken", token);
-            Cookie adminIdCookie = CookieUtil.buildCookie("adminId", String.valueOf(admin.getAdminId()));
-            response.addCookie(tokenCookie);
-            response.addCookie(adminIdCookie);
+
+            ValueOperations<String, Object> operations = redisTemplate.opsForValue();
+            Admin admin = (Admin) operations.get("Admin" + username);
+            if (admin != null) {
+                String token = TokenGenerator.generateToken(
+                        (admin).getUsername(),
+                        String.valueOf(admin.getAdminId()),
+                        (admin).getPassword()
+                );
+                session.setAttribute("username", username);
+                session.setAttribute("password", password);
+                jsonResult.setStatus(state);
+                Cookie tokenCookie = CookieUtil.buildCookie("accessToken", token);
+                Cookie adminIdCookie = CookieUtil.buildCookie("adminId", String.valueOf(admin.getAdminId()));
+                response.addCookie(tokenCookie);
+                response.addCookie(adminIdCookie);
+            }
         } else if (state == JsonResultStatus.USERNAME_WRONG) {
             return ResultFactory.buildFailJsonResult(state, JsonResultStatus.USERNAME_WRONG_DESC);
         } else if (state == JsonResultStatus.PASSWORD_WRONG) {
@@ -279,12 +287,12 @@ public class AdminController {
     @PostMapping("/u/user")
     @IsLoggedIn
     @IsAdmin
-    public JsonResult updateUser(@RequestBody UpdatedUserMessage updatedUserMessage){
+    public JsonResult updateUser(@RequestBody UpdatedUserMessage updatedUserMessage) {
 
         Integer raw = adminService.updateUser(updatedUserMessage);
-        if (raw!=null && raw == 1){
+        if (raw != null && raw == 1) {
             return ResultFactory.buildSuccessJsonResult();
-        }else{
+        } else {
             return ResultFactory.buildFailJsonResult();
         }
     }

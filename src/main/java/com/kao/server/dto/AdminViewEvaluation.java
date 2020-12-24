@@ -1,9 +1,11 @@
 package com.kao.server.dto;
 
+import java.io.Serializable;
+
 /**
  * @author 全鸿润
  */
-public class AdminViewEvaluation {
+public class AdminViewEvaluation implements Serializable {
 
     private String mname;
     private String mid;

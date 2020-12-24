@@ -15,7 +15,7 @@ public interface FavorService {
      * @param uid 用户 id
      * @return 查询结果
      */
-    StudentId getStudentId(int uid);
+    StudentId getStudentId(Integer uid);
 
     /**
      * 收藏专业

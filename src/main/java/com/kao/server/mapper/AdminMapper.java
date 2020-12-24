@@ -91,6 +91,7 @@ public interface AdminMapper {
 
     /**
      * 删除用户
+     *
      * @param uid 用户id
      * @return 删除的行数
      * @throws Exception 数据库操作异常
@@ -99,6 +100,7 @@ public interface AdminMapper {
 
     /**
      * 修改用户信息
+     *
      * @param message 修改的用户信息
      * @return 修改的行数
      * @throws Exception 数据库操作异常

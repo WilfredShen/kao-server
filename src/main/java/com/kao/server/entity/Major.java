@@ -1,9 +1,11 @@
 package com.kao.server.entity;
 
+import java.io.Serializable;
+
 /**
  * @author 沈伟峰
  */
-public class Major {
+public class Major implements Serializable {
     private String mid;
     private String mname;
     private String did;

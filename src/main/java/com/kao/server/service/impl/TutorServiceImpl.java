@@ -7,6 +7,7 @@ import com.kao.server.mapper.TutorMapper;
 import com.kao.server.service.TutorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,8 @@ public class TutorServiceImpl implements TutorService {
     private TutorMapper tutorMapper;
 
     @Override
-    public TutorMessage findTutorById(int uid) {
+    @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName+#uid")
+    public TutorMessage findTutorById(Integer uid) {
         try {
             return tutorMapper.findTutorById(uid);
         } catch (Exception e) {
@@ -32,7 +34,8 @@ public class TutorServiceImpl implements TutorService {
     }
 
     @Override
-    public TutorMessage getTutorMsg(int uid) {
+    @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName+#uid")
+    public TutorMessage getTutorMsg(Integer uid) {
 
         try {
             return tutorMapper.findTutorById(uid);
@@ -42,6 +45,7 @@ public class TutorServiceImpl implements TutorService {
     }
 
     @Override
+    @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName+#p0+#p1+#p2+#p3+#p4")
     public List<QueryableStudentMessage> getQueryableStudentByConditions(Date beginDate, Date endDate, String collegeLevel, String major, String expectedMajor) {
         try {
             return tutorMapper.getQueryableStudentByConditions(

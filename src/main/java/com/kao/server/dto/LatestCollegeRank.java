@@ -1,11 +1,12 @@
 package com.kao.server.dto;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 /**
  * @author 全鸿润
  */
-public class LatestCollegeRank {
+public class LatestCollegeRank implements Serializable {
 
     private String rankFrom;
     private Integer rank;

@@ -8,6 +8,7 @@ import com.kao.server.util.checker.LoginChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +22,8 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private AdminMapper adminMapper;
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Override
     public Admin findUserByUsername(String username) {
@@ -32,9 +35,24 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public int handleLogin(Admin admin, String username, String password) {
+    public Integer handleLogin(String username, String password) {
 
-        return LoginChecker.checkLogin(admin, username, password);
+        try {
+            Admin admin;
+            Boolean flag = redisTemplate.hasKey("Admin" + username);
+            if (flag != null && flag) {
+                admin = (Admin) redisTemplate.opsForValue().get("Admin" + username);
+            } else {
+                admin = adminMapper.findUserByUsername(username);
+                if (admin != null) {
+                    redisTemplate.opsForValue().set("Admin" + username, admin);
+                }
+            }
+            return LoginChecker.checkLogin(admin, username, password);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
