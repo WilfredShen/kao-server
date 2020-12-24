@@ -10,15 +10,18 @@ spring:
     password: kao666
   redis:
     host: localhost
-    databse: 0
+    database: 0
     port: 6379
     password:
     jedis:
       pool:
         max-active: 8
-        max-wait: -1ms
+        max-wait: -1
         max-idle: 0
+        max-total: 1000
     timeout: 3000ms
+    lettuce:
+      shutdown-timeout: 0
 
 redis:
   key:
@@ -26,6 +29,8 @@ redis:
       authCode: "protal:authCode:"
       username: "username:"
       password: "password:"
+      admin: "admin"
+      user: "user"
     expire:
       authCode: 60
 
