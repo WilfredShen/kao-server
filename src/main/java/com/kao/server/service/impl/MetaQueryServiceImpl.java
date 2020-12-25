@@ -26,6 +26,7 @@ public class MetaQueryServiceImpl implements MetaQueryService {
     public List<CollegeIdAndName> queryCollegeIdAndName() {
         List<CollegeIdAndName> data = null;
         try {
+            System.err.println("queryCollegeIdAndName");
             data = metaQueryMapper.queryCollegeIdAndName();
         } catch (Exception e) {
             e.printStackTrace();
@@ -38,6 +39,7 @@ public class MetaQueryServiceImpl implements MetaQueryService {
     public List<Discipline> queryDiscipline() {
         List<Discipline> data = null;
         try {
+            System.err.println("queryDiscipline");
             data = metaQueryMapper.queryDiscipline();
         } catch (Exception e) {
             e.printStackTrace();
@@ -50,6 +52,7 @@ public class MetaQueryServiceImpl implements MetaQueryService {
     public List<Major> queryMajor() {
         List<Major> data = null;
         try {
+            System.err.println("queryMajor");
             data = metaQueryMapper.queryMajor();
         } catch (Exception e) {
             e.printStackTrace();
@@ -62,6 +65,7 @@ public class MetaQueryServiceImpl implements MetaQueryService {
     public List<Integer> queryRound() {
         List<Integer> data = null;
         try {
+            System.err.println("queryRound");
             data = metaQueryMapper.queryRound();
         } catch (Exception e) {
             e.printStackTrace();
@@ -73,6 +77,7 @@ public class MetaQueryServiceImpl implements MetaQueryService {
     @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName")
     public List<RankBase> queryRank() {
         try {
+            System.err.println("queryRank");
             return metaQueryMapper.queryRank();
         } catch (Exception e) {
             e.printStackTrace();

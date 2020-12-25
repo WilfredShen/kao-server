@@ -24,9 +24,10 @@ public class UserServiceImpl implements UserService {
     private RedisTemplate<String, Object> redisTemplate;
 
     @Override
-    @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName+userId")
+    @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName+#userId")
     public User findUserByUserId(int userId) {
         try {
+            System.err.println("findUserByUserId:"+userId);
             return userMapper.findUserByUserId(userId);
         } catch (Exception e) {
             return null;
@@ -37,6 +38,7 @@ public class UserServiceImpl implements UserService {
     @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName+#uid")
     public UserMessage getNotVerifiedUserMessageById(int uid) {
         try {
+            System.err.println("getNotVerifiedUserMessageById:"+uid);
             return userMapper.getNotVerifiedUserMessageById(uid);
         } catch (Exception e) {
             return null;
@@ -47,6 +49,7 @@ public class UserServiceImpl implements UserService {
     @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName+#uid")
     public UserMessage getStudentUserMessageById(int uid) {
         try {
+            System.err.println("getStudentUserMessageById:"+uid);
             return userMapper.getStudentUserMessageById(uid);
         } catch (Exception e) {
             return null;
@@ -57,6 +60,7 @@ public class UserServiceImpl implements UserService {
     @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName+#uid")
     public UserMessage getTutorUserMessageById(int uid) {
         try {
+            System.err.println("getTutorUserMessageById:"+uid);
             return userMapper.getTutorUserMessageById(uid);
         } catch (Exception e) {
             return null;

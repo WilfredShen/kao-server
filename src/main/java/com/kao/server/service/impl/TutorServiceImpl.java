@@ -27,6 +27,7 @@ public class TutorServiceImpl implements TutorService {
     @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName+#uid")
     public TutorMessage findTutorById(Integer uid) {
         try {
+            System.err.println("findTutorById:"+uid);
             return tutorMapper.findTutorById(uid);
         } catch (Exception e) {
             return null;
@@ -38,6 +39,7 @@ public class TutorServiceImpl implements TutorService {
     public TutorMessage getTutorMsg(Integer uid) {
 
         try {
+            System.err.println("getTutorMsg:"+uid);
             return tutorMapper.findTutorById(uid);
         } catch (Exception e) {
             return null;
@@ -48,6 +50,7 @@ public class TutorServiceImpl implements TutorService {
     @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName+#p0+#p1+#p2+#p3+#p4")
     public List<QueryableStudentMessage> getQueryableStudentByConditions(Date beginDate, Date endDate, String collegeLevel, String major, String expectedMajor) {
         try {
+            System.err.println("getQueryableStudentByConditions");
             return tutorMapper.getQueryableStudentByConditions(
                     beginDate,
                     endDate,
@@ -63,6 +66,7 @@ public class TutorServiceImpl implements TutorService {
     @Override
     public Integer updateTutorMsg(UpdatedTutorMessage message, int uid) {
         try {
+            System.err.println("updateTutorMsg"+uid);
             return tutorMapper.updateTutorMessage(message, uid);
         } catch (Exception e) {
             return null;

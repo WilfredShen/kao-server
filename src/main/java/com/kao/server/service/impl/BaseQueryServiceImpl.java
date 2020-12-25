@@ -24,6 +24,7 @@ public class BaseQueryServiceImpl implements BaseQueryService {
     public List<EvaluationBase> queryEvaluation(Integer round) {
         List<EvaluationBase> data = null;
         try {
+            System.err.println("queryEvaluation:"+round);
             data = baseQueryMapper.queryEvaluation(round);
         } catch (Exception e) {
             e.printStackTrace();
@@ -36,6 +37,7 @@ public class BaseQueryServiceImpl implements BaseQueryService {
     public List<EvaluationBase> queryLatestEvaluation() {
         List<EvaluationBase> data = null;
         try {
+            System.err.println("queryLatestEvaluation");
             data = baseQueryMapper.queryLatestEvaluation();
         } catch (Exception e) {
             e.printStackTrace();
@@ -63,6 +65,7 @@ public class BaseQueryServiceImpl implements BaseQueryService {
     public List<College> queryCollege(List<String> cidList) {
         List<College> data = null;
         try {
+            System.err.println("queryCollege");
             data = baseQueryMapper.queryCollege(cidList);
         } catch (Exception e) {
             e.printStackTrace();
@@ -75,6 +78,7 @@ public class BaseQueryServiceImpl implements BaseQueryService {
     public List<TutorRoleBaseWithName> queryTutor(String cid) {
         List<TutorRoleBaseWithName> data = null;
         try {
+            System.err.println("queryCollege:"+cid);
             data = baseQueryMapper.queryTutor(cid);
         } catch (Exception e) {
             e.printStackTrace();
@@ -88,6 +92,7 @@ public class BaseQueryServiceImpl implements BaseQueryService {
 
         List<SummerCampMessage> data = null;
         try {
+            System.err.println("querySummerCamp");
             data = baseQueryMapper.querySummerCamp();
         } catch (Exception e) {
             e.printStackTrace();
@@ -100,6 +105,7 @@ public class BaseQueryServiceImpl implements BaseQueryService {
     public List<ExemptionMessage> queryExemption() {
         List<ExemptionMessage> data = null;
         try {
+            System.err.println("queryExemption");
             data = baseQueryMapper.queryExemption();
         } catch (Exception e) {
             e.printStackTrace();
@@ -112,6 +118,7 @@ public class BaseQueryServiceImpl implements BaseQueryService {
     public List<LatestCollegeRank> queryLatestCollegeRank(String cid) {
         List<LatestCollegeRank> data = null;
         try {
+            System.err.println("queryLatestCollegeRank:"+cid);
             data = baseQueryMapper.queryLatestCollegeRank(cid);
         } catch (Exception e) {
             e.printStackTrace();
@@ -123,6 +130,7 @@ public class BaseQueryServiceImpl implements BaseQueryService {
     @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName")
     public List<CollegeRankBase> queryCollegeRank() {
         try {
+            System.err.println("queryCollegeRank");
             return baseQueryMapper.queryCollegeRank();
         } catch (Exception e) {
             e.printStackTrace();
@@ -135,6 +143,7 @@ public class BaseQueryServiceImpl implements BaseQueryService {
     public List<AcceptanceRateMessage> queryAcceptanceRate(String cid) {
         List<AcceptanceRateMessage> data = null;
         try {
+            System.err.println("queryAcceptanceRate:"+cid);
             data = baseQueryMapper.queryAcceptanceRate(cid);
         } catch (Exception e) {
             e.printStackTrace();
