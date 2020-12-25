@@ -23,7 +23,7 @@ public class FavorServiceImpl implements FavorService {
     public StudentId getStudentId(Integer uid) {
         StudentId data = null;
         try {
-            System.err.println("getStudentId:"+uid);
+            System.err.println("getStudentId:" + uid);
             data = favorMapper.getStudentId(uid);
         } catch (Exception e) {
             e.printStackTrace();
@@ -36,7 +36,7 @@ public class FavorServiceImpl implements FavorService {
     public Integer favorMajor(String stuCid, String stuSid, List<MajorFavorBase> majorList) {
         Integer count = null;
         try {
-            System.err.println("favorMajor:"+stuCid+","+stuSid);
+            System.err.println("favorMajor:" + stuCid + "," + stuSid);
             count = favorMapper.favorMajor(stuCid, stuSid, majorList);
         } catch (Exception e) {
             e.printStackTrace();
@@ -49,7 +49,7 @@ public class FavorServiceImpl implements FavorService {
     public Integer favorTutor(String stuCid, String stuSid, List<TutorFavorBase> tutorList) {
         Integer count = null;
         try {
-            System.err.println("favorTutor:"+stuCid+","+stuSid);
+            System.err.println("favorTutor:" + stuCid + "," + stuSid);
             count = favorMapper.favorTutor(stuCid, stuSid, tutorList);
         } catch (Exception e) {
             e.printStackTrace();
@@ -62,7 +62,7 @@ public class FavorServiceImpl implements FavorService {
     public List<NewsFavorMessage> queryNews(String stuCid, String stuSid) {
         List<NewsFavorMessage> data = null;
         try {
-            System.err.println("queryNews:"+stuCid+","+stuSid);
+            System.err.println("queryNews:" + stuCid + "," + stuSid);
             data = favorMapper.queryNews(stuCid, stuSid);
         } catch (Exception e) {
             e.printStackTrace();
@@ -75,7 +75,7 @@ public class FavorServiceImpl implements FavorService {
     public List<MajorFavorMessage> queryMajor(String stuCid, String stuSid) {
         List<MajorFavorMessage> data = null;
         try {
-            System.err.println("queryMajor:"+stuCid+","+stuSid);
+            System.err.println("queryMajor:" + stuCid + "," + stuSid);
             data = favorMapper.queryMajor(stuCid, stuSid);
         } catch (Exception e) {
             e.printStackTrace();
@@ -88,7 +88,7 @@ public class FavorServiceImpl implements FavorService {
     public List<TutorFavorMessage> queryTutor(String stuCid, String stuSid) {
         List<TutorFavorMessage> data = null;
         try {
-            System.err.println("queryTutor:"+stuCid+","+stuSid);
+            System.err.println("queryTutor:" + stuCid + "," + stuSid);
             data = favorMapper.queryTutor(stuCid, stuSid);
         } catch (Exception e) {
             e.printStackTrace();

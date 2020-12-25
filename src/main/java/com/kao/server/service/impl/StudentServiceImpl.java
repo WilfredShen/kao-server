@@ -24,7 +24,7 @@ public class StudentServiceImpl implements StudentService {
     @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName+#uid")
     public StudentMessage getStuMsg(Integer uid) {
         try {
-            System.err.println("getStuMsg"+uid);
+            System.err.println("getStuMsg" + uid);
             return studentMapper.findStudentById(uid);
         } catch (Exception e) {
             return null;
@@ -34,7 +34,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Integer updateStudentMsg(UpdatedStudentMessage studentMessage, int uid) {
         try {
-            System.err.println("updateStudentMsg"+uid);
+            System.err.println("updateStudentMsg" + uid);
             return studentMapper.updateStudentMsg(studentMessage, uid);
         } catch (Exception e) {
             return null;

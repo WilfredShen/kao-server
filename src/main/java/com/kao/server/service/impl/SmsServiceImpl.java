@@ -12,7 +12,7 @@ public class SmsServiceImpl implements SmsService {
 
     @Override
     public String getVerificationCode(String phoneNumber) {
-        System.err.println("getVerificationCode"+phoneNumber);
+        System.err.println("getVerificationCode" + phoneNumber);
         return VerificationCodeGenerator.generateVerificationCode(phoneNumber);
     }
 }

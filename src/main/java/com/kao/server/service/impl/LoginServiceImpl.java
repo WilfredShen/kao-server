@@ -41,7 +41,7 @@ public class LoginServiceImpl implements LoginService {
     public User findUserByUsername(String username) {
 
         try {
-            System.err.println("findUserByUsername:"+username);
+            System.err.println("findUserByUsername:" + username);
             return loginMapper.findUserByUsername(username);
         } catch (Exception e) {
             return null;
@@ -52,7 +52,7 @@ public class LoginServiceImpl implements LoginService {
     @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName+#username")
     public User findUserNameByUsername(String username) {
         try {
-            System.err.println("findUserNameByUsername:"+username);
+            System.err.println("findUserNameByUsername:" + username);
             return loginMapper.findUserNameByUsername(username);
         } catch (Exception e) {
             return null;
