@@ -77,11 +77,11 @@ public class TutorServiceImpl implements TutorService {
     public Integer updateTutorMsg(UpdatedTutorMessage message, int uid) {
         try {
             String key = prefix + uid;
-            Integer raw = tutorMapper.updateTutorMessage(message, uid);
-            if (raw != null && raw == 1) {
+            Integer row = tutorMapper.updateTutorMessage(message, uid);
+            if (row != null && row == 1) {
                 redisTemplate.opsForValue().set(key, tutorMapper.findTutorById(uid));
             }
-            return raw;
+            return row;
         } catch (Exception e) {
             return null;
         }

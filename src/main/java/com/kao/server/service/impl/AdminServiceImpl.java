@@ -92,18 +92,18 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Integer updateEvaluationResult(String cid, String mid, int round, int adminId, String result) {
         try {
-            Integer raw = adminMapper.updateEvaluationResult(
+            Integer row = adminMapper.updateEvaluationResult(
                     cid,
                     mid,
                     round,
                     adminId,
                     result
             );
-            if (raw != null && raw == 1) {
+            if (row != null && row == 1) {
                 redisTemplate.opsForValue().set(RedisPrefixProperties.EVALUATIONS + round, baseQueryService.queryEvaluation(round));
                 redisTemplate.opsForValue().set(RedisPrefixProperties.LATEST_EVALUATION, baseQueryService.queryLatestEvaluation());
             }
-            return raw;
+            return row;
         } catch (Exception e) {
             return null;
         }
@@ -112,12 +112,12 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Integer uploadEvaluationResult(EvaluationBase result, int adminId) {
         try {
-            Integer raw = adminMapper.uploadEvaluationResult(result, adminId);
-            if (raw != null) {
+            Integer row = adminMapper.uploadEvaluationResult(result, adminId);
+            if (row != null) {
                 redisTemplate.opsForValue().set(RedisPrefixProperties.EVALUATIONS + result.getRound(), baseQueryService.queryEvaluation(result.getRound()));
                 redisTemplate.opsForValue().set(RedisPrefixProperties.LATEST_EVALUATION, baseQueryService.queryLatestEvaluation());
             }
-            return raw;
+            return row;
         } catch (Exception e) {
             return null;
         }
@@ -189,11 +189,11 @@ public class AdminServiceImpl implements AdminService {
     public Integer deleteUser(Integer uid) {
         try {
             System.err.println("deleteUser: " + uid);
-            Integer raw = adminMapper.deleteUser(uid);
-            if (raw != null && raw == 1) {
+            Integer row = adminMapper.deleteUser(uid);
+            if (row != null && row == 1) {
                 redisTemplate.delete(String.valueOf(uid));
             }
-            return raw;
+            return row;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -204,8 +204,8 @@ public class AdminServiceImpl implements AdminService {
     public Integer updateUser(UpdatedUserMessage message) {
         try {
             System.err.println("updateUser: " + message.getUsername());
-            Integer raw = adminMapper.updateUser(message);
-            if (raw != null && raw == 1) {
+            Integer row = adminMapper.updateUser(message);
+            if (row != null && row == 1) {
                 Integer uid = message.getUid();
                 //先删除已有的键
                 redisTemplate.delete("findUserByUserId" + uid);
@@ -225,7 +225,7 @@ public class AdminServiceImpl implements AdminService {
                     redisTemplate.opsForValue().set(String.valueOf(uid), userService.getNotVerifiedUserMessageById(uid));
                 }
             }
-            return raw;
+            return row;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

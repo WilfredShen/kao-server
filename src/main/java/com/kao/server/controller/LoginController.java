@@ -107,8 +107,8 @@ public class LoginController {
             newUser.setPassword(DigestGenerator.getDigest(password, newUser.getSalt()));
             newUser.setRegisterTime(new Timestamp(System.currentTimeMillis()));
 
-            Integer raw = loginService.addOne(newUser);
-            if (raw != null && raw == 1) {
+            Integer row = loginService.addOne(newUser);
+            if (row != null && row == 1) {
                 return ResultFactory.buildSuccessJsonResult();
             } else {
                 return ResultFactory.buildFailJsonResult();

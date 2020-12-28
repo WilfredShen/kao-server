@@ -64,12 +64,12 @@ public class LoginServiceImpl implements LoginService {
     public Integer addOne(User user) {
 
         try {
-            Integer raw = loginMapper.addOne(user);
-            if (raw != null && raw == 1) {
+            Integer row = loginMapper.addOne(user);
+            if (row != null && row == 1) {
                 redisTemplate.opsForValue().set(String.valueOf(user.getUsername()), user);
                 System.err.println("addOne:" + redisTemplate.opsForValue().get(user.getUsername()));
             }
-            return raw;
+            return row;
         } catch (Exception e) {
             return null;
         }
@@ -154,10 +154,10 @@ public class LoginServiceImpl implements LoginService {
             return JsonResultStatus.VERIFICATIONS_IS_WRONG;
         }
         String digest = DigestGenerator.getDigest(password, user.getSalt());
-        int raws;
+        Integer row;
         try {
-            raws = loginMapper.updatePassword(username, digest);
-            if (raws == 1) {
+            row = loginMapper.updatePassword(username, digest);
+            if (row == 1) {
                 User newUser = loginMapper.findUserByUsername(username);
                 redisTemplate.delete(username);
                 redisTemplate.opsForValue().set(username, newUser);

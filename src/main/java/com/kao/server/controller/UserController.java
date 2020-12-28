@@ -73,8 +73,8 @@ public class UserController {
         Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
         String phoneNumber = userMsg.getString("phoneNumber");
         String email = userMsg.getString("email");
-        Integer raw = userService.updateUserMsg(phoneNumber, email, uid);
-        if (raw != null && raw == 1) {
+        Integer row = userService.updateUserMsg(phoneNumber, email, uid);
+        if (row != null && row == 1) {
             return ResultFactory.buildSuccessJsonResult();
         } else {
             return ResultFactory.buildFailJsonResult();
