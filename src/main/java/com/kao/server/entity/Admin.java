@@ -71,4 +71,17 @@ public class Admin implements Serializable {
     public void setLatestLoginLocation(String latestLoginLocation) {
         this.latestLoginLocation = latestLoginLocation;
     }
+
+    @Override
+    public String toString() {
+        return "Admin{" +
+                "adminId=" + adminId +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", salt='" + salt + '\'' +
+                ", registerTime=" + registerTime +
+                ", latestLoginTime=" + latestLoginTime +
+                ", latestLoginLocation='" + latestLoginLocation + '\'' +
+                '}';
+    }
 }

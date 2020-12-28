@@ -135,4 +135,24 @@ public class User implements Serializable {
     public void setLatestLoginLocation(String latestLoginLocation) {
         this.latestLoginLocation = latestLoginLocation;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "uid=" + uid +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", salt='" + salt + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", identity='" + identity + '\'' +
+                ", name='" + name + '\'' +
+                ", birthday=" + birthday +
+                ", sex=" + sex +
+                ", accountType='" + accountType + '\'' +
+                ", registerTime=" + registerTime +
+                ", latestLoginTime=" + latestLoginTime +
+                ", latestLoginLocation='" + latestLoginLocation + '\'' +
+                '}';
+    }
 }

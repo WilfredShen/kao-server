@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Service
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+@PropertySource(value = {"classpath:application.yml"})
 public class LoginServiceImpl implements LoginService {
 
     @Autowired
@@ -30,18 +32,17 @@ public class LoginServiceImpl implements LoginService {
     private SmsService smsService;
     @Value("${redis.key.prefix.authCode}")
     private String authCode;
-    @Value("${redis.key.expire.authCode}")
+    @Value("${redis.key.expired.authCode}")
     private Long expireTime;
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
-
     @Override
-    @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName+#username")
+    @Cacheable(value = {"redisCacheManager"}, key = "#result.username", condition = "#result!=null")
     public User findUserByUsername(String username) {
 
         try {
-            System.err.println("findUserByUsername:" + username);
+            System.err.println("findUserByUsername: " + username);
             return loginMapper.findUserByUsername(username);
         } catch (Exception e) {
             return null;
@@ -49,10 +50,10 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName+#username")
+    @Cacheable(value = {"redisCacheManager"}, key = "#result.username", condition = "#result!=null")
     public User findUserNameByUsername(String username) {
         try {
-            System.err.println("findUserNameByUsername:" + username);
+            System.err.println("findUserNameByUsername: " + username);
             return loginMapper.findUserNameByUsername(username);
         } catch (Exception e) {
             return null;
@@ -65,7 +66,7 @@ public class LoginServiceImpl implements LoginService {
         try {
             Integer raw = loginMapper.addOne(user);
             if (raw != null && raw == 1) {
-                redisTemplate.opsForValue().set(user.getUsername(), user);
+                redisTemplate.opsForValue().set(String.valueOf(user.getUsername()), user);
                 System.err.println("addOne:" + redisTemplate.opsForValue().get(user.getUsername()));
             }
             return raw;
@@ -78,12 +79,15 @@ public class LoginServiceImpl implements LoginService {
     public Integer handleLogin(String username, String password) {
 
         try {
-            User user;
+            User user = null;
             Boolean flag = redisTemplate.hasKey(username);
+            System.err.println(flag);
             if (flag != null && flag) {
                 user = (User) redisTemplate.opsForValue().get(username);
+                System.err.println(user);
             } else {
                 user = loginMapper.findUserByUsername(username);
+                System.err.println(user);
                 if (user != null) {
                     redisTemplate.opsForValue().set(username, user);
                 }
@@ -156,7 +160,7 @@ public class LoginServiceImpl implements LoginService {
             if (raws == 1) {
                 User newUser = loginMapper.findUserByUsername(username);
                 redisTemplate.delete(username);
-                redisTemplate.opsForValue().set(username, user);
+                redisTemplate.opsForValue().set(username, newUser);
                 return JsonResultStatus.SUCCESS;
             } else {
                 return JsonResultStatus.FAIL;

@@ -54,7 +54,7 @@ public class AdminAspect {
         try {
             HttpServletRequest request = HttpUtil.getRequest();
             String accessToken = CookieUtil.findCookie(request.getCookies(), "accessToken").getValue();
-            Admin admin = adminService.findUserByUsername(TokenVerifier.getUserNameFromToken(accessToken));
+            Admin admin = adminService.findAdminByUsername(TokenVerifier.getUserNameFromToken(accessToken));
             if (admin != null) {
                 return proceedingJoinPoint.proceed();
             } else {

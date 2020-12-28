@@ -16,7 +16,7 @@ public interface AdminService {
      * @param username 用户名
      * @return Admin 管理员对象
      */
-    Admin findUserByUsername(String username);
+    Admin findAdminByUsername(String username);
 
     /**
      * 处理登录逻辑

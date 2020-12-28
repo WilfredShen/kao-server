@@ -7,8 +7,8 @@ import com.kao.server.mapper.TutorMapper;
 import com.kao.server.service.TutorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -22,12 +22,15 @@ import java.util.List;
 public class TutorServiceImpl implements TutorService {
     @Autowired
     private TutorMapper tutorMapper;
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
+
+    private final String prefix = "tutor";
 
     @Override
-    @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName+#uid")
     public TutorMessage findTutorById(Integer uid) {
         try {
-            System.err.println("findTutorById:" + uid);
+            System.err.println("findTutorById: " + uid);
             return tutorMapper.findTutorById(uid);
         } catch (Exception e) {
             return null;
@@ -35,20 +38,27 @@ public class TutorServiceImpl implements TutorService {
     }
 
     @Override
-    @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName+#uid")
     public TutorMessage getTutorMsg(Integer uid) {
-
+        TutorMessage tutorMessage;
         try {
-            System.err.println("getTutorMsg:" + uid);
-            return tutorMapper.findTutorById(uid);
+            String key = prefix + uid;
+            System.err.println("getTutorMsg: " + uid);
+            Boolean flag = redisTemplate.hasKey(key);
+            if (flag != null && flag) {
+                tutorMessage = (TutorMessage) redisTemplate.opsForValue().get(key);
+            } else {
+                tutorMessage = tutorMapper.findTutorById(uid);
+                redisTemplate.opsForValue().set(key, tutorMessage);
+            }
+            return tutorMessage;
         } catch (Exception e) {
             return null;
         }
     }
 
     @Override
-    @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName+#p0+#p1+#p2+#p3+#p4")
-    public List<QueryableStudentMessage> getQueryableStudentByConditions(Date beginDate, Date endDate, String collegeLevel, String major, String expectedMajor) {
+    public List<QueryableStudentMessage> getQueryableStudentByConditions(Date beginDate, Date endDate, String
+            collegeLevel, String major, String expectedMajor) {
         try {
             System.err.println("getQueryableStudentByConditions");
             return tutorMapper.getQueryableStudentByConditions(
@@ -66,8 +76,12 @@ public class TutorServiceImpl implements TutorService {
     @Override
     public Integer updateTutorMsg(UpdatedTutorMessage message, int uid) {
         try {
-            System.err.println("updateTutorMsg" + uid);
-            return tutorMapper.updateTutorMessage(message, uid);
+            String key = prefix + uid;
+            Integer raw = tutorMapper.updateTutorMessage(message, uid);
+            if (raw != null && raw == 1) {
+                redisTemplate.opsForValue().set(key, tutorMapper.findTutorById(uid));
+            }
+            return raw;
         } catch (Exception e) {
             return null;
         }

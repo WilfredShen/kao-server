@@ -62,4 +62,16 @@ public class UserMessage implements Serializable {
     }
 
     private String accountType;
+
+    @Override
+    public String toString() {
+        return "UserMessage{" +
+                "uid=" + uid +
+                ", username='" + username + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", verified=" + verified +
+                ", accountType='" + accountType + '\'' +
+                '}';
+    }
 }

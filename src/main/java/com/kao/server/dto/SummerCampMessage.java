@@ -53,4 +53,15 @@ public class SummerCampMessage implements Serializable {
     public void setDate(Date date) {
         this.date = date;
     }
+
+    @Override
+    public String toString() {
+        return "SummerCampMessage{" +
+                "title='" + title + '\'' +
+                ", image='" + image + '\'' +
+                ", officialLink='" + officialLink + '\'' +
+                ", content='" + content + '\'' +
+                ", date=" + date +
+                '}';
+    }
 }

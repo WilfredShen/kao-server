@@ -31,8 +31,12 @@ redis:
       password: "password:"
       admin: "admin"
       user: "user"
-    expire:
+      evaluation: "evaluation"
+      latestNews: "latestNews"
+      news: "news"
+    expired:
       authCode: 60
+      commandExpireTime: 600
 
 
 mybatis:
