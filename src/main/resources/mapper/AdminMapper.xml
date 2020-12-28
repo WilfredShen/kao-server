@@ -41,7 +41,7 @@
         WHERE user.uid = #{uid}
     </delete>
 
-    <select id="findUserByUsername" parameterType="java.lang.String" resultType="com.kao.server.entity.Admin">
+    <select id="findAdminByUsername" parameterType="java.lang.String" resultType="com.kao.server.entity.Admin">
         SELECT a.*
         FROM admin AS a
         WHERE a.username = #{username}

@@ -17,7 +17,7 @@ public interface AdminMapper {
      * @return Admin
      * @throws Exception 数据库操作异常
      */
-    Admin findUserByUsername(String username) throws Exception;
+    Admin findAdminByUsername(String username) throws Exception;
 
     /**
      * 通过轮次查询评估结果

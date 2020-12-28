@@ -2,9 +2,14 @@ package com.kao.server.service.impl;
 
 import com.kao.server.dto.*;
 import com.kao.server.entity.Admin;
+import com.kao.server.entity.User;
 import com.kao.server.mapper.AdminMapper;
 import com.kao.server.service.AdminService;
+import com.kao.server.service.BaseQueryService;
+import com.kao.server.service.UserService;
+import com.kao.server.util.accounttype.AccountTypeConstant;
 import com.kao.server.util.checker.LoginChecker;
+import com.kao.server.util.properties.RedisPrefixProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -25,10 +30,29 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
+    @Autowired
+    private BaseQueryService baseQueryService;
+
+    @Autowired
+    private UserService userService;
+
+    private final String prefix = "admin";
+
+
     @Override
-    public Admin findUserByUsername(String username) {
+    public Admin findAdminByUsername(String username) {
+        Admin admin;
         try {
-            return adminMapper.findUserByUsername(username);
+            String key = prefix + username;
+            Boolean flag = redisTemplate.hasKey(key);
+            if (flag != null && flag) {
+                admin = (Admin) redisTemplate.opsForValue().get(key);
+            } else {
+                admin = adminMapper.findAdminByUsername(username);
+                redisTemplate.opsForValue().set(key, admin);
+            }
+            System.err.println("findAdminByUsername" + username);
+            return admin;
         } catch (Exception e) {
             return null;
         }
@@ -37,15 +61,16 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Integer handleLogin(String username, String password) {
 
+        String key = prefix + username;
         try {
-            Admin admin;
-            Boolean flag = redisTemplate.hasKey("Admin" + username);
+            Admin admin = null;
+            Boolean flag = redisTemplate.hasKey(key);
             if (flag != null && flag) {
-                admin = (Admin) redisTemplate.opsForValue().get("Admin" + username);
+                admin = (Admin) redisTemplate.opsForValue().get(key);
             } else {
-                admin = adminMapper.findUserByUsername(username);
+                admin = adminMapper.findAdminByUsername(username);
                 if (admin != null) {
-                    redisTemplate.opsForValue().set("Admin" + username, admin);
+                    redisTemplate.opsForValue().set(key, admin);
                 }
             }
             return LoginChecker.checkLogin(admin, username, password);
@@ -67,13 +92,18 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Integer updateEvaluationResult(String cid, String mid, int round, int adminId, String result) {
         try {
-            return adminMapper.updateEvaluationResult(
+            Integer raw = adminMapper.updateEvaluationResult(
                     cid,
                     mid,
                     round,
                     adminId,
                     result
             );
+            if (raw != null && raw == 1) {
+                redisTemplate.opsForValue().set(RedisPrefixProperties.EVALUATIONS + round, baseQueryService.queryEvaluation(round));
+                redisTemplate.opsForValue().set(RedisPrefixProperties.LATEST_EVALUATION, baseQueryService.queryLatestEvaluation());
+            }
+            return raw;
         } catch (Exception e) {
             return null;
         }
@@ -82,7 +112,12 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Integer uploadEvaluationResult(EvaluationBase result, int adminId) {
         try {
-            return adminMapper.uploadEvaluationResult(result, adminId);
+            Integer raw = adminMapper.uploadEvaluationResult(result, adminId);
+            if (raw != null) {
+                redisTemplate.opsForValue().set(RedisPrefixProperties.EVALUATIONS + result.getRound(), baseQueryService.queryEvaluation(result.getRound()));
+                redisTemplate.opsForValue().set(RedisPrefixProperties.LATEST_EVALUATION, baseQueryService.queryLatestEvaluation());
+            }
+            return raw;
         } catch (Exception e) {
             return null;
         }
@@ -93,6 +128,12 @@ public class AdminServiceImpl implements AdminService {
         Integer count = null;
         try {
             count = adminMapper.uploadNews(news, adminId);
+            if (count != null && count == 1) {
+                redisTemplate.delete(RedisPrefixProperties.LATEST_NEWS);
+                redisTemplate.delete(RedisPrefixProperties.NEWS);
+                redisTemplate.opsForValue().set(RedisPrefixProperties.LATEST_NEWS, baseQueryService.queryLatestNews(6));
+                redisTemplate.opsForValue().set(RedisPrefixProperties.NEWS, adminMapper.queryNews());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -103,7 +144,13 @@ public class AdminServiceImpl implements AdminService {
     public List<NewsBase> queryNews() {
         List<NewsBase> data = null;
         try {
-            data = adminMapper.queryNews();
+            Boolean flag = redisTemplate.hasKey(RedisPrefixProperties.NEWS);
+            if (flag != null && flag) {
+                data = (List<NewsBase>) redisTemplate.opsForValue().get(RedisPrefixProperties.NEWS);
+            } else {
+                data = adminMapper.queryNews();
+                redisTemplate.opsForValue().set(RedisPrefixProperties.NEWS, data);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -115,6 +162,13 @@ public class AdminServiceImpl implements AdminService {
         Integer count = 0;
         try {
             count = adminMapper.updateNews(news, adminId);
+            System.err.println("修改新闻条数： " + count);
+            if (count != null) {
+                redisTemplate.delete(RedisPrefixProperties.LATEST_NEWS);
+                redisTemplate.delete(RedisPrefixProperties.NEWS);
+                redisTemplate.opsForValue().set(RedisPrefixProperties.LATEST_NEWS, baseQueryService.queryLatestNews(6));
+                redisTemplate.opsForValue().set(RedisPrefixProperties.NEWS, adminMapper.queryNews());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -134,7 +188,12 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Integer deleteUser(Integer uid) {
         try {
-            return adminMapper.deleteUser(uid);
+            System.err.println("deleteUser: " + uid);
+            Integer raw = adminMapper.deleteUser(uid);
+            if (raw != null && raw == 1) {
+                redisTemplate.delete(String.valueOf(uid));
+            }
+            return raw;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -144,7 +203,29 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Integer updateUser(UpdatedUserMessage message) {
         try {
-            return adminMapper.updateUser(message);
+            System.err.println("updateUser: " + message.getUsername());
+            Integer raw = adminMapper.updateUser(message);
+            if (raw != null && raw == 1) {
+                Integer uid = message.getUid();
+                //先删除已有的键
+                redisTemplate.delete("findUserByUserId" + uid);
+                redisTemplate.delete(String.valueOf(uid));
+
+                User user = userService.findUserByUserId(uid);
+                //更新findUserById
+                redisTemplate.opsForValue().set("findUserByUserId" + uid, user);
+                //更新findUserByName
+                redisTemplate.opsForValue().set(user.getUsername(), user);
+                //根据用户类型更新缓存
+                if (user.getAccountType().equals(AccountTypeConstant.getStudentType())) {
+                    redisTemplate.opsForValue().set(String.valueOf(uid), userService.getStudentUserMessageById(uid));
+                } else if (user.getAccountType().equals(AccountTypeConstant.getTeacherType())) {
+                    redisTemplate.opsForValue().set(String.valueOf(uid), userService.getTutorUserMessageById(uid));
+                } else if (user.getAccountType() == null) {
+                    redisTemplate.opsForValue().set(String.valueOf(uid), userService.getNotVerifiedUserMessageById(uid));
+                }
+            }
+            return raw;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

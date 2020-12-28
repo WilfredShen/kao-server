@@ -2,18 +2,15 @@ package com.kao.server;
 
 import com.kao.server.dto.QueryableStudentMessage;
 import com.kao.server.dto.UpdatedStudentMessage;
-import com.kao.server.dto.UpdatedTutorMessage;
 import com.kao.server.entity.Admin;
 import com.kao.server.mapper.AdminMapper;
 import com.kao.server.mapper.LoginMapper;
-import com.kao.server.mapper.StudentMapper;
 import com.kao.server.mapper.TutorMapper;
 import com.kao.server.service.StudentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.sound.midi.SoundbankResource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -74,7 +71,7 @@ class ServerApplicationTests {
 
         Admin admin = null;
         try {
-            admin = adminMapper.findUserByUsername(username);
+            admin = adminMapper.findAdminByUsername(username);
         } catch (Exception e) {
             e.printStackTrace();
         }

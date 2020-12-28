@@ -3,8 +3,9 @@ package com.kao.server.service.impl;
 import com.kao.server.dto.*;
 import com.kao.server.mapper.FavorMapper;
 import com.kao.server.service.FavorService;
+import com.kao.server.util.properties.RedisPrefixProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,13 +18,21 @@ public class FavorServiceImpl implements FavorService {
 
     @Autowired
     private FavorMapper favorMapper;
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Override
-    @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName+#uid")
     public StudentId getStudentId(Integer uid) {
         StudentId data = null;
+        String key = RedisPrefixProperties.STUDENT_ID;
         try {
-            data = favorMapper.getStudentId(uid);
+            Boolean flag = redisTemplate.hasKey(key);
+            if (flag != null && flag) {
+                data = (StudentId) redisTemplate.opsForValue().get(key);
+            } else {
+                data = favorMapper.getStudentId(uid);
+                redisTemplate.opsForValue().set(key, data);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -31,11 +40,16 @@ public class FavorServiceImpl implements FavorService {
     }
 
     @Override
-    @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName+#stuCid+#stuSid")
     public Integer favorMajor(String stuCid, String stuSid, List<MajorFavorBase> majorList) {
         Integer count = null;
+        String key1 = RedisPrefixProperties.FAVOR_MAJOR + stuCid + stuSid;
+        String key2 = RedisPrefixProperties.FAVOR_NEWS + stuCid + stuSid;
         try {
             count = favorMapper.favorMajor(stuCid, stuSid, majorList);
+            if (count != null) {
+                redisTemplate.opsForValue().set(key1, favorMapper.queryMajor(stuCid, stuSid));
+                redisTemplate.opsForValue().set(key2, favorMapper.queryNews(stuCid, stuSid));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -43,11 +57,14 @@ public class FavorServiceImpl implements FavorService {
     }
 
     @Override
-    @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName+#stuCid+#stuSid")
     public Integer favorTutor(String stuCid, String stuSid, List<TutorFavorBase> tutorList) {
         Integer count = null;
+        String key1 = RedisPrefixProperties.FAVOR_TUTOR + stuCid + stuSid;
         try {
             count = favorMapper.favorTutor(stuCid, stuSid, tutorList);
+            if (count != null) {
+                redisTemplate.opsForValue().set(key1, favorMapper.queryTutor(stuCid, stuSid));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -55,11 +72,17 @@ public class FavorServiceImpl implements FavorService {
     }
 
     @Override
-    @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName+#stuCid+#stuSid")
     public List<NewsFavorMessage> queryNews(String stuCid, String stuSid) {
         List<NewsFavorMessage> data = null;
+        String key = RedisPrefixProperties.FAVOR_NEWS + stuCid + stuSid;
         try {
-            data = favorMapper.queryNews(stuCid, stuSid);
+            Boolean flag = redisTemplate.hasKey(key);
+            if (flag != null && flag) {
+                data = (List<NewsFavorMessage>) redisTemplate.opsForValue().get(key);
+            } else {
+                data = favorMapper.queryNews(stuCid, stuSid);
+                redisTemplate.opsForValue().set(key, data);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -67,11 +90,17 @@ public class FavorServiceImpl implements FavorService {
     }
 
     @Override
-    @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName+#stuCid+#stuSid")
     public List<MajorFavorMessage> queryMajor(String stuCid, String stuSid) {
         List<MajorFavorMessage> data = null;
+        String key = RedisPrefixProperties.FAVOR_MAJOR + stuCid + stuSid;
         try {
-            data = favorMapper.queryMajor(stuCid, stuSid);
+            Boolean flag = redisTemplate.hasKey(key);
+            if (flag != null && flag) {
+                data = (List<MajorFavorMessage>) redisTemplate.opsForValue().get(key);
+            } else {
+                data = favorMapper.queryMajor(stuCid, stuSid);
+                redisTemplate.opsForValue().set(key, data);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -79,11 +108,17 @@ public class FavorServiceImpl implements FavorService {
     }
 
     @Override
-    @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName+#stuCid+#stuSid")
     public List<TutorFavorMessage> queryTutor(String stuCid, String stuSid) {
         List<TutorFavorMessage> data = null;
+        String key = RedisPrefixProperties.FAVOR_TUTOR + stuCid + stuSid;
         try {
-            data = favorMapper.queryTutor(stuCid, stuSid);
+            Boolean flag = redisTemplate.hasKey(key);
+            if (flag != null && flag) {
+                data = (List<TutorFavorMessage>) redisTemplate.opsForValue().get(key);
+            } else {
+                data = favorMapper.queryTutor(stuCid, stuSid);
+                redisTemplate.opsForValue().set(key, data);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -92,19 +127,36 @@ public class FavorServiceImpl implements FavorService {
 
     @Override
     public Integer deleteMajor(String cid, String sid, String majorCid, String majorMid) {
+
+        Integer raw = null;
+        String key1 = RedisPrefixProperties.FAVOR_MAJOR + cid + sid;
+        String key2 = RedisPrefixProperties.FAVOR_NEWS + cid + sid;
         try {
-            return favorMapper.deleteMajor(cid, sid, majorCid, majorMid);
+            raw = favorMapper.deleteMajor(cid, sid, majorCid, majorMid);
+            if (raw != null && raw == 1) {
+                redisTemplate.opsForValue().set(key1, favorMapper.queryMajor(cid, sid));
+                redisTemplate.opsForValue().set(key2, favorMapper.queryNews(cid, sid));
+            }
         } catch (Exception e) {
-            return null;
+            e.printStackTrace();
         }
+        return raw;
     }
 
     @Override
     public Integer deleteTutor(String cid, String sid, String tutorCid, String tutorTid) {
+
+        Integer raw = null;
+        String key = RedisPrefixProperties.FAVOR_TUTOR + cid + sid;
         try {
-            return favorMapper.deleteTutor(cid, sid, tutorCid, tutorTid);
+            raw = favorMapper.deleteTutor(cid, sid, tutorCid, tutorTid);
+            if (raw != null && raw == 1) {
+                redisTemplate.opsForValue().set(key, favorMapper.queryTutor(cid, sid));
+            }
+
         } catch (Exception e) {
-            return null;
+            e.printStackTrace();
         }
+        return raw;
     }
 }

@@ -31,7 +31,7 @@ public interface UserService {
      * @param uid 用户id
      * @return 未注册用户信息
      */
-    UserMessage getNotVerifiedUserMessageById(int uid);
+    UserMessage getNotVerifiedUserMessageById(Integer uid);
 
     /**
      * 获取学生用户信息
@@ -39,7 +39,7 @@ public interface UserService {
      * @param uid 用户id
      * @return 学生用户信息
      */
-    UserMessage getStudentUserMessageById(int uid);
+    UserMessage getStudentUserMessageById(Integer uid);
 
     /**
      * 获取老师用户信息
@@ -47,7 +47,7 @@ public interface UserService {
      * @param uid 用户id
      * @return 老师用户信息
      */
-    UserMessage getTutorUserMessageById(int uid);
+    UserMessage getTutorUserMessageById(Integer uid);
 
 
 }

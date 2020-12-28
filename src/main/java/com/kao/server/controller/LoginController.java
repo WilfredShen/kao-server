@@ -14,7 +14,6 @@ import com.kao.server.util.login.UidGenerator;
 import com.kao.server.util.token.TokenGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -55,24 +54,19 @@ public class LoginController {
         JsonResult jsonResult = null;
         int state = loginService.handleLogin(username, password);
         if (state == JsonResultStatus.SUCCESS) {
-            //先去redis找
-            ValueOperations<String, Object> operations = redisTemplate.opsForValue();
-            User user = (User) operations.get(username);
-            String token = null;
-            if (user != null) {
-                token = TokenGenerator.generateToken(
-                        (user).getUsername(),
-                        String.valueOf(user.getUid()),
-                        (user).getPassword()
-                );
-                session.setAttribute("username", username);
-                session.setAttribute("password", user.getPassword());
-                jsonResult = ResultFactory.buildSuccessJsonResult();
-                Cookie tokenCookie = CookieUtil.buildCookie("accessToken", token);
-                Cookie uidCookie = CookieUtil.buildCookie("uid", String.valueOf(user.getUid()));
-                response.addCookie(tokenCookie);
-                response.addCookie(uidCookie);
-            }
+            User user = (User) redisTemplate.opsForValue().get(username);
+            String token = TokenGenerator.generateToken(
+                    (user).getUsername(),
+                    String.valueOf(user.getUid()),
+                    (user).getPassword()
+            );
+            session.setAttribute("username", username);
+            session.setAttribute("password", user.getPassword());
+            jsonResult = ResultFactory.buildSuccessJsonResult();
+            Cookie tokenCookie = CookieUtil.buildCookie("accessToken", token);
+            Cookie uidCookie = CookieUtil.buildCookie("uid", String.valueOf(user.getUid()));
+            response.addCookie(tokenCookie);
+            response.addCookie(uidCookie);
 
         } else if (state == JsonResultStatus.USERNAME_WRONG) {
             return ResultFactory.buildFailJsonResult(state, JsonResultStatus.USERNAME_WRONG_DESC);
@@ -148,7 +142,6 @@ public class LoginController {
         String verificationCode = jsonObject.getString("verificationCode");
         String password = jsonObject.getString("password");
         String passwordAgain = jsonObject.getString("passwordAgain");
-
         Integer state = loginService.handleUpdateUserPassword(
                 username,
                 password,

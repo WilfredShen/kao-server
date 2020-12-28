@@ -6,8 +6,8 @@ import com.kao.server.mapper.StudentMapper;
 import com.kao.server.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 /**
@@ -19,12 +19,25 @@ public class StudentServiceImpl implements StudentService {
 
     @Autowired
     private StudentMapper studentMapper;
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
+
+    private final String prefix = "stu";
 
     @Override
-    @Cacheable(value = {"redisCacheManager"}, key = "#root.methodName+#uid")
     public StudentMessage getStuMsg(Integer uid) {
+
+        StudentMessage studentMessage;
         try {
-            return studentMapper.findStudentById(uid);
+            String key = prefix + uid;
+            System.err.println("getStuMsg: " + uid);
+            Boolean flag = redisTemplate.hasKey(key);
+            if (flag != null && flag) {
+                studentMessage = (StudentMessage) redisTemplate.opsForValue().get(key);
+            } else {
+                studentMessage = studentMapper.findStudentById(uid);
+            }
+            return studentMessage;
         } catch (Exception e) {
             return null;
         }
@@ -33,7 +46,13 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Integer updateStudentMsg(UpdatedStudentMessage studentMessage, int uid) {
         try {
-            return studentMapper.updateStudentMsg(studentMessage, uid);
+            String key = prefix + uid;
+            Integer raw = studentMapper.updateStudentMsg(studentMessage, uid);
+            if (raw != null && raw == 1) {
+                StudentMessage message = studentMapper.findStudentById(uid);
+                redisTemplate.opsForValue().set(key, message);
+            }
+            return raw;
         } catch (Exception e) {
             return null;
         }

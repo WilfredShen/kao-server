@@ -21,6 +21,7 @@ public class LoginChecker {
         if (user != null) {
             if (user instanceof User) {
                 String digest = DigestGenerator.getDigest(password, ((User) user).getSalt());
+                System.err.println("checkLogin: " + digest);
                 if (!((User) user).getPassword().equals(digest)) {
                     return JsonResultStatus.PASSWORD_WRONG;
                 }

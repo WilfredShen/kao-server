@@ -54,9 +54,9 @@ public class AdminController {
         int state = adminService.handleLogin(username, password);
         JsonResult jsonResult = new JsonResult(null, null, null);
         if (state == JsonResultStatus.SUCCESS) {
-
+            String key = "admin" + username;
             ValueOperations<String, Object> operations = redisTemplate.opsForValue();
-            Admin admin = (Admin) operations.get("Admin" + username);
+            Admin admin = (Admin) operations.get(key);
             if (admin != null) {
                 String token = TokenGenerator.generateToken(
                         (admin).getUsername(),

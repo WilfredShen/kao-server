@@ -53,7 +53,7 @@ public class TutorAspect {
         try {
             HttpServletRequest request = HttpUtil.getRequest();
             int uid = CookieUtil.parseInt(request.getCookies(), "uid");
-            TutorMessage tutorMessage = tutorService.findTutorById(uid);
+            TutorMessage tutorMessage = tutorService.getTutorMsg(uid);
             if (tutorMessage != null) {
                 return proceedingJoinPoint.proceed();
             } else {
