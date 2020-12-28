@@ -60,6 +60,7 @@ public class TutorServiceImpl implements TutorService {
     public List<QueryableStudentMessage> getQueryableStudentByConditions(Date beginDate, Date endDate, String
             collegeLevel, String major, String expectedMajor) {
         try {
+            System.err.println("getQueryableStudentByConditions");
             return tutorMapper.getQueryableStudentByConditions(
                     beginDate,
                     endDate,

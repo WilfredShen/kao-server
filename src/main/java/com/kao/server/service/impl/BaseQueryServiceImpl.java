@@ -84,6 +84,7 @@ public class BaseQueryServiceImpl implements BaseQueryService {
     public List<College> queryCollege(List<String> cidList) {
         List<College> data = null;
         try {
+            System.err.println("queryCollege");
             data = baseQueryMapper.queryCollege(cidList);
         } catch (Exception e) {
             e.printStackTrace();

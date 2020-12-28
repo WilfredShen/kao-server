@@ -45,6 +45,7 @@ public class FavorServiceImpl implements FavorService {
         String key1 = RedisPrefixProperties.FAVOR_MAJOR + stuCid + stuSid;
         String key2 = RedisPrefixProperties.FAVOR_NEWS + stuCid + stuSid;
         try {
+            System.err.println("favorMajor:" + stuCid + "," + stuSid);
             count = favorMapper.favorMajor(stuCid, stuSid, majorList);
             if (count != null) {
                 redisTemplate.opsForValue().set(key1, favorMapper.queryMajor(stuCid, stuSid));
@@ -61,6 +62,7 @@ public class FavorServiceImpl implements FavorService {
         Integer count = null;
         String key1 = RedisPrefixProperties.FAVOR_TUTOR + stuCid + stuSid;
         try {
+            System.err.println("favorTutor:" + stuCid + "," + stuSid);
             count = favorMapper.favorTutor(stuCid, stuSid, tutorList);
             if (count != null) {
                 redisTemplate.opsForValue().set(key1, favorMapper.queryTutor(stuCid, stuSid));
