@@ -1,6 +1,6 @@
 qiniu:
   domain: kao.wilfredshen.cn
-  access-key: qGkkLDP2MV_ASbbce-K6LEL6SrkJ9WCFRcxPn309
-  secret-key: EWZjP_KtYqTjW5vtXdSRqvKTMgN9N7Bz6jLGjz42
+  access-key: xxxxxx
+  secret-key: xxxxxx
   bucket-name: kao
   region: huanan

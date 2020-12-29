@@ -1,5 +1,9 @@
 package com.kao.server.util.verification;
 
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+
 /**
  * @author 沈伟峰
  */
@@ -12,8 +16,14 @@ public class VerificationUtil {
      * @param name     姓名
      * @return 认证结果
      */
-    public static boolean realAuth(String identity, String name) {
-        return true;
+    public static boolean identityAuth(String identity, String name) {
+        boolean flag = false;
+        try {
+            flag = IdentityUtil.verify(identity, name);
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException | InvalidKeyException e) {
+            e.printStackTrace();
+        }
+        return flag;
     }
 
     /**
