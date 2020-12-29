@@ -1,0 +1,6 @@
+identity:
+  api: http://service-m6b92bj7-1300755093.bj.apigw.tencentcs.com/release/idcard/VerifyIdcardv2
+  secret-id: xxxxxx
+  secret-key: xxxxxx
+  source: market
+  request-method: GET

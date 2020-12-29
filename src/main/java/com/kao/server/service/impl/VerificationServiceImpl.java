@@ -23,7 +23,7 @@ public class VerificationServiceImpl implements VerificationService {
     @Override
     public Integer realAuth(Integer uid, String identity, String name) {
         int status;
-        boolean flag = VerificationUtil.realAuth(identity, name);
+        boolean flag = VerificationUtil.identityAuth(identity, name);
         if (flag) {
             try {
                 verificationMapper.realAuth(uid, identity, name);
