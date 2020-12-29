@@ -10,7 +10,6 @@ import com.kao.server.util.login.DigestGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -38,38 +37,49 @@ public class LoginServiceImpl implements LoginService {
     private RedisTemplate<String, Object> redisTemplate;
 
     @Override
-    @Cacheable(value = {"redisCacheManager"}, key = "#result.username", condition = "#result!=null")
     public User findUserByUsername(String username) {
 
+        User user = null;
         try {
-            System.err.println("findUserByUsername: " + username);
-            return loginMapper.findUserByUsername(username);
+            Boolean flag = redisTemplate.hasKey(username);
+            if (flag != null && flag) {
+                user = (User) redisTemplate.opsForValue().get(username);
+            } else {
+                user = loginMapper.findUserByUsername(username);
+            }
         } catch (Exception e) {
-            return null;
+            e.printStackTrace();
         }
+        return user;
     }
 
     @Override
-    @Cacheable(value = {"redisCacheManager"}, key = "#result.username", condition = "#result!=null")
     public User findUserNameByUsername(String username) {
+
+        User user = null;
         try {
-            System.err.println("findUserNameByUsername: " + username);
-            return loginMapper.findUserNameByUsername(username);
+            Boolean flag = redisTemplate.hasKey(username);
+            if (flag != null && flag) {
+                user = (User) redisTemplate.opsForValue().get(username);
+            } else {
+                user = loginMapper.findUserNameByUsername(username);
+            }
         } catch (Exception e) {
-            return null;
+            e.printStackTrace();
         }
+        return user;
     }
 
     @Override
     public Integer addOne(User user) {
 
         try {
-            Integer raw = loginMapper.addOne(user);
-            if (raw != null && raw == 1) {
-                redisTemplate.opsForValue().set(String.valueOf(user.getUsername()), user);
+            Integer row = loginMapper.addOne(user);
+            if (row != null && row == 1) {
+                redisTemplate.opsForValue().set(user.getUsername(), user);
                 System.err.println("addOne:" + redisTemplate.opsForValue().get(user.getUsername()));
             }
-            return raw;
+            return row;
         } catch (Exception e) {
             return null;
         }
@@ -154,13 +164,12 @@ public class LoginServiceImpl implements LoginService {
             return JsonResultStatus.VERIFICATIONS_IS_WRONG;
         }
         String digest = DigestGenerator.getDigest(password, user.getSalt());
-        int raws;
+        Integer row;
         try {
-            raws = loginMapper.updatePassword(username, digest);
-            if (raws == 1) {
-                User newUser = loginMapper.findUserByUsername(username);
-                redisTemplate.delete(username);
-                redisTemplate.opsForValue().set(username, newUser);
+            row = loginMapper.updatePassword(username, digest);
+            if (row == 1) {
+                redisTemplate.opsForValue().set(username, user);
+                System.err.println(user.getPassword());
                 return JsonResultStatus.SUCCESS;
             } else {
                 return JsonResultStatus.FAIL;
@@ -171,11 +180,13 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    @Cacheable(value = {"redisCacheManager"}, key = "#phoneNumber")
     public String getVerificationCode(String phoneNumber) {
+//        String verificationCode = smsService.getVerificationCode(phoneNumber);
         String verificationCode = "666666";
-        redisTemplate.expire(phoneNumber, expireTime, TimeUnit.SECONDS);
-        System.err.println(redisTemplate.opsForValue().get(authCode + phoneNumber));
+        if (verificationCode != null) {
+            redisTemplate.opsForValue().set(phoneNumber, verificationCode);
+            redisTemplate.expire(phoneNumber, expireTime, TimeUnit.SECONDS);
+        }
         return verificationCode;
     }
 

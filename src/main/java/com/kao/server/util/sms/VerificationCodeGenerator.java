@@ -26,10 +26,9 @@ public class VerificationCodeGenerator {
     public static String generateVerificationCode(String phoneNumber) {
         String verifiedCode = String.valueOf(new Random().nextInt(899999) + 100000);
         //配置密钥
-        DefaultProfile m_profile = DefaultProfile.getProfile("cn-hangzhou",
+        DefaultProfile mProfile = DefaultProfile.getProfile("cn-hangzhou",
                 "YourAccessKey", "YourAccessSecret");
-        IAcsClient m_client = new DefaultAcsClient(m_profile);
-
+        IAcsClient mClient = new DefaultAcsClient(mProfile);
         //调用阿里云短信服务平台
         CommonRequest request = new CommonRequest();
         request.setSysMethod(MethodType.POST);
@@ -38,17 +37,16 @@ public class VerificationCodeGenerator {
         request.setSysAction("SendSms");
         request.putQueryParameter("RegionId", "cn-hangzhou");
         request.putQueryParameter("PhoneNumbers", phoneNumber);
-        request.putQueryParameter("SignName", "自动生成试卷系统");
-        request.putQueryParameter("TemplateCode", "SMS_204116418");
+        request.putQueryParameter("TemplateCode", "SMS_207953773");
         //0为验证码形式
         request.putQueryParameter("TemplateType", "0");
-        request.putQueryParameter("TemplateName", "自动生成试卷系统");
-        request.putQueryParameter("TemplateContent", "您正在申请手机注册，验证码为：${code}，5分钟内有效！");
-        request.putQueryParameter("Remark", "个人网站开发测试");
+        request.putQueryParameter("TemplateName", "教育部学科评估管理信息系统");
+        request.putQueryParameter("TemplateContent", "您的验证码${code}，该验证码5分钟内有效，请勿泄漏于他人！");
+        request.putQueryParameter("Remark", "个人网站开发使用");
         request.putQueryParameter("TemplateParam", "{\"code\":\"" + verifiedCode + "\"}");
 
         try {
-            CommonResponse response = m_client.getCommonResponse(request);
+            CommonResponse response = mClient.getCommonResponse(request);
             JSONObject verification = JSON.parseObject(response.getData());
             String successCode = "OK";
             String code = "Code";

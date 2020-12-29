@@ -113,8 +113,8 @@ public class AdminController {
     public JsonResult uploadEvaluations(@RequestBody EvaluationBase results, HttpServletRequest request) {
 
         Integer adminId = CookieUtil.parseInt(request.getCookies(), "adminId");
-        Integer raws = adminService.uploadEvaluationResult(results, adminId);
-        if (raws == null || raws != 1) {
+        Integer row = adminService.uploadEvaluationResult(results, adminId);
+        if (row == null || row != 1) {
             return ResultFactory.buildFailJsonResult(JsonResultStatus.UNCOMPLETED, JsonResultStatus.UNCOMPLETED_DESC);
         }
         return ResultFactory.buildSuccessJsonResult();
@@ -141,7 +141,7 @@ public class AdminController {
 
         JsonResult jsonResult;
 
-        Integer raws = adminService.updateEvaluationResult(
+        Integer row = adminService.updateEvaluationResult(
                 cid,
                 mid,
                 Integer.parseInt(round),
@@ -149,7 +149,7 @@ public class AdminController {
                 result
         );
 
-        if (raws != null && raws == 1) {
+        if (row != null && row == 1) {
             jsonResult = ResultFactory.buildSuccessJsonResult();
         } else {
             jsonResult = ResultFactory.buildFailJsonResult();
@@ -273,8 +273,8 @@ public class AdminController {
 
         try {
             Integer uid = Integer.valueOf(jsonObject.getString("uid"));
-            Integer raw = adminService.deleteUser(uid);
-            if (raw != null && raw == 1) {
+            Integer row = adminService.deleteUser(uid);
+            if (row != null && row == 1) {
                 return ResultFactory.buildSuccessJsonResult();
             } else {
                 return ResultFactory.buildFailJsonResult();
@@ -289,8 +289,8 @@ public class AdminController {
     @IsAdmin
     public JsonResult updateUser(@RequestBody UpdatedUserMessage updatedUserMessage) {
 
-        Integer raw = adminService.updateUser(updatedUserMessage);
-        if (raw != null && raw == 1) {
+        Integer row = adminService.updateUser(updatedUserMessage);
+        if (row != null && row == 1) {
             return ResultFactory.buildSuccessJsonResult();
         } else {
             return ResultFactory.buildFailJsonResult();

@@ -65,8 +65,8 @@ public class TutorController {
         if (tutorService.getTutorMsg(uid) == null) {
             return ResultFactory.buildFailJsonResult(JsonResultStatus.UNAUTHORIZED, JsonResultStatus.UNAUTHORIZED_DESC);
         }
-        Integer raw = tutorService.updateTutorMsg(message, uid);
-        if (raw != null && raw == 1) {
+        Integer row = tutorService.updateTutorMsg(message, uid);
+        if (row != null && row == 1) {
             return ResultFactory.buildSuccessJsonResult();
         } else {
             return ResultFactory.buildFailJsonResult();

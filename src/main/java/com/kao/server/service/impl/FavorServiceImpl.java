@@ -130,35 +130,35 @@ public class FavorServiceImpl implements FavorService {
     @Override
     public Integer deleteMajor(String cid, String sid, String majorCid, String majorMid) {
 
-        Integer raw = null;
+        Integer row = null;
         String key1 = RedisPrefixProperties.FAVOR_MAJOR + cid + sid;
         String key2 = RedisPrefixProperties.FAVOR_NEWS + cid + sid;
         try {
-            raw = favorMapper.deleteMajor(cid, sid, majorCid, majorMid);
-            if (raw != null && raw == 1) {
+            row = favorMapper.deleteMajor(cid, sid, majorCid, majorMid);
+            if (row != null && row == 1) {
                 redisTemplate.opsForValue().set(key1, favorMapper.queryMajor(cid, sid));
                 redisTemplate.opsForValue().set(key2, favorMapper.queryNews(cid, sid));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return raw;
+        return row;
     }
 
     @Override
     public Integer deleteTutor(String cid, String sid, String tutorCid, String tutorTid) {
 
-        Integer raw = null;
+        Integer row = null;
         String key = RedisPrefixProperties.FAVOR_TUTOR + cid + sid;
         try {
-            raw = favorMapper.deleteTutor(cid, sid, tutorCid, tutorTid);
-            if (raw != null && raw == 1) {
+            row = favorMapper.deleteTutor(cid, sid, tutorCid, tutorTid);
+            if (row != null && row == 1) {
                 redisTemplate.opsForValue().set(key, favorMapper.queryTutor(cid, sid));
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return raw;
+        return row;
     }
 }

@@ -47,12 +47,12 @@ public class StudentServiceImpl implements StudentService {
     public Integer updateStudentMsg(UpdatedStudentMessage studentMessage, int uid) {
         try {
             String key = prefix + uid;
-            Integer raw = studentMapper.updateStudentMsg(studentMessage, uid);
-            if (raw != null && raw == 1) {
+            Integer row = studentMapper.updateStudentMsg(studentMessage, uid);
+            if (row != null && row == 1) {
                 StudentMessage message = studentMapper.findStudentById(uid);
                 redisTemplate.opsForValue().set(key, message);
             }
-            return raw;
+            return row;
         } catch (Exception e) {
             return null;
         }

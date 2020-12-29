@@ -145,8 +145,8 @@ public class FavorController {
         Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
         StudentId studentId = favorService.getStudentId(uid);
         JsonResult jsonResult;
-        Integer raw = favorService.deleteMajor(studentId.getCid(), studentId.getSid(), majorCid, majorMid);
-        if (raw != null && raw == 1) {
+        Integer row = favorService.deleteMajor(studentId.getCid(), studentId.getSid(), majorCid, majorMid);
+        if (row != null && row == 1) {
             jsonResult = ResultFactory.buildSuccessJsonResult();
         } else {
             jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.CANCEL_COLLECTION_FAILED, JsonResultStatus.CANCEL_COLLECTION_FAILED_DESC);
@@ -170,8 +170,8 @@ public class FavorController {
         Integer uid = CookieUtil.parseInt(request.getCookies(), "uid");
         StudentId studentId = favorService.getStudentId(uid);
         JsonResult jsonResult;
-        Integer raw = favorService.deleteTutor(studentId.getCid(), studentId.getSid(), tutorCid, tutorTid);
-        if (raw != null && raw == 1) {
+        Integer row = favorService.deleteTutor(studentId.getCid(), studentId.getSid(), tutorCid, tutorTid);
+        if (row != null && row == 1) {
             jsonResult = ResultFactory.buildSuccessJsonResult();
         } else {
             jsonResult = ResultFactory.buildFailJsonResult(JsonResultStatus.CANCEL_COLLECTION_FAILED, JsonResultStatus.CANCEL_COLLECTION_FAILED_DESC);

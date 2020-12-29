@@ -62,8 +62,8 @@ public class StudentController {
             if (studentService.getStuMsg(uid) == null) {
                 return ResultFactory.buildFailJsonResult(JsonResultStatus.UNAUTHORIZED, JsonResultStatus.UNAUTHORIZED_DESC);
             }
-            Integer raw = studentService.updateStudentMsg(studentMessage, uid);
-            if (raw != null && raw == 1) {
+            Integer row = studentService.updateStudentMsg(studentMessage, uid);
+            if (row != null && row == 1) {
                 return ResultFactory.buildSuccessJsonResult();
             } else {
                 return ResultFactory.buildFailJsonResult();
