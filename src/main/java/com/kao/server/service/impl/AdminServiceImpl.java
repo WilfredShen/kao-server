@@ -189,8 +189,10 @@ public class AdminServiceImpl implements AdminService {
     public Integer deleteUser(Integer uid) {
         try {
             System.err.println("deleteUser: " + uid);
+            User user = userService.findUserByUserId(uid);
             Integer row = adminMapper.deleteUser(uid);
             if (row != null && row == 1) {
+                redisTemplate.delete(user.getUsername());
                 redisTemplate.delete(String.valueOf(uid));
             }
             return row;

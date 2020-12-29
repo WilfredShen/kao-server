@@ -149,6 +149,7 @@ public class LoginController {
                 verificationCode,
                 passwordAgain
         );
+        System.err.println(state);
         if (state != null && state.equals(JsonResultStatus.SUCCESS)) {
             return ResultFactory.buildSuccessJsonResult();
         } else if (state != null && state.equals(JsonResultStatus.NOT_FOUND)) {
@@ -166,12 +167,11 @@ public class LoginController {
      * 获取验证码
      *
      * @param jsonObject 包括手机号
-     * @param request    HttpServletRequest
      * @return 封装的Json数据
      */
     @PostMapping("/getvfcode")
     @ResponseBody
-    public JsonResult getVerificationCode(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
+    public JsonResult getVerificationCode(@RequestBody JSONObject jsonObject) {
         String phoneNumber = jsonObject.getString("phoneNumber");
         System.err.println(phoneNumber);
         String verificationCode = loginService.getVerificationCode(phoneNumber);
