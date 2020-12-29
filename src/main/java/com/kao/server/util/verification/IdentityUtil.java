@@ -3,9 +3,9 @@ package com.kao.server.util.verification;
 import com.alibaba.fastjson.JSONObject;
 import com.kao.server.util.http.HttpUtil;
 import com.kao.server.util.properties.IdentityProperties;
+import com.kao.server.util.security.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import sun.misc.BASE64Encoder;
 
 import javax.annotation.PostConstruct;
 import javax.crypto.Mac;
@@ -49,11 +49,18 @@ public class IdentityUtil {
         Key sKey = new SecretKeySpec(secretKey.getBytes(StandardCharsets.UTF_8), mac.getAlgorithm());
         mac.init(sKey);
         byte[] hash = mac.doFinal(signString.getBytes(StandardCharsets.UTF_8));
-        String sig = new BASE64Encoder().encode(hash);
+        String sig = SecurityUtil.encodeBase64(hash);
 
         return "hmac id=\"" + secretId + "\", algorithm=\"hmac-sha1\", headers=\"x-date x-source\", signature=\"" + sig + "\"";
     }
 
+    /**
+     * 进行实名认证
+     *
+     * @param identity 身份证号
+     * @param name     真实姓名
+     * @return 实名认证是否通过
+     */
     public static boolean verify(String identity, String name)
             throws NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException {
         boolean flag = false;

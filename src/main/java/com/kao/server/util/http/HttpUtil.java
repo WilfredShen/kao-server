@@ -10,7 +10,7 @@ import java.net.URLEncoder;
 import java.util.Map;
 
 /**
- * @author 全鸿润
+ * @author 全鸿润、沈伟峰
  */
 public class HttpUtil {
 
