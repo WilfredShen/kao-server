@@ -9,13 +9,23 @@ import com.aliyuncs.IAcsClient;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
+import com.kao.server.util.properties.SmsProperties;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.Random;
 
 /**
  * @author 全鸿润
  */
+@Component
 public class VerificationCodeGenerator {
+
+    private static VerificationCodeGenerator verificationCodeGenerator;
+
+    @Autowired
+    private SmsProperties smsProperties;
 
     /**
      * 调用阿里云接口获取短信验证码
@@ -25,26 +35,27 @@ public class VerificationCodeGenerator {
      */
     public static String generateVerificationCode(String phoneNumber) {
         String verifiedCode = String.valueOf(new Random().nextInt(899999) + 100000);
-        String accessKeyId = "请填入accessKeyId";
-        String secret = "请填入accessSecret";
+
+        String accessKeyId = verificationCodeGenerator.smsProperties.accessKeyId;
+        String secret = verificationCodeGenerator.smsProperties.accessSecret;
         //配置密钥
-        DefaultProfile mProfile = DefaultProfile.getProfile("cn-hangzhou",
+        DefaultProfile mProfile = DefaultProfile.getProfile(verificationCodeGenerator.smsProperties.regionId,
                 accessKeyId, secret);
         IAcsClient mClient = new DefaultAcsClient(mProfile);
         //调用阿里云短信服务平台
         CommonRequest request = new CommonRequest();
         request.setSysMethod(MethodType.POST);
-        request.setSysDomain("dysmsapi.aliyuncs.com");
-        request.setSysVersion("2017-05-25");
-        request.setSysAction("SendSms");
-        request.putQueryParameter("RegionId", "cn-hangzhou");
+        request.setSysDomain(verificationCodeGenerator.smsProperties.sysDomain);
+        request.setSysVersion(verificationCodeGenerator.smsProperties.sysVersion);
+        request.setSysAction(verificationCodeGenerator.smsProperties.sysAction);
+        request.putQueryParameter("RegionId", verificationCodeGenerator.smsProperties.regionId);
+        request.putQueryParameter("TemplateCode", verificationCodeGenerator.smsProperties.templateCode);
+        request.putQueryParameter("SignName", verificationCodeGenerator.smsProperties.signName);
+        request.putQueryParameter("TemplateType", verificationCodeGenerator.smsProperties.templateType.toString());
+        request.putQueryParameter("TemplateName", verificationCodeGenerator.smsProperties.templateName);
+        request.putQueryParameter("TemplateContent", verificationCodeGenerator.smsProperties.templateContent);
+        request.putQueryParameter("Remark", verificationCodeGenerator.smsProperties.remark);
         request.putQueryParameter("PhoneNumbers", phoneNumber);
-        request.putQueryParameter("TemplateCode", "SMS_204111139");
-        request.putQueryParameter("SignName", "LH出题系统");
-        request.putQueryParameter("TemplateType", "0");
-        request.putQueryParameter("TemplateName", "结对编程");
-        request.putQueryParameter("TemplateContent", "您正在申请手LH出题系统手机注册，验证码为：${code}，5分钟内有效！");
-        request.putQueryParameter("Remark", "学校编程任务需要手机验证码进行验证");
         request.putQueryParameter("TemplateParam", "{\"code\":\"" + verifiedCode + "\"}");
 
         try {
@@ -61,5 +72,11 @@ public class VerificationCodeGenerator {
             System.err.println("获取验证码失败,检查手机号是否输入正确");
             return null;
         }
+    }
+
+    @PostConstruct
+    public void init() {
+        verificationCodeGenerator = this;
+        verificationCodeGenerator.smsProperties = this.smsProperties;
     }
 }

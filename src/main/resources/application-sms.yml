@@ -1,0 +1,12 @@
+sms:
+  access-key-id: xxxx
+  access-secret: xxxx
+  region-id: cn-hangzhou
+  sys-domain: dysmsapi.aliyuncs.com
+  sys-version: 2017-05-25
+  sys-action: SendSms
+  sign-name: xxxx
+  template-code: xxxx
+  template-type: 0
+  template-name: 结对编程
+  remark: 学校编程任务需要手机验证码进行验证
