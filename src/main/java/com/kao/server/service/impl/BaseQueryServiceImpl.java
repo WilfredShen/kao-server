@@ -33,7 +33,7 @@ public class BaseQueryServiceImpl implements BaseQueryService {
                 data = (List<EvaluationBase>) redisTemplate.opsForValue().get(key);
             } else {
                 data = baseQueryMapper.queryEvaluation(round);
-                redisTemplate.opsForValue().set(key + round, data);
+                redisTemplate.opsForValue().set(key, data);
             }
         } catch (Exception e) {
             e.printStackTrace();
