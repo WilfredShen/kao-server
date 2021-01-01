@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.kao.server.dto.UserMessage;
 import com.kao.server.entity.User;
 import com.kao.server.service.UserService;
-import com.kao.server.util.accounttype.AccountTypeConstant;
 import com.kao.server.util.accounttype.IsLoggedIn;
 import com.kao.server.util.cookie.CookieUtil;
 import com.kao.server.util.json.JsonResult;
@@ -41,13 +40,14 @@ public class UserController {
             User user = userService.findUserByUserId(uid);
             UserMessage userMessage = null;
 
-            if (user.getAccountType() == null) {
+            if (user.getName() != null && user.getIdentity() != null) {
+                userMessage = userService.getVerifiedUserMessageById(uid);
+                System.err.println("已认证");
+            } else {
                 userMessage = userService.getNotVerifiedUserMessageById(uid);
-            } else if (user.getAccountType().equals(AccountTypeConstant.getStudentType())) {
-                userMessage = userService.getStudentUserMessageById(uid);
-            } else if (user.getAccountType().equals(AccountTypeConstant.getTeacherType())) {
-                userMessage = userService.getTutorUserMessageById(uid);
+                System.err.println("没认证");
             }
+            System.err.println(userMessage);
 
             if (userMessage != null) {
                 return ResultFactory.buildSuccessJsonResult(userMessage);

@@ -49,5 +49,12 @@ public interface UserService {
      */
     UserMessage getTutorUserMessageById(Integer uid);
 
+    /**
+     * 获取实名认证用户信息
+     *
+     * @param uid 用户id
+     * @return 实名认证用户信息
+     */
+    UserMessage getVerifiedUserMessageById(int uid);
 
 }
