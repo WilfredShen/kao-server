@@ -60,4 +60,8 @@ public class TokenVerifier {
         return getDecodeJwt(token).getClaim("password").asString();
     }
 
+    public static String getUserIdFromToken(String token) {
+        return getDecodeJwt(token).getClaim("uid").asString();
+    }
+
 }

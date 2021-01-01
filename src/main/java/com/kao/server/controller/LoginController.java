@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 
 /**
@@ -47,8 +46,6 @@ public class LoginController {
      */
     @PostMapping("/login")
     public JsonResult login(@RequestBody JSONObject jsonObject, HttpServletRequest request, HttpServletResponse response) {
-
-        HttpSession session = request.getSession();
         String username = jsonObject.getString("username");
         String password = jsonObject.getString("password");
         JsonResult jsonResult = null;
@@ -60,14 +57,11 @@ public class LoginController {
                     String.valueOf(user.getUid()),
                     (user).getPassword()
             );
-            session.setAttribute("username", username);
-            session.setAttribute("password", user.getPassword());
             jsonResult = ResultFactory.buildSuccessJsonResult();
             Cookie tokenCookie = CookieUtil.buildCookie("accessToken", token);
             Cookie uidCookie = CookieUtil.buildCookie("uid", String.valueOf(user.getUid()));
             response.addCookie(tokenCookie);
             response.addCookie(uidCookie);
-
         } else if (state == JsonResultStatus.USERNAME_WRONG) {
             return ResultFactory.buildFailJsonResult(state, JsonResultStatus.USERNAME_WRONG_DESC);
         } else if (state == JsonResultStatus.PASSWORD_WRONG) {

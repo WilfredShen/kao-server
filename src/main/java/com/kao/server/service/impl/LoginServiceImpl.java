@@ -181,7 +181,8 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public String getVerificationCode(String phoneNumber) {
-        String verificationCode = smsService.getVerificationCode(phoneNumber);
+//        String verificationCode = smsService.getVerificationCode(phoneNumber);
+        String verificationCode = "666666";
         if (verificationCode != null) {
             redisTemplate.opsForValue().set(phoneNumber, verificationCode);
             redisTemplate.expire(phoneNumber, expireTime, TimeUnit.SECONDS);

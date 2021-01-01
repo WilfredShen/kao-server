@@ -22,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -47,7 +46,6 @@ public class AdminController {
      */
     @PostMapping("/login")
     public JsonResult login(@RequestBody JSONObject adminMsg, HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession();
         String username = adminMsg.getString("username");
         String password = adminMsg.getString("password");
 
@@ -63,8 +61,6 @@ public class AdminController {
                         String.valueOf(admin.getAdminId()),
                         (admin).getPassword()
                 );
-                session.setAttribute("username", username);
-                session.setAttribute("password", password);
                 jsonResult.setStatus(state);
                 Cookie tokenCookie = CookieUtil.buildCookie("accessToken", token);
                 Cookie adminIdCookie = CookieUtil.buildCookie("adminId", String.valueOf(admin.getAdminId()));

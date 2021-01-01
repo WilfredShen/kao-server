@@ -1,6 +1,10 @@
 package com.kao.server.util.aspect;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.kao.server.entity.Admin;
+import com.kao.server.entity.User;
+import com.kao.server.service.AdminService;
+import com.kao.server.service.LoginService;
 import com.kao.server.util.accounttype.IsLoggedIn;
 import com.kao.server.util.cookie.CookieUtil;
 import com.kao.server.util.http.HttpUtil;
@@ -11,11 +15,11 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 /**
  * @author 全鸿润
@@ -24,6 +28,13 @@ import javax.servlet.http.HttpSession;
 @Aspect
 @Order(-1)
 public class LoginAspect {
+
+
+    @Autowired
+    private LoginService loginService;
+
+    @Autowired
+    private AdminService adminService;
 
     /**
      * 切点方法
@@ -45,23 +56,34 @@ public class LoginAspect {
     public Object authorityVerify(ProceedingJoinPoint pjp, IsLoggedIn isLoggedIn) {
         try {
             HttpServletRequest request = HttpUtil.getRequest();
-            HttpSession session = request.getSession();
             String accessToken = CookieUtil.findCookie(request.getCookies(), "accessToken").getValue();
             boolean flag = false;
             if (TokenVerifier.verifyToken(accessToken)) {
+
                 String username = TokenVerifier.getUserNameFromToken(accessToken);
                 String password = TokenVerifier.getPasswordFromToken(accessToken);
-                String userName = (String) session.getAttribute("username");
-                String passWord = (String) session.getAttribute("password");
-                System.err.println(userName + " " + passWord);
-                //判断token是否属于当前用户
-                if (userName.equals(username) && passWord.equals(password)) {
-                    flag = true;
+                //用户持有uid,是用户类型
+                if (CookieUtil.findCookie(request.getCookies(), "uid") != null) {
+                    User user = loginService.findUserByUsername(username);
+                    String userName = user.getUsername();
+                    String passWord = user.getPassword();
+                    if (userName.equals(username) && passWord.equals(password)) {
+                        flag = true;
+                    }
+                    System.err.println("user: " + userName + " " + passWord);
+                } else if (CookieUtil.findCookie(request.getCookies(), "adminId") != null) {
+                    Admin admin = adminService.findAdminByUsername(username);
+                    String userName = admin.getUsername();
+                    String passWord = admin.getPassword();
+                    if (userName.equals(username) && passWord.equals(password)) {
+                        flag = true;
+                    }
+                    System.err.println("admin: " + userName + " " + passWord);
                 }
+                //判断token是否属于当前用户
             }
             if (flag) {
-                Object object = pjp.proceed();
-                return object;
+                return pjp.proceed();
             } else {
                 return ResultFactory.buildFailJsonResult(JsonResultStatus.UNAUTHORIZED, JsonResultStatus.UNAUTHORIZED_DESC);
             }
