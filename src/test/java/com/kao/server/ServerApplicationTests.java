@@ -7,6 +7,7 @@ import com.kao.server.mapper.AdminMapper;
 import com.kao.server.mapper.LoginMapper;
 import com.kao.server.mapper.TutorMapper;
 import com.kao.server.service.StudentService;
+import com.kao.server.util.properties.SmsProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
