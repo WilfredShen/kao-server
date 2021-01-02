@@ -1,5 +1,7 @@
 package com.kao.server.mapper;
 
+import java.sql.Date;
+
 /**
  * @author 沈伟峰
  */
@@ -11,9 +13,11 @@ public interface VerificationMapper {
      * @param uid      用户编号
      * @param identity 身份证号
      * @param name     姓名
+     * @param sex      性别
+     * @param birthday 生日
      * @return 影响的记录数
      */
-    Integer realAuth(Integer uid, String identity, String name) throws Exception;
+    Integer realAuth(Integer uid, String identity, String name, Integer sex, Date birthday) throws Exception;
 
     /**
      * 学生提交认证
