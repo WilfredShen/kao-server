@@ -36,7 +36,7 @@ public class VerificationServiceImpl implements VerificationService {
         Map<Object, Object> map = VerificationUtil.identityAuth(identity, name);
         key1 = String.valueOf(uid);
         key2 = "findUserByUserId" + uid;
-        if ((boolean) map.get("isOK")) {
+        if (map != null && (boolean) map.get("isOK")) {
             try {
                 String idCardNo = (String) map.get("identity");
                 int sex = "M".equals((String) map.get("sex")) ? 0 : 1;
@@ -60,7 +60,7 @@ public class VerificationServiceImpl implements VerificationService {
     @Override
     public Integer studentAuth(Integer uid, String cid, String sid) {
         int status;
-        User user = null;
+        User user;
         key1 = String.valueOf(uid);
         key2 = "findUserByUserId" + uid;
         try {
@@ -100,7 +100,7 @@ public class VerificationServiceImpl implements VerificationService {
     @Override
     public Integer tutorAuth(Integer uid, String cid, String tid) {
         int status;
-        User user = null;
+        User user;
         key1 = String.valueOf(uid);
         key2 = "findUserByUserId" + uid;
         try {
