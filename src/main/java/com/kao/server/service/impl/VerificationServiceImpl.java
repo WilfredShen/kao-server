@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.util.Map;
+
 /**
  * @author 沈伟峰
  */
@@ -30,12 +33,15 @@ public class VerificationServiceImpl implements VerificationService {
     @Override
     public Integer realAuth(Integer uid, String identity, String name) {
         int status;
-        boolean flag = VerificationUtil.identityAuth(identity, name);
+        Map<Object, Object> map = VerificationUtil.identityAuth(identity, name);
         key1 = String.valueOf(uid);
         key2 = "findUserByUserId" + uid;
-        if (flag) {
+        if ((boolean) map.get("isOK")) {
             try {
-                verificationMapper.realAuth(uid, identity, name);
+                String idCardNo = (String) map.get("identity");
+                int sex = "M".equals((String) map.get("sex")) ? 0 : 1;
+                Date birthday = (Date) map.get("birthday");
+                verificationMapper.realAuth(uid, idCardNo, name, sex, birthday);
                 redisTemplate.delete(key1);
                 redisTemplate.delete(key2);
                 redisTemplate.opsForValue().set(key1, userMapper.getVerifiedUserMessageById(uid));

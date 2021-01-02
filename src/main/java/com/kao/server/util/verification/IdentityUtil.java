@@ -19,6 +19,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -54,16 +55,38 @@ public class IdentityUtil {
         return "hmac id=\"" + secretId + "\", algorithm=\"hmac-sha1\", headers=\"x-date x-source\", signature=\"" + sig + "\"";
     }
 
+    private static Map<Object, Object> parseResult(JSONObject result) {
+        Map<Object, Object> map = new HashMap<>();
+
+        boolean isOK = result.getBoolean("isok");
+        map.put("isok", isOK);
+        String identity = result.getString("idcard");
+        map.put("identity", identity);
+
+        JSONObject idCardInfo = result.getJSONObject("IdCardInfor");
+        String sex = idCardInfo.getString("sex");
+        map.put("sex", "男".equals(sex) ? "M" : "F");
+        Date birthday = idCardInfo.getSqlDate("birthday");
+        map.put("birthday", birthday);
+
+        return map;
+    }
+
     /**
      * 进行实名认证
      *
      * @param identity 身份证号
      * @param name     真实姓名
-     * @return 实名认证是否通过
+     * @return 实名认证结果<br />
+     * boolean isOK: 认证是否通过<br/>
+     * String name: 脱敏姓名<br/>
+     * String identity: 脱敏身份证号<br/>
+     * String sex: "M"表示男性，"F"表示女性<br/>
+     * java.sql.Date birthday: 生日
      */
-    public static boolean verify(String identity, String name)
+    public static Map<Object, Object> verify(String identity, String name)
             throws NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException {
-        boolean flag = false;
+        Map<Object, Object> map = null;
 
         String secretId = identityUtil.properties.secretId;
         String secretKey = identityUtil.properties.secretKey;
@@ -117,7 +140,7 @@ public class IdentityUtil {
             int errorCode = jsonObject.getIntValue("error_code");
             if (errorCode == 0) {
                 JSONObject result = jsonObject.getJSONObject("result");
-                flag = result.getBoolean("isok");
+                map = parseResult(result);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -130,7 +153,7 @@ public class IdentityUtil {
                 e2.printStackTrace();
             }
         }
-        return flag;
+        return map;
     }
 
     @PostConstruct

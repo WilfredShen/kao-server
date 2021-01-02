@@ -15,7 +15,9 @@
     <update id="realAuth">
         UPDATE user
         SET identity = #{identity},
-            name     = #{name}
+            name     = #{name},
+            sex      = #{sex},
+            birthday = #{birthday}
         WHERE uid = #{uid}
     </update>
     <update id="studentAuthVerified">

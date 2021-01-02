@@ -3,6 +3,7 @@ package com.kao.server.util.verification;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Map;
 
 /**
  * @author 沈伟峰
@@ -10,20 +11,25 @@ import java.security.NoSuchAlgorithmException;
 public class VerificationUtil {
 
     /**
-     * 实名认证
+     * 进行实名认证
      *
      * @param identity 身份证号
-     * @param name     姓名
-     * @return 认证结果
+     * @param name     真实姓名
+     * @return 实名认证结果<br />
+     * boolean isOK: 认证是否通过<br/>
+     * String name: 脱敏姓名<br/>
+     * String identity: 脱敏身份证号<br/>
+     * String sex: "M"表示男性，"F"表示女性<br/>
+     * java.sql.Date birthday: 生日
      */
-    public static boolean identityAuth(String identity, String name) {
-        boolean flag = false;
+    public static Map<Object, Object> identityAuth(String identity, String name) {
+        Map<Object, Object> map = null;
         try {
-            flag = IdentityUtil.verify(identity, name);
+            map = IdentityUtil.verify(identity, name);
         } catch (NoSuchAlgorithmException | UnsupportedEncodingException | InvalidKeyException e) {
             e.printStackTrace();
         }
-        return flag;
+        return map;
     }
 
     /**
