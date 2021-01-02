@@ -59,7 +59,7 @@ public class IdentityUtil {
         Map<Object, Object> map = new HashMap<>();
 
         boolean isOK = result.getBoolean("isok");
-        map.put("isok", isOK);
+        map.put("isOK", isOK);
         String identity = result.getString("idcard");
         map.put("identity", identity);
 
@@ -138,6 +138,7 @@ public class IdentityUtil {
 
             JSONObject jsonObject = JSONObject.parseObject(response.toString());
             int errorCode = jsonObject.getIntValue("error_code");
+            System.out.println("error_code:" + errorCode);
             if (errorCode == 0) {
                 JSONObject result = jsonObject.getJSONObject("result");
                 map = parseResult(result);
