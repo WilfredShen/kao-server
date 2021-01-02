@@ -3,6 +3,7 @@ package com.kao.server;
 import com.kao.server.service.AdminService;
 import com.kao.server.service.StudentService;
 import com.kao.server.service.TutorService;
+import com.kao.server.service.VerificationService;
 import com.kao.server.service.impl.AdminServiceImpl;
 import com.kao.server.service.impl.StudentServiceImpl;
 import com.kao.server.service.impl.TutorServiceImpl;
@@ -27,11 +28,6 @@ public class ServerApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ServerApplication.class, args);
-        try {
-            IdentityUtil.verify("330411200005262215", "沈伟峰");
-        } catch (NoSuchAlgorithmException | UnsupportedEncodingException | InvalidKeyException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
