@@ -7,6 +7,7 @@ import com.kao.server.service.VerificationService;
 import com.kao.server.util.json.JsonResultStatus;
 import com.kao.server.util.verification.VerificationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 /**
@@ -19,16 +20,29 @@ public class VerificationServiceImpl implements VerificationService {
     private VerificationMapper verificationMapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
+
+    private String key1;
+    private String key2;
+    private String key3;
 
     @Override
     public Integer realAuth(Integer uid, String identity, String name) {
         int status;
         boolean flag = VerificationUtil.identityAuth(identity, name);
+        key1 = String.valueOf(uid);
+        key2 = "findUserByUserId" + uid;
         if (flag) {
             try {
                 verificationMapper.realAuth(uid, identity, name);
+                redisTemplate.delete(key1);
+                redisTemplate.delete(key2);
+                redisTemplate.opsForValue().set(key1, userMapper.getVerifiedUserMessageById(uid));
+                redisTemplate.opsForValue().set(key2, userMapper.findUserByUserId(uid));
                 status = JsonResultStatus.SUCCESS;
             } catch (Exception e) {
+                e.printStackTrace();
                 status = JsonResultStatus.FAIL;
             }
         } else {
@@ -41,6 +55,8 @@ public class VerificationServiceImpl implements VerificationService {
     public Integer studentAuth(Integer uid, String cid, String sid) {
         int status;
         User user = null;
+        key1 = String.valueOf(uid);
+        key2 = "findUserByUserId" + uid;
         try {
             user = userMapper.findUserByUserId(uid);
         } catch (Exception e) {
@@ -61,6 +77,10 @@ public class VerificationServiceImpl implements VerificationService {
         if (flag) {
             try {
                 verificationMapper.studentAuthVerified(uid);
+                redisTemplate.delete(key1);
+                redisTemplate.delete(key2);
+                redisTemplate.opsForValue().set(key1, userMapper.getStudentUserMessageById(uid));
+                redisTemplate.opsForValue().set(key2, userMapper.findUserByUserId(uid));
                 status = JsonResultStatus.SUCCESS;
             } catch (Exception e) {
                 status = JsonResultStatus.FAIL;
@@ -75,6 +95,8 @@ public class VerificationServiceImpl implements VerificationService {
     public Integer tutorAuth(Integer uid, String cid, String tid) {
         int status;
         User user = null;
+        key1 = String.valueOf(uid);
+        key2 = "findUserByUserId" + uid;
         try {
             user = userMapper.findUserByUserId(uid);
         } catch (Exception e) {
@@ -94,6 +116,10 @@ public class VerificationServiceImpl implements VerificationService {
         if (flag) {
             try {
                 verificationMapper.tutorAuthVerified(uid);
+                redisTemplate.delete(key1);
+                redisTemplate.delete(key2);
+                redisTemplate.opsForValue().set(key1, userMapper.getTutorUserMessageById(uid));
+                redisTemplate.opsForValue().set(key2, userMapper.findUserByUserId(uid));
                 status = JsonResultStatus.SUCCESS;
             } catch (Exception e) {
                 status = JsonResultStatus.FAIL;

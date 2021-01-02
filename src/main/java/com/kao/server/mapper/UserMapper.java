@@ -64,5 +64,14 @@ public interface UserMapper {
      */
     UserMessage getTutorUserMessageById(int uid) throws Exception;
 
+    /**
+     * 获取实名认证用户信息
+     *
+     * @param uid 用户id
+     * @return 教师用户信息
+     * @throws Exception 数据库操作异常
+     */
+    UserMessage getVerifiedUserMessageById(int uid) throws Exception;
+
 
 }

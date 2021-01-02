@@ -12,6 +12,7 @@ public class UserMessage implements Serializable {
     private String phone;
     private String email;
     private boolean verified;
+    private String accountType;
 
     public Integer getUid() {
         return uid;
@@ -60,8 +61,6 @@ public class UserMessage implements Serializable {
     public void setAccountType(String accountType) {
         this.accountType = accountType;
     }
-
-    private String accountType;
 
     @Override
     public String toString() {

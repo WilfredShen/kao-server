@@ -85,6 +85,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserMessage getTutorUserMessageById(Integer uid) {
+        UserMessage userMessage = null;
         try {
             String key = String.valueOf(uid);
             Boolean flag = (redisTemplate.hasKey(key));
@@ -93,13 +94,24 @@ public class UserServiceImpl implements UserService {
                 return (UserMessage) redisTemplate.opsForValue().get(key);
             } else {
                 System.err.println("getTutorUserMessageById: " + uid);
-                UserMessage userMessage = userMapper.getTutorUserMessageById(uid);
+                userMessage = userMapper.getTutorUserMessageById(uid);
                 redisTemplate.opsForValue().set(key, userMessage);
-                return userMessage;
             }
         } catch (Exception e) {
-            return null;
+            e.printStackTrace();
         }
+        return userMessage;
+    }
+
+    @Override
+    public UserMessage getVerifiedUserMessageById(int uid) {
+        UserMessage userMessage = null;
+        try {
+            userMessage = userMapper.getVerifiedUserMessageById(uid);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return userMessage;
     }
 
     @Override

@@ -41,5 +41,10 @@
         FROM user_teacher AS u
         WHERE u.uid = #{uid};
     </select>
+    <select id="getVerifiedUserMessageById" resultType="com.kao.server.dto.UserMessage">
+        SELECT *
+        FROM verified_user AS v
+        WHERE v.uid = #{uid}
+    </select>
 
 </mapper>

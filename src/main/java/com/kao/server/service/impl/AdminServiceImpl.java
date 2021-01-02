@@ -4,9 +4,9 @@ import com.kao.server.dto.*;
 import com.kao.server.entity.Admin;
 import com.kao.server.entity.User;
 import com.kao.server.mapper.AdminMapper;
+import com.kao.server.mapper.BaseQueryMapper;
+import com.kao.server.mapper.UserMapper;
 import com.kao.server.service.AdminService;
-import com.kao.server.service.BaseQueryService;
-import com.kao.server.service.UserService;
 import com.kao.server.util.accounttype.AccountTypeConstant;
 import com.kao.server.util.checker.LoginChecker;
 import com.kao.server.util.properties.RedisPrefixProperties;
@@ -31,10 +31,10 @@ public class AdminServiceImpl implements AdminService {
     private RedisTemplate<String, Object> redisTemplate;
 
     @Autowired
-    private BaseQueryService baseQueryService;
+    private BaseQueryMapper baseQueryMapper;
 
     @Autowired
-    private UserService userService;
+    private UserMapper userMapper;
 
     private final String prefix = "admin";
 
@@ -100,8 +100,8 @@ public class AdminServiceImpl implements AdminService {
                     result
             );
             if (row != null && row == 1) {
-                redisTemplate.opsForValue().set(RedisPrefixProperties.EVALUATIONS + round, baseQueryService.queryEvaluation(round));
-                redisTemplate.opsForValue().set(RedisPrefixProperties.LATEST_EVALUATION, baseQueryService.queryLatestEvaluation());
+                redisTemplate.opsForValue().set(RedisPrefixProperties.EVALUATIONS + round, baseQueryMapper.queryEvaluation(round));
+                redisTemplate.opsForValue().set(RedisPrefixProperties.LATEST_EVALUATION, baseQueryMapper.queryLatestEvaluation());
             }
             return row;
         } catch (Exception e) {
@@ -114,8 +114,8 @@ public class AdminServiceImpl implements AdminService {
         try {
             Integer row = adminMapper.uploadEvaluationResult(result, adminId);
             if (row != null) {
-                redisTemplate.opsForValue().set(RedisPrefixProperties.EVALUATIONS + result.getRound(), baseQueryService.queryEvaluation(result.getRound()));
-                redisTemplate.opsForValue().set(RedisPrefixProperties.LATEST_EVALUATION, baseQueryService.queryLatestEvaluation());
+                redisTemplate.opsForValue().set(RedisPrefixProperties.EVALUATIONS + result.getRound(), baseQueryMapper.queryEvaluation(result.getRound()));
+                redisTemplate.opsForValue().set(RedisPrefixProperties.LATEST_EVALUATION, baseQueryMapper.queryLatestEvaluation());
             }
             return row;
         } catch (Exception e) {
@@ -129,9 +129,7 @@ public class AdminServiceImpl implements AdminService {
         try {
             count = adminMapper.uploadNews(news, adminId);
             if (count != null && count == 1) {
-                redisTemplate.delete(RedisPrefixProperties.LATEST_NEWS);
-                redisTemplate.delete(RedisPrefixProperties.NEWS);
-                redisTemplate.opsForValue().set(RedisPrefixProperties.LATEST_NEWS, baseQueryService.queryLatestNews(6));
+                redisTemplate.opsForValue().set(RedisPrefixProperties.LATEST_NEWS, baseQueryMapper.queryLatestNews(6));
                 redisTemplate.opsForValue().set(RedisPrefixProperties.NEWS, adminMapper.queryNews());
             }
         } catch (Exception e) {
@@ -164,9 +162,7 @@ public class AdminServiceImpl implements AdminService {
             count = adminMapper.updateNews(news, adminId);
             System.err.println("修改新闻条数： " + count);
             if (count != null) {
-                redisTemplate.delete(RedisPrefixProperties.LATEST_NEWS);
-                redisTemplate.delete(RedisPrefixProperties.NEWS);
-                redisTemplate.opsForValue().set(RedisPrefixProperties.LATEST_NEWS, baseQueryService.queryLatestNews(6));
+                redisTemplate.opsForValue().set(RedisPrefixProperties.LATEST_NEWS, baseQueryMapper.queryLatestNews(6));
                 redisTemplate.opsForValue().set(RedisPrefixProperties.NEWS, adminMapper.queryNews());
             }
         } catch (Exception e) {
@@ -189,7 +185,7 @@ public class AdminServiceImpl implements AdminService {
     public Integer deleteUser(Integer uid) {
         try {
             System.err.println("deleteUser: " + uid);
-            User user = userService.findUserByUserId(uid);
+            User user = userMapper.findUserByUserId(uid);
             Integer row = adminMapper.deleteUser(uid);
             if (row != null && row == 1) {
                 redisTemplate.delete(user.getUsername());
@@ -206,25 +202,24 @@ public class AdminServiceImpl implements AdminService {
     public Integer updateUser(UpdatedUserMessage message) {
         try {
             System.err.println("updateUser: " + message.getUsername());
+            Integer uid = message.getUid();
+            //先保存旧用户信息
+            User user = userMapper.findUserByUserId(uid);
             Integer row = adminMapper.updateUser(message);
             if (row != null && row == 1) {
-                Integer uid = message.getUid();
-                //先删除已有的键
-                redisTemplate.delete("findUserByUserId" + uid);
-                redisTemplate.delete(String.valueOf(uid));
 
-                User user = userService.findUserByUserId(uid);
+                redisTemplate.delete(user.getUsername());
                 //更新findUserById
                 redisTemplate.opsForValue().set("findUserByUserId" + uid, user);
                 //更新findUserByName
-                redisTemplate.opsForValue().set(user.getUsername(), user);
+                redisTemplate.opsForValue().set(message.getUsername(), user);
                 //根据用户类型更新缓存
                 if (user.getAccountType().equals(AccountTypeConstant.getStudentType())) {
-                    redisTemplate.opsForValue().set(String.valueOf(uid), userService.getStudentUserMessageById(uid));
+                    redisTemplate.opsForValue().set(String.valueOf(uid), userMapper.getStudentUserMessageById(uid));
                 } else if (user.getAccountType().equals(AccountTypeConstant.getTeacherType())) {
-                    redisTemplate.opsForValue().set(String.valueOf(uid), userService.getTutorUserMessageById(uid));
+                    redisTemplate.opsForValue().set(String.valueOf(uid), userMapper.getTutorUserMessageById(uid));
                 } else if (user.getAccountType() == null) {
-                    redisTemplate.opsForValue().set(String.valueOf(uid), userService.getNotVerifiedUserMessageById(uid));
+                    redisTemplate.opsForValue().set(String.valueOf(uid), userMapper.getNotVerifiedUserMessageById(uid));
                 }
             }
             return row;
