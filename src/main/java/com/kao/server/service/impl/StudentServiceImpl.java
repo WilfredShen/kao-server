@@ -5,22 +5,30 @@ import com.kao.server.dto.UpdatedStudentMessage;
 import com.kao.server.mapper.StudentMapper;
 import com.kao.server.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author 全鸿润
  */
 @Service
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+@PropertySource(value = {"classpath:application.yml"})
 public class StudentServiceImpl implements StudentService {
 
     @Autowired
     private StudentMapper studentMapper;
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
+
+    @Value("${redis.key.expired.commandExpireTime}")
+    private Long expireTime;
 
     private final String prefix = "stu";
 
@@ -36,6 +44,8 @@ public class StudentServiceImpl implements StudentService {
                 studentMessage = (StudentMessage) redisTemplate.opsForValue().get(key);
             } else {
                 studentMessage = studentMapper.findStudentById(uid);
+                redisTemplate.opsForValue().set(key, studentMessage);
+                redisTemplate.expire(key, expireTime, TimeUnit.MINUTES);
             }
             return studentMessage;
         } catch (Exception e) {
@@ -51,6 +61,7 @@ public class StudentServiceImpl implements StudentService {
             if (row != null && row == 1) {
                 StudentMessage message = studentMapper.findStudentById(uid);
                 redisTemplate.opsForValue().set(key, message);
+                redisTemplate.expire(key, expireTime, TimeUnit.MINUTES);
             }
             return row;
         } catch (Exception e) {

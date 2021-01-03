@@ -7,16 +7,20 @@ import com.kao.server.service.VerificationService;
 import com.kao.server.util.json.JsonResultStatus;
 import com.kao.server.util.verification.VerificationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author 沈伟峰
  */
 @Service
+@PropertySource(value = {"classpath:application.yml"})
 public class VerificationServiceImpl implements VerificationService {
 
     @Autowired
@@ -26,9 +30,11 @@ public class VerificationServiceImpl implements VerificationService {
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
+    @Value("${redis.key.expired.commandExpireTime}")
+    private Long expireTime;
+
     private String key1;
     private String key2;
-    private String key3;
 
     @Override
     public Integer realAuth(Integer uid, String identity, String name) {
@@ -46,6 +52,8 @@ public class VerificationServiceImpl implements VerificationService {
                 redisTemplate.delete(key2);
                 redisTemplate.opsForValue().set(key1, userMapper.getVerifiedUserMessageById(uid));
                 redisTemplate.opsForValue().set(key2, userMapper.findUserByUserId(uid));
+                redisTemplate.expire(key1, expireTime, TimeUnit.MINUTES);
+                redisTemplate.expire(key2, expireTime, TimeUnit.MINUTES);
                 status = JsonResultStatus.SUCCESS;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -87,6 +95,8 @@ public class VerificationServiceImpl implements VerificationService {
                 redisTemplate.delete(key2);
                 redisTemplate.opsForValue().set(key1, userMapper.getStudentUserMessageById(uid));
                 redisTemplate.opsForValue().set(key2, userMapper.findUserByUserId(uid));
+                redisTemplate.expire(key1, expireTime, TimeUnit.MINUTES);
+                redisTemplate.expire(key2, expireTime, TimeUnit.MINUTES);
                 status = JsonResultStatus.SUCCESS;
             } catch (Exception e) {
                 status = JsonResultStatus.FAIL;
@@ -126,6 +136,8 @@ public class VerificationServiceImpl implements VerificationService {
                 redisTemplate.delete(key2);
                 redisTemplate.opsForValue().set(key1, userMapper.getTutorUserMessageById(uid));
                 redisTemplate.opsForValue().set(key2, userMapper.findUserByUserId(uid));
+                redisTemplate.expire(key1, expireTime, TimeUnit.MINUTES);
+                redisTemplate.expire(key2, expireTime, TimeUnit.MINUTES);
                 status = JsonResultStatus.SUCCESS;
             } catch (Exception e) {
                 status = JsonResultStatus.FAIL;

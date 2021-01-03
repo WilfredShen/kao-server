@@ -6,22 +6,30 @@ import com.kao.server.mapper.UserMapper;
 import com.kao.server.service.UserService;
 import com.kao.server.util.accounttype.AccountTypeConstant;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author 全鸿润
  */
 @Service
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+@PropertySource(value = {"classpath:application.yml"})
 public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
+
+    @Value("${redis.key.expired.commandExpireTime}")
+    private Long expireTime;
 
     @Override
     public User findUserByUserId(int userId) {
@@ -34,6 +42,8 @@ public class UserServiceImpl implements UserService {
                 user = (User) redisTemplate.opsForValue().get(key);
             } else {
                 user = userMapper.findUserByUserId(userId);
+                redisTemplate.opsForValue().set(key, user);
+                redisTemplate.expire(key, expireTime, TimeUnit.MINUTES);
             }
             return user;
         } catch (Exception e) {
@@ -54,6 +64,7 @@ public class UserServiceImpl implements UserService {
                 System.err.println("getNotVerifiedUserMessageById: " + uid);
                 UserMessage userMessage = userMapper.getNotVerifiedUserMessageById(uid);
                 redisTemplate.opsForValue().set(key, userMessage);
+                redisTemplate.expire(key, expireTime, TimeUnit.MINUTES);
                 return userMessage;
             }
         } catch (Exception e) {
@@ -76,6 +87,7 @@ public class UserServiceImpl implements UserService {
                 System.err.println("getStudentUserMessageById: " + uid);
                 userMessage = userMapper.getStudentUserMessageById(uid);
                 redisTemplate.opsForValue().set(key, userMessage);
+                redisTemplate.expire(key, expireTime, TimeUnit.MINUTES);
                 return userMessage;
             }
         } catch (Exception e) {
@@ -96,6 +108,7 @@ public class UserServiceImpl implements UserService {
                 System.err.println("getTutorUserMessageById: " + uid);
                 userMessage = userMapper.getTutorUserMessageById(uid);
                 redisTemplate.opsForValue().set(key, userMessage);
+                redisTemplate.expire(key, expireTime, TimeUnit.MINUTES);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -107,7 +120,17 @@ public class UserServiceImpl implements UserService {
     public UserMessage getVerifiedUserMessageById(int uid) {
         UserMessage userMessage = null;
         try {
-            userMessage = userMapper.getVerifiedUserMessageById(uid);
+            String key = String.valueOf(uid);
+            Boolean flag = (redisTemplate.hasKey(key));
+            if (flag != null && flag) {
+                System.err.println("getVerifiedUserMessageById: " + true);
+                return (UserMessage) redisTemplate.opsForValue().get(key);
+            } else {
+                System.err.println("getVerifiedUserMessageById: " + uid);
+                userMessage = userMapper.getVerifiedUserMessageById(uid);
+                redisTemplate.opsForValue().set(key, userMessage);
+                redisTemplate.expire(key, expireTime, TimeUnit.MINUTES);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -144,16 +167,17 @@ public class UserServiceImpl implements UserService {
                 String key2 = "findUserByUserId" + uid;
                 User user = userMapper.findUserByUserId(uid);
                 redisTemplate.opsForValue().set(key2, user);
-                if (user.getAccountType().equals(AccountTypeConstant.getStudentType())) {
+                redisTemplate.expire(key2, expireTime, TimeUnit.MINUTES);
+                if (AccountTypeConstant.getStudentType().equals(user.getAccountType())) {
                     UserMessage userMessage = userMapper.getStudentUserMessageById(uid);
-                    System.err.println("update" + userMessage);
+                    System.err.println("update: " + userMessage);
                     redisTemplate.opsForValue().set(key1, userMessage);
-                    System.err.println("测试: " + redisTemplate.opsForValue().get(String.valueOf(uid)));
-                } else if (user.getAccountType().equals(AccountTypeConstant.getTeacherType())) {
+                } else if (AccountTypeConstant.getTeacherType().equals(user.getAccountType())) {
                     redisTemplate.opsForValue().set(key1, userMapper.getTutorUserMessageById(uid));
                 } else {
                     redisTemplate.opsForValue().set(key1, userMapper.getNotVerifiedUserMessageById(uid));
                 }
+                redisTemplate.expire(key1, expireTime, TimeUnit.MINUTES);
             } catch (Exception e) {
                 e.printStackTrace();
             }

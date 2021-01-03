@@ -8,11 +8,13 @@ import com.kao.server.mapper.MetaQueryMapper;
 import com.kao.server.service.MetaQueryService;
 import com.kao.server.util.properties.RedisPrefixProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author 沈伟峰
@@ -26,6 +28,9 @@ public class MetaQueryServiceImpl implements MetaQueryService {
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
+    @Value("${redis.key.expired.commandExpireTime}")
+    private Long expireTime;
+
     @Override
     public List<CollegeIdAndName> queryCollegeIdAndName() {
         List<CollegeIdAndName> data = null;
@@ -36,6 +41,7 @@ public class MetaQueryServiceImpl implements MetaQueryService {
             } else {
                 data = metaQueryMapper.queryCollegeIdAndName();
                 redisTemplate.opsForValue().set(RedisPrefixProperties.COLLEGE_ID_AND_NAME, data);
+                redisTemplate.expire(RedisPrefixProperties.COLLEGE_ID_AND_NAME, expireTime, TimeUnit.MINUTES);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -53,6 +59,7 @@ public class MetaQueryServiceImpl implements MetaQueryService {
             } else {
                 data = metaQueryMapper.queryDiscipline();
                 redisTemplate.opsForValue().set(RedisPrefixProperties.DISCIPLINE, data);
+                redisTemplate.expire(RedisPrefixProperties.DISCIPLINE, expireTime, TimeUnit.MINUTES);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -70,6 +77,8 @@ public class MetaQueryServiceImpl implements MetaQueryService {
             } else {
                 data = metaQueryMapper.queryMajor();
                 redisTemplate.opsForValue().set(RedisPrefixProperties.MAJOR, data);
+                redisTemplate.expire(RedisPrefixProperties.MAJOR, expireTime, TimeUnit.MINUTES);
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -87,6 +96,7 @@ public class MetaQueryServiceImpl implements MetaQueryService {
             } else {
                 data = metaQueryMapper.queryRound();
                 redisTemplate.opsForValue().set(RedisPrefixProperties.ROUND, data);
+                redisTemplate.expire(RedisPrefixProperties.ROUND, expireTime, TimeUnit.MINUTES);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -105,6 +115,8 @@ public class MetaQueryServiceImpl implements MetaQueryService {
             } else {
                 data = metaQueryMapper.queryRank();
                 redisTemplate.opsForValue().set(RedisPrefixProperties.RANK, data);
+                redisTemplate.expire(RedisPrefixProperties.RANK, expireTime, TimeUnit.MINUTES);
+
             }
         } catch (Exception e) {
             e.printStackTrace();
