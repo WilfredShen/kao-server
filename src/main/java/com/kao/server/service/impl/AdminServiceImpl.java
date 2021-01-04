@@ -11,24 +11,31 @@ import com.kao.server.util.accounttype.AccountTypeConstant;
 import com.kao.server.util.checker.LoginChecker;
 import com.kao.server.util.properties.RedisPrefixProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author 全鸿润、沈伟峰
  */
 @Service
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+@PropertySource(value = {"classpath:application.yml"})
 public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private AdminMapper adminMapper;
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
+
+    @Value("${redis.key.expired.commandExpireTime}")
+    private Long expireTime;
 
     @Autowired
     private BaseQueryMapper baseQueryMapper;
@@ -50,6 +57,7 @@ public class AdminServiceImpl implements AdminService {
             } else {
                 admin = adminMapper.findAdminByUsername(username);
                 redisTemplate.opsForValue().set(key, admin);
+                redisTemplate.expire(key, expireTime, TimeUnit.MINUTES);
             }
             System.err.println("findAdminByUsername" + username);
             return admin;
@@ -71,6 +79,7 @@ public class AdminServiceImpl implements AdminService {
                 admin = adminMapper.findAdminByUsername(username);
                 if (admin != null) {
                     redisTemplate.opsForValue().set(key, admin);
+                    redisTemplate.expire(key, expireTime, TimeUnit.MINUTES);
                 }
             }
             return LoginChecker.checkLogin(admin, username, password);
@@ -102,6 +111,8 @@ public class AdminServiceImpl implements AdminService {
             if (row != null && row == 1) {
                 redisTemplate.opsForValue().set(RedisPrefixProperties.EVALUATIONS + round, baseQueryMapper.queryEvaluation(round));
                 redisTemplate.opsForValue().set(RedisPrefixProperties.LATEST_EVALUATION, baseQueryMapper.queryLatestEvaluation());
+                redisTemplate.expire(RedisPrefixProperties.EVALUATIONS + round, 30, TimeUnit.MINUTES);
+                redisTemplate.expire(RedisPrefixProperties.LATEST_EVALUATION + round, 30, TimeUnit.MINUTES);
             }
             return row;
         } catch (Exception e) {
@@ -116,6 +127,8 @@ public class AdminServiceImpl implements AdminService {
             if (row != null) {
                 redisTemplate.opsForValue().set(RedisPrefixProperties.EVALUATIONS + result.getRound(), baseQueryMapper.queryEvaluation(result.getRound()));
                 redisTemplate.opsForValue().set(RedisPrefixProperties.LATEST_EVALUATION, baseQueryMapper.queryLatestEvaluation());
+                redisTemplate.expire(RedisPrefixProperties.EVALUATIONS + result.getRound(), 30, TimeUnit.MINUTES);
+                redisTemplate.expire(RedisPrefixProperties.LATEST_EVALUATION, expireTime, TimeUnit.MINUTES);
             }
             return row;
         } catch (Exception e) {
@@ -131,6 +144,8 @@ public class AdminServiceImpl implements AdminService {
             if (count != null && count == 1) {
                 redisTemplate.opsForValue().set(RedisPrefixProperties.LATEST_NEWS, baseQueryMapper.queryLatestNews(6));
                 redisTemplate.opsForValue().set(RedisPrefixProperties.NEWS, adminMapper.queryNews());
+                redisTemplate.expire(RedisPrefixProperties.LATEST_NEWS, expireTime, TimeUnit.MINUTES);
+                redisTemplate.expire(RedisPrefixProperties.NEWS, expireTime, TimeUnit.MINUTES);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -148,6 +163,7 @@ public class AdminServiceImpl implements AdminService {
             } else {
                 data = adminMapper.queryNews();
                 redisTemplate.opsForValue().set(RedisPrefixProperties.NEWS, data);
+                redisTemplate.expire(RedisPrefixProperties.NEWS, expireTime, TimeUnit.MINUTES);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -164,6 +180,8 @@ public class AdminServiceImpl implements AdminService {
             if (count != null) {
                 redisTemplate.opsForValue().set(RedisPrefixProperties.LATEST_NEWS, baseQueryMapper.queryLatestNews(6));
                 redisTemplate.opsForValue().set(RedisPrefixProperties.NEWS, adminMapper.queryNews());
+                redisTemplate.expire(RedisPrefixProperties.LATEST_NEWS, expireTime, TimeUnit.MINUTES);
+                redisTemplate.expire(RedisPrefixProperties.NEWS, expireTime, TimeUnit.MINUTES);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -206,21 +224,24 @@ public class AdminServiceImpl implements AdminService {
             //先保存旧用户信息
             User user = userMapper.findUserByUserId(uid);
             Integer row = adminMapper.updateUser(message);
-            if (row != null && row == 1) {
+            if (row != null && row == 1 && user != null) {
 
                 redisTemplate.delete(user.getUsername());
                 //更新findUserById
                 redisTemplate.opsForValue().set("findUserByUserId" + uid, user);
+                redisTemplate.expire("findUserByUserId" + uid, expireTime, TimeUnit.MINUTES);
                 //更新findUserByName
                 redisTemplate.opsForValue().set(message.getUsername(), user);
+                redisTemplate.expire(message.getUsername(), expireTime, TimeUnit.MINUTES);
                 //根据用户类型更新缓存
-                if (user.getAccountType().equals(AccountTypeConstant.getStudentType())) {
+                if (AccountTypeConstant.getStudentType().equals(user.getAccountType())) {
                     redisTemplate.opsForValue().set(String.valueOf(uid), userMapper.getStudentUserMessageById(uid));
-                } else if (user.getAccountType().equals(AccountTypeConstant.getTeacherType())) {
+                } else if (AccountTypeConstant.getTeacherType().equals(user.getAccountType())) {
                     redisTemplate.opsForValue().set(String.valueOf(uid), userMapper.getTutorUserMessageById(uid));
                 } else if (user.getAccountType() == null) {
                     redisTemplate.opsForValue().set(String.valueOf(uid), userMapper.getNotVerifiedUserMessageById(uid));
                 }
+                redisTemplate.expire(String.valueOf(uid), expireTime, TimeUnit.MINUTES);
             }
             return row;
         } catch (Exception e) {

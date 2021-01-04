@@ -5,21 +5,28 @@ import com.kao.server.mapper.FavorMapper;
 import com.kao.server.service.FavorService;
 import com.kao.server.util.properties.RedisPrefixProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author 沈伟峰
  */
 @Service
+@PropertySource(value = {"classpath:application.yml"})
 public class FavorServiceImpl implements FavorService {
 
     @Autowired
     private FavorMapper favorMapper;
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
+
+    @Value("${redis.key.expired.commandExpireTime}")
+    private Long expireTime;
 
     @Override
     public StudentId getStudentId(Integer uid) {
@@ -32,6 +39,7 @@ public class FavorServiceImpl implements FavorService {
             } else {
                 data = favorMapper.getStudentId(uid);
                 redisTemplate.opsForValue().set(key, data);
+                redisTemplate.expire(key, expireTime, TimeUnit.MINUTES);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -50,6 +58,8 @@ public class FavorServiceImpl implements FavorService {
             if (count != null) {
                 redisTemplate.opsForValue().set(key1, favorMapper.queryMajor(stuCid, stuSid));
                 redisTemplate.opsForValue().set(key2, favorMapper.queryNews(stuCid, stuSid));
+                redisTemplate.expire(key1, expireTime, TimeUnit.MINUTES);
+                redisTemplate.expire(key2, expireTime, TimeUnit.MINUTES);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -66,6 +76,7 @@ public class FavorServiceImpl implements FavorService {
             count = favorMapper.favorTutor(stuCid, stuSid, tutorList);
             if (count != null) {
                 redisTemplate.opsForValue().set(key1, favorMapper.queryTutor(stuCid, stuSid));
+                redisTemplate.expire(key1, expireTime, TimeUnit.MINUTES);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -84,6 +95,7 @@ public class FavorServiceImpl implements FavorService {
             } else {
                 data = favorMapper.queryNews(stuCid, stuSid);
                 redisTemplate.opsForValue().set(key, data);
+                redisTemplate.expire(key, expireTime, TimeUnit.MINUTES);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -102,6 +114,7 @@ public class FavorServiceImpl implements FavorService {
             } else {
                 data = favorMapper.queryMajor(stuCid, stuSid);
                 redisTemplate.opsForValue().set(key, data);
+                redisTemplate.expire(key, expireTime, TimeUnit.MINUTES);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -120,6 +133,7 @@ public class FavorServiceImpl implements FavorService {
             } else {
                 data = favorMapper.queryTutor(stuCid, stuSid);
                 redisTemplate.opsForValue().set(key, data);
+                redisTemplate.expire(key, expireTime, TimeUnit.MINUTES);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -138,6 +152,8 @@ public class FavorServiceImpl implements FavorService {
             if (row != null && row == 1) {
                 redisTemplate.opsForValue().set(key1, favorMapper.queryMajor(cid, sid));
                 redisTemplate.opsForValue().set(key2, favorMapper.queryNews(cid, sid));
+                redisTemplate.expire(key1, expireTime, TimeUnit.MINUTES);
+                redisTemplate.expire(key2, expireTime, TimeUnit.MINUTES);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -154,6 +170,7 @@ public class FavorServiceImpl implements FavorService {
             row = favorMapper.deleteTutor(cid, sid, tutorCid, tutorTid);
             if (row != null && row == 1) {
                 redisTemplate.opsForValue().set(key, favorMapper.queryTutor(cid, sid));
+                redisTemplate.expire(key, expireTime, TimeUnit.MINUTES);
             }
 
         } catch (Exception e) {

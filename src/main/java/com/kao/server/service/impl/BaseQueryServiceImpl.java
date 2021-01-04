@@ -6,15 +6,19 @@ import com.kao.server.mapper.BaseQueryMapper;
 import com.kao.server.service.BaseQueryService;
 import com.kao.server.util.properties.RedisPrefixProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author 沈伟峰
  */
 @Service
+@PropertySource(value = {"classpath:application.yml"})
 public class BaseQueryServiceImpl implements BaseQueryService {
 
     @Autowired
@@ -22,6 +26,8 @@ public class BaseQueryServiceImpl implements BaseQueryService {
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
+    @Value("${redis.key.expired.commandExpireTime}")
+    private Long expireTime;
 
     @Override
     public List<EvaluationBase> queryEvaluation(Integer round) {
@@ -34,6 +40,7 @@ public class BaseQueryServiceImpl implements BaseQueryService {
             } else {
                 data = baseQueryMapper.queryEvaluation(round);
                 redisTemplate.opsForValue().set(key, data);
+                redisTemplate.expire(key, expireTime, TimeUnit.MINUTES);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -52,6 +59,7 @@ public class BaseQueryServiceImpl implements BaseQueryService {
             } else {
                 data = baseQueryMapper.queryLatestEvaluation();
                 redisTemplate.opsForValue().set(key, data);
+                redisTemplate.expire(key, expireTime, TimeUnit.MINUTES);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -73,6 +81,7 @@ public class BaseQueryServiceImpl implements BaseQueryService {
             } else {
                 data = baseQueryMapper.queryLatestNews(limit);
                 redisTemplate.opsForValue().set(key, data);
+                redisTemplate.expire(key, expireTime, TimeUnit.MINUTES);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -103,6 +112,7 @@ public class BaseQueryServiceImpl implements BaseQueryService {
             } else {
                 data = baseQueryMapper.queryTutor(cid);
                 redisTemplate.opsForValue().set(key, data);
+                redisTemplate.expire(key, expireTime, TimeUnit.MINUTES);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -122,6 +132,7 @@ public class BaseQueryServiceImpl implements BaseQueryService {
             } else {
                 data = baseQueryMapper.querySummerCamp();
                 redisTemplate.opsForValue().set(key, data);
+                redisTemplate.expire(key, expireTime, TimeUnit.MINUTES);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -140,6 +151,7 @@ public class BaseQueryServiceImpl implements BaseQueryService {
             } else {
                 data = baseQueryMapper.queryExemption();
                 redisTemplate.opsForValue().set(key, data);
+                redisTemplate.expire(key, expireTime, TimeUnit.MINUTES);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -158,6 +170,8 @@ public class BaseQueryServiceImpl implements BaseQueryService {
             } else {
                 data = baseQueryMapper.queryLatestCollegeRank(cid);
                 redisTemplate.opsForValue().set(key, data);
+                //命中率相对较低，存活时间短一点
+                redisTemplate.expire(key, 10, TimeUnit.MINUTES);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -177,6 +191,7 @@ public class BaseQueryServiceImpl implements BaseQueryService {
             } else {
                 data = baseQueryMapper.queryCollegeRank();
                 redisTemplate.opsForValue().set(key, data);
+                redisTemplate.expire(key, expireTime, TimeUnit.MINUTES);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -195,6 +210,7 @@ public class BaseQueryServiceImpl implements BaseQueryService {
             } else {
                 data = baseQueryMapper.queryAcceptanceRate(cid);
                 redisTemplate.opsForValue().set(key, data);
+                redisTemplate.expire(key, 10, TimeUnit.MINUTES);
             }
         } catch (Exception e) {
             e.printStackTrace();

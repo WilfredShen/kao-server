@@ -29,9 +29,8 @@ public class LoginServiceImpl implements LoginService {
     private LoginMapper loginMapper;
     @Autowired
     private SmsService smsService;
-    @Value("${redis.key.prefix.authCode}")
-    private String authCode;
-    @Value("${redis.key.expired.authCode}")
+
+    @Value("${redis.key.expired.commandExpireTime}")
     private Long expireTime;
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
@@ -46,6 +45,7 @@ public class LoginServiceImpl implements LoginService {
                 user = (User) redisTemplate.opsForValue().get(username);
             } else {
                 user = loginMapper.findUserByUsername(username);
+                redisTemplate.expire(username, expireTime, TimeUnit.MINUTES);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -63,6 +63,7 @@ public class LoginServiceImpl implements LoginService {
                 user = (User) redisTemplate.opsForValue().get(username);
             } else {
                 user = loginMapper.findUserNameByUsername(username);
+                redisTemplate.expire(username, expireTime, TimeUnit.MINUTES);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -77,6 +78,7 @@ public class LoginServiceImpl implements LoginService {
             Integer row = loginMapper.addOne(user);
             if (row != null && row == 1) {
                 redisTemplate.opsForValue().set(user.getUsername(), user);
+                redisTemplate.expire(user.getUsername(), expireTime, TimeUnit.MINUTES);
                 System.err.println("addOne:" + redisTemplate.opsForValue().get(user.getUsername()));
             }
             return row;
@@ -100,6 +102,7 @@ public class LoginServiceImpl implements LoginService {
                 System.err.println(user);
                 if (user != null) {
                     redisTemplate.opsForValue().set(username, user);
+                    redisTemplate.expire(username, expireTime, TimeUnit.MINUTES);
                 }
             }
             return LoginChecker.checkLogin(user, username, password);
@@ -169,7 +172,7 @@ public class LoginServiceImpl implements LoginService {
             row = loginMapper.updatePassword(username, digest);
             if (row == 1) {
                 redisTemplate.opsForValue().set(username, user);
-                System.err.println(user.getPassword());
+                redisTemplate.expire(username, expireTime, TimeUnit.MINUTES);
                 return JsonResultStatus.SUCCESS;
             } else {
                 return JsonResultStatus.FAIL;
@@ -184,7 +187,7 @@ public class LoginServiceImpl implements LoginService {
         String verificationCode = smsService.getVerificationCode(phoneNumber);
         if (verificationCode != null) {
             redisTemplate.opsForValue().set(phoneNumber, verificationCode);
-            redisTemplate.expire(phoneNumber, expireTime, TimeUnit.SECONDS);
+            redisTemplate.expire(phoneNumber, 60, TimeUnit.SECONDS);
         }
         return verificationCode;
     }

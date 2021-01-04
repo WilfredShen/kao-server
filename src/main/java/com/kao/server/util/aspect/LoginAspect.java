@@ -65,20 +65,24 @@ public class LoginAspect {
                 //用户持有uid,是用户类型
                 if (CookieUtil.findCookie(request.getCookies(), "uid") != null) {
                     User user = loginService.findUserByUsername(username);
-                    String userName = user.getUsername();
-                    String passWord = user.getPassword();
-                    if (userName.equals(username) && passWord.equals(password)) {
-                        flag = true;
+                    if (user != null) {
+                        String userName = user.getUsername();
+                        String passWord = user.getPassword();
+                        if (userName.equals(username) && passWord.equals(password)) {
+                            flag = true;
+                        }
+                        System.err.println("user: " + userName + " " + passWord);
                     }
-                    System.err.println("user: " + userName + " " + passWord);
                 } else if (CookieUtil.findCookie(request.getCookies(), "adminId") != null) {
                     Admin admin = adminService.findAdminByUsername(username);
-                    String userName = admin.getUsername();
-                    String passWord = admin.getPassword();
-                    if (userName.equals(username) && passWord.equals(password)) {
-                        flag = true;
+                    if (admin != null) {
+                        String userName = admin.getUsername();
+                        String passWord = admin.getPassword();
+                        if (userName.equals(username) && passWord.equals(password)) {
+                            flag = true;
+                        }
+                        System.err.println("admin: " + userName + " " + passWord);
                     }
-                    System.err.println("admin: " + userName + " " + passWord);
                 }
                 //判断token是否属于当前用户
             }
@@ -88,8 +92,10 @@ public class LoginAspect {
                 return ResultFactory.buildFailJsonResult(JsonResultStatus.UNAUTHORIZED, JsonResultStatus.UNAUTHORIZED_DESC);
             }
         } catch (JWTVerificationException j) {
+            j.printStackTrace();
             return ResultFactory.buildFailJsonResult(JsonResultStatus.UNAUTHORIZED, JsonResultStatus.UNKNOWN_ERROR_DESC);
         } catch (Throwable throwable) {
+            throwable.printStackTrace();
             return ResultFactory.buildFailJsonResult(JsonResultStatus.UNKNOWN_ERROR, JsonResultStatus.UNKNOWN_ERROR_DESC);
         }
     }

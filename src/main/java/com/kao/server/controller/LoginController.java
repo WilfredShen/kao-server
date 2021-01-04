@@ -164,7 +164,6 @@ public class LoginController {
      * @return 封装的Json数据
      */
     @PostMapping("/getvfcode")
-    @ResponseBody
     public JsonResult getVerificationCode(@RequestBody JSONObject jsonObject) {
         String phoneNumber = jsonObject.getString("phoneNumber");
         System.err.println(phoneNumber);
