@@ -30,7 +30,6 @@ import java.time.Duration;
  */
 @Configuration
 @EnableCaching
-@PropertySource(value = {"classpath:application.yml"})
 public class RedisConfig extends CachingConfigurerSupport {
 
     @Value("${spring.redis.host}")

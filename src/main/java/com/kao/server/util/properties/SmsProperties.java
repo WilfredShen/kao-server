@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-@PropertySource(value = {"classpath:application-sms.yml"})
 public class SmsProperties {
 
     @Value("${sms.access-key-id}")
