@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
  * @author 沈伟峰
  */
 @Component
-@PropertySource(value = {"classpath:application-cookie.yml"})
 public class CookieProperties {
 
     @Value("${cookie.domain}")

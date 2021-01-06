@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
  * @author 沈伟峰
  */
 @Component
-@PropertySource(value = {"classpath:application-qiniu.yml"})
 public class QiniuCloudProperties {
 
     @Value("${qiniu.domain}")

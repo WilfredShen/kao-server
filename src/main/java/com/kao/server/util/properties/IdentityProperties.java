@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
  * @author 沈伟峰
  */
 @Component
-@PropertySource(value = {"classpath:application-identity.yml"})
 public class IdentityProperties {
 
     @Value("${identity.api}")
